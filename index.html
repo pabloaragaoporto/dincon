@@ -34,7 +34,7 @@ body{background:var(--bg);color:var(--t);font-family:var(--font);min-height:100v
 .wrap{max-width:960px;margin:0 auto;padding:0 20px;}
 
 /* HEADER */
-header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;}
+header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;padding-top:calc(18px + env(safe-area-inset-top));}
 .hrow{display:flex;align-items:center;justify-content:space-between;}
 .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;text-decoration:none;color:var(--t);}
 .logo-ic{width:34px;height:34px;border-radius:10px;background:#00c86e;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#000;flex-shrink:0;}
@@ -1137,6 +1137,8 @@ function goTabNoRoute(tab){
   if(tab==='fins')renderFins();
   if(tab==='saude')renderSaude();
   if(tab==='planej')renderPlanej();
+  const fab=document.querySelector('.fab');
+  if(fab)fab.style.display=tab==='dash'?'flex':'none';
 }
 function goTab(tab){
   goTabNoRoute(tab);
@@ -1147,6 +1149,8 @@ function goTab(tab){
 document.querySelectorAll('.nav-btn').forEach(b=>{
   b.addEventListener('click',()=>goTab(b.dataset.tab));
 });
+// Scroll horizontal no nav com mouse wheel (desktop)
+(()=>{const nav=document.getElementById('mainNav');if(nav)nav.addEventListener('wheel',e=>{e.preventDefault();nav.scrollLeft+=e.deltaY;},{passive:false});})();
 
 // ─── MÊS ───
 function monthStr(d){ return d.toLocaleDateString('pt-BR',{month:'long',year:'numeric'}); }
@@ -1887,9 +1891,21 @@ function renderCC(){
   }
   if(!S.cartoes.length){ el.innerHTML=`<div class="empty"><div class="empty-icon">💳</div><div class="empty-lbl">Nenhum cartão cadastrado</div><div class="empty-sub">Controle fatura e limite dos seus cartões</div><button class="add-btn" style="margin-top:14px" onclick="openAddCC()">+ Adicionar cartão</button></div>`; }
   else {
+    const hoje2=new Date();
     el.innerHTML=S.cartoes.map((c,i)=>{
+      // Fatura atual = parcelas deste mês (o que será cobrado na fatura)
       const faturaCalc=txDoMes().filter(t=>t.tipo==='gasto'&&t.cartao===c.nome).reduce((s,t)=>s+t.valor/(t.parcelas||1),0);
-      const usoPct=c.limite>0?Math.min(Math.round((faturaCalc/c.limite)*100),100):0;
+      // Saldo comprometido = total ainda pendente de todas as compras (para limite)
+      const comprometido=S.tx.filter(t=>t.tipo==='gasto'&&t.cartao===c.nome&&t.meio==='crédito').reduce((s,t)=>{
+        if(!t.data)return s+t.valor;
+        const compra=new Date(t.data+'T12:00');
+        const meses=(hoje2.getFullYear()-compra.getFullYear())*12+(hoje2.getMonth()-compra.getMonth());
+        const parc=t.parcelas||1;
+        const pagas=Math.min(Math.max(0,meses),parc);
+        const restante=t.valor-pagas*(t.valor/parc);
+        return s+Math.max(0,restante);
+      },0);
+      const usoPct=c.limite>0?Math.min(Math.round((comprometido/c.limite)*100),100):0;
       const dias=diasParaVencimento(c.venc);
       const vencBadge=dias!==null&&dias<=5?`<div style="position:absolute;bottom:14px;right:14px;background:${dias===0?'#f25f7a':dias<=2?'#f5a623':'rgba(255,255,255,.2)'};color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px">${dias===0?'⚠️ Vence hoje':dias===1?'⚠️ Amanhã':'📅 '+dias+' dias'}</div>`:''
       return `<div class="cc-visual" style="background:${CC_COLORS[i%CC_COLORS.length]}">
@@ -1898,7 +1914,7 @@ function renderCC(){
           <div class="cc-fatura-lbl">Fatura atual</div>
           <div class="cc-fatura">${fmt(faturaCalc)}</div>
           <div style="margin-top:8px;height:4px;background:rgba(255,255,255,.2);border-radius:100px;overflow:hidden"><div style="height:100%;width:${usoPct}%;background:rgba(255,255,255,.8);border-radius:100px"></div></div>
-          <div style="display:flex;justify-content:space-between;margin-top:4px"><span style="font-size:10px;color:rgba(255,255,255,.5)">Limite: ${fmt(c.limite||0)}</span><span style="font-size:10px;color:rgba(255,255,255,.5)">${usoPct}%</span></div>
+          <div style="display:flex;justify-content:space-between;margin-top:4px"><span style="font-size:10px;color:rgba(255,255,255,.5)">Comprometido: ${fmt(comprometido)} / ${fmt(c.limite||0)}</span><span style="font-size:10px;color:rgba(255,255,255,.5)">${usoPct}%</span></div>
         </div>
         ${vencBadge}
         <button onclick="delCC(${i})" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.15);border:none;border-radius:8px;padding:5px 9px;color:#fff;cursor:pointer;font-size:12px">✕</button>
