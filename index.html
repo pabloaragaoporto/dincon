@@ -974,11 +974,33 @@ function switchAuthTab(mode){
   document.getElementById('authTabSignup').className='auth-tab'+(mode==='signup'?' active':'');
   document.getElementById('authErr').textContent='';
 }
+// ─── ROTAS ───
+const ROUTES={
+  'dash':'/dashboard','tx':'/transacoes','cc':'/cartoes',
+  'metas':'/metas','orc':'/orcamentos','patri':'/patrimonio',
+  'fins':'/financiamentos','saude':'/saude','perfil':'/perfil'
+};
+const PATH_TO_TAB=Object.fromEntries(Object.entries(ROUTES).map(([k,v])=>[v,k]));
+function pushRoute(path){
+  if(window.location.protocol!=='file:')history.pushState({},''  ,path);
+}
+function tabFromPath(){
+  const p=window.location.pathname;
+  return PATH_TO_TAB[p]||'dash';
+}
+window.addEventListener('popstate',()=>{
+  const tab=tabFromPath();
+  if(document.getElementById('authScreen').style.display==='flex')return;
+  goTabNoRoute(tab);
+});
+
 function showAuthScreen(){
   document.getElementById('authScreen').style.display='flex';
+  pushRoute('/login');
 }
 function hideAuthScreen(){
   document.getElementById('authScreen').style.display='none';
+  pushRoute('/dashboard');
 }
 function authSetLoading(v){
   ['authBtnLogin','authBtnSignup'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=v;b&&(b.textContent=v?'Aguarde...':(id==='authBtnLogin'?'Entrar':'Criar conta gratuita'));});
@@ -1055,7 +1077,7 @@ function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 function openModal(id){ document.getElementById(id).classList.add('open'); }
 
 // ─── NAVEGAÇÃO ───
-function goTab(tab){
+function goTabNoRoute(tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   document.querySelectorAll('.nav-btn,.bni').forEach(b=>{
@@ -1069,6 +1091,10 @@ function goTab(tab){
   if(tab==='patri')renderPatri();
   if(tab==='fins')renderFins();
   if(tab==='saude')renderSaude();
+}
+function goTab(tab){
+  goTabNoRoute(tab);
+  pushRoute(ROUTES[tab]||'/dashboard');
 }
 
 // Vincular nav buttons
@@ -2364,6 +2390,11 @@ async function init(){
   updateMonthLbl();
   renderAll();
   buildCatSelect();
+  if(currentUser){
+    const initialTab=tabFromPath();
+    goTabNoRoute(initialTab);
+    pushRoute(ROUTES[initialTab]||'/dashboard');
+  }
   if(currentUser&&!S.prefs.nome)checkOnboarding();
   // Listener de mudança de sessão (logout em outra aba, etc.)
   sb.auth.onAuthStateChange((event,session)=>{
