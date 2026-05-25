@@ -340,6 +340,29 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;}
 .splash-prog{height:100%;background:#00c86e;border-radius:100px;animation:splashLoad .8s ease forwards;}
 @keyframes splashPulse{from{box-shadow:0 0 0 0 rgba(0,200,110,.4)}to{box-shadow:0 0 0 16px rgba(0,200,110,0)}}
 @keyframes splashLoad{from{width:0}to{width:100%}}
+
+/* ── PLANEJAMENTO ANUAL ── */
+.planej-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--r);}
+.planej-tbl{width:100%;min-width:880px;border-collapse:collapse;font-size:12px;}
+.planej-tbl th{background:var(--s3);color:var(--t2);font-weight:700;text-align:right;padding:9px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid var(--border);white-space:nowrap;}
+.planej-tbl th:first-child{text-align:left;min-width:170px;position:sticky;left:0;background:var(--s3);z-index:2;}
+.planej-tbl td{padding:7px 10px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap;}
+.planej-tbl td:first-child{text-align:left;position:sticky;left:0;background:var(--surface);z-index:1;font-weight:500;color:var(--t2);border-right:1px solid var(--border);}
+.planej-tbl tbody tr:hover td{background:var(--s2);}
+.planej-tbl tbody tr:hover td:first-child{background:var(--s2);}
+.planej-sec td{background:#141e33 !important;color:#60a5fa !important;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:10px 10px;}
+.planej-total td{background:var(--s3) !important;font-weight:700;color:var(--t) !important;}
+.planej-total td:first-child{color:var(--t) !important;}
+.planej-acum td{background:#081a10 !important;font-weight:700;}
+.planej-acum td:first-child{color:var(--accent) !important;}
+.pj-future{color:var(--t3);}
+.pj-pos{color:var(--accent);font-weight:700;}
+.pj-neg{color:var(--red);font-weight:700;}
+.pj-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:middle;flex-shrink:0;}
+.pj-dot.ok{background:var(--accent);}
+.pj-dot.no{background:var(--border);}
+.planej-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--t2);margin-bottom:12px;align-items:center;}
+.planej-legend span{display:flex;align-items:center;gap:5px;}
 </style>
 </head>
 <body>
@@ -416,6 +439,7 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;}
   <button class="nav-btn" data-tab="patri">🏦 Patrimônio</button>
   <button class="nav-btn" data-tab="fins">📅 Financiamentos</button>
   <button class="nav-btn" data-tab="saude">❤️ Saúde</button>
+  <button class="nav-btn" data-tab="planej">📅 Planejamento</button>
   <button class="nav-btn" data-tab="perfil">👤 Perfil</button>
 </nav>
 
@@ -616,6 +640,26 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;}
   </div>
 </div>
 
+<!-- ═══ TAB: PLANEJAMENTO ANUAL ═══ -->
+<div class="tab" id="tab-planej">
+  <div class="row mb-16">
+    <div><div class="card-title">📅 Planejamento Anual</div><div style="font-size:12px;color:var(--t2);margin-top:3px" id="planejmSub">Visão completa dos 12 meses</div></div>
+  </div>
+  <div class="planej-legend">
+    <span><span class="pj-dot ok"></span>Confirmado</span>
+    <span><span class="pj-dot no"></span>Não lançado</span>
+    <span style="color:var(--t3)">Cinza = projeção futura</span>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div class="planej-wrap">
+      <table class="planej-tbl">
+        <thead><tr id="planejmHead"></tr></thead>
+        <tbody id="planejmBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 </div><!-- /wrap -->
 
 <!-- MODAL: IMPORTAR CSV -->
@@ -681,6 +725,7 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;}
     <button onclick="goTab('orc');closeMaisMenu()" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border-radius:12px;background:var(--s2);border:none;cursor:pointer;font-family:var(--font);font-size:11px;color:var(--t2)"><span style="font-size:24px">📋</span>Orçamentos</button>
     <button onclick="goTab('patri');closeMaisMenu()" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border-radius:12px;background:var(--s2);border:none;cursor:pointer;font-family:var(--font);font-size:11px;color:var(--t2)"><span style="font-size:24px">🏦</span>Patrimônio</button>
     <button onclick="goTab('fins');closeMaisMenu()" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border-radius:12px;background:var(--s2);border:none;cursor:pointer;font-family:var(--font);font-size:11px;color:var(--t2)"><span style="font-size:24px">📅</span>Financiam.</button>
+    <button onclick="goTab('planej');closeMaisMenu()" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border-radius:12px;background:var(--s2);border:none;cursor:pointer;font-family:var(--font);font-size:11px;color:var(--t2)"><span style="font-size:24px">🗓️</span>Planejam.</button>
     <button onclick="goTab('perfil');closeMaisMenu()" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border-radius:12px;background:var(--s2);border:none;cursor:pointer;font-family:var(--font);font-size:11px;color:var(--t2)"><span style="font-size:24px">👤</span>Perfil</button>
     <button onclick="gerarRelatorio();closeMaisMenu()" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border-radius:12px;background:var(--s2);border:none;cursor:pointer;font-family:var(--font);font-size:11px;color:var(--t2)"><span style="font-size:24px">🖨️</span>Mês</button>
     <button onclick="gerarRelatorioAnual();closeMaisMenu()" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border-radius:12px;background:var(--s2);border:none;cursor:pointer;font-family:var(--font);font-size:11px;color:var(--t2)"><span style="font-size:24px">📅</span>Ano</button>
@@ -978,7 +1023,7 @@ function switchAuthTab(mode){
 const ROUTES={
   'dash':'/dashboard','tx':'/transacoes','cc':'/cartoes',
   'metas':'/metas','orc':'/orcamentos','patri':'/patrimonio',
-  'fins':'/financiamentos','saude':'/saude','perfil':'/perfil'
+  'fins':'/financiamentos','saude':'/saude','planej':'/planejamento','perfil':'/perfil'
 };
 const PATH_TO_TAB=Object.fromEntries(Object.entries(ROUTES).map(([k,v])=>[v,k]));
 function pushRoute(path){
@@ -1091,6 +1136,7 @@ function goTabNoRoute(tab){
   if(tab==='patri')renderPatri();
   if(tab==='fins')renderFins();
   if(tab==='saude')renderSaude();
+  if(tab==='planej')renderPlanej();
 }
 function goTab(tab){
   goTabNoRoute(tab);
@@ -1502,7 +1548,11 @@ function renderLineChart(){
   const ctx=document.getElementById('lineChart');if(!ctx)return;
   if(charts.line){charts.line.destroy();charts.line=null;}
   const ano=cur.getFullYear();
-  const meses=Array.from({length:12},(_,i)=>({rec:0,desp:0}));
+  const hoje=new Date();
+  const mesHoje=hoje.getMonth(),anoHoje=hoje.getFullYear();
+  const meses=Array.from({length:12},()=>({rec:0,desp:0,proj:false}));
+
+  // Dados reais
   S.tx.forEach(t=>{
     if(!t.data)return;
     const d=new Date(t.data+'T12:00');
@@ -1511,10 +1561,27 @@ function renderLineChart(){
     if(t.tipo==='receita')meses[d.getMonth()].rec+=v;
     else meses[d.getMonth()].desp+=v;
   });
-  const temDados=S.tx.some(t=>t.data&&new Date(t.data+'T12:00').getFullYear()===ano);
-  let acum=0;
-  const saldos=meses.map(m=>{acum+=m.rec-m.desp;return Math.round(acum*100)/100;});
-  const labels=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+
+  // Projeção para meses futuros com recorrentes
+  if(ano>=anoHoje){
+    const recMap={};
+    S.tx.filter(t=>t.recorrente).forEach(t=>{
+      const k=t.desc+'|'+t.tipo;
+      if(!recMap[k]||t.data>recMap[k].data)recMap[k]=t;
+    });
+    const recList=Object.values(recMap);
+    const inicio=ano===anoHoje?mesHoje+1:0;
+    for(let m=inicio;m<12;m++){
+      recList.forEach(t=>{
+        const v=t.valor/(t.parcelas||1);
+        if(t.tipo==='receita')meses[m].rec+=v;
+        else meses[m].desp+=v;
+      });
+      meses[m].proj=true;
+    }
+  }
+
+  const temDados=S.tx.some(t=>t.data&&new Date(t.data+'T12:00').getFullYear()===ano)||meses.some(m=>m.proj&&(m.rec>0||m.desp>0));
   const card=ctx.closest('.card');
   const emptyId='lineEmpty';
   let existingEmpty=card?card.querySelector('#'+emptyId):null;
@@ -1525,14 +1592,260 @@ function renderLineChart(){
     return;
   }
   ctx.style.display='';
+
+  let acum=0;
+  const saldos=meses.map(m=>{acum+=m.rec-m.desp;return Math.round(acum*100)/100;});
+  const labels=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+
+  // Cores por ponto: sólido=real, transparente=projeção
+  const ptSaldo=meses.map(m=>m.proj?'transparent':'#00c86e');
+  const ptRec=meses.map(m=>m.proj?'transparent':'#00bfff');
+  const ptDesp=meses.map(m=>m.proj?'transparent':'#f25f7a');
+
   charts.line=new Chart(ctx,{type:'line',data:{labels,datasets:[
-    {label:'Saldo acum.',data:saldos,borderColor:'#00c86e',backgroundColor:'rgba(0,200,110,.07)',borderWidth:2,fill:true,tension:.4,pointRadius:3,pointBackgroundColor:'#00c86e'},
-    {label:'Receitas',data:meses.map(m=>m.rec),borderColor:'#00bfff',borderWidth:1.5,borderDash:[5,3],tension:.4,pointRadius:2,fill:false},
-    {label:'Despesas',data:meses.map(m=>m.desp),borderColor:'#f25f7a',borderWidth:1.5,borderDash:[5,3],tension:.4,pointRadius:2,fill:false},
-  ]},options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmt(c.raw)}}},scales:{
-    x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#606078',font:{size:10}}},
-    y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#606078',font:{size:10},callback:v=>'R$'+v.toLocaleString('pt-BR',{maximumFractionDigits:0})}},
-  }}});
+    {label:'Saldo',data:saldos,borderColor:'#00c86e',backgroundColor:'rgba(0,200,110,.07)',borderWidth:2.5,fill:true,tension:.4,
+     pointRadius:4,pointBackgroundColor:ptSaldo,pointBorderColor:'#00c86e',
+     segment:{borderDash:ctx=>meses[ctx.p1DataIndex]?.proj?[6,4]:undefined,
+               borderColor:ctx=>meses[ctx.p1DataIndex]?.proj?'rgba(0,200,110,.45)':'#00c86e'}},
+    {label:'Receitas',data:meses.map(m=>m.rec),borderColor:'#00bfff',borderWidth:1.5,tension:.4,pointRadius:3,fill:false,
+     pointBackgroundColor:ptRec,pointBorderColor:'#00bfff',
+     segment:{borderDash:ctx=>meses[ctx.p1DataIndex]?.proj?[5,3]:undefined,
+               borderColor:ctx=>meses[ctx.p1DataIndex]?.proj?'rgba(0,191,255,.4)':'#00bfff'}},
+    {label:'Despesas',data:meses.map(m=>m.desp),borderColor:'#f25f7a',borderWidth:1.5,tension:.4,pointRadius:3,fill:false,
+     pointBackgroundColor:ptDesp,pointBorderColor:'#f25f7a',
+     segment:{borderDash:ctx=>meses[ctx.p1DataIndex]?.proj?[5,3]:undefined,
+               borderColor:ctx=>meses[ctx.p1DataIndex]?.proj?'rgba(242,95,122,.4)':'#f25f7a'}},
+  ]},options:{
+    plugins:{
+      legend:{display:true,position:'top',align:'end',labels:{color:'#a0a0b8',font:{size:10},boxWidth:12,padding:12}},
+      tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${fmt(c.raw)}${meses[c.dataIndex]?.proj?' (projeção)':''}`}}
+    },
+    scales:{
+      x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#606078',font:{size:10}}},
+      y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#606078',font:{size:10},callback:v=>'R$'+v.toLocaleString('pt-BR',{maximumFractionDigits:0})}},
+    }
+  }});
+}
+
+// ─── PLANEJAMENTO ANUAL ───
+function renderPlanej(){
+  const head=document.getElementById('planejmHead');
+  const body=document.getElementById('planejmBody');
+  if(!head||!body)return;
+
+  const ano=cur.getFullYear();
+  const hoje=new Date();
+  const mesHoje=hoje.getMonth(),anoHoje=hoje.getFullYear();
+  const LBL=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+
+  // Status do mês
+  function mSt(m){
+    if(ano<anoHoje||(ano===anoHoje&&m<mesHoje))return'past';
+    if(ano===anoHoje&&m===mesHoje)return'cur';
+    return'fut';
+  }
+
+  // Transações do mês
+  function txM(m){
+    return S.tx.filter(t=>{
+      if(!t.data)return false;
+      const d=new Date(t.data+'T12:00');
+      return d.getFullYear()===ano&&d.getMonth()===m;
+    });
+  }
+
+  // Recorrentes únicos mais recentes por desc+tipo
+  function recUniq(tipo){
+    const map={};
+    S.tx.filter(t=>t.recorrente&&t.tipo===tipo).forEach(t=>{
+      if(!map[t.desc]||t.data>map[t.desc].data)map[t.desc]=t;
+    });
+    return Object.values(map).sort((a,b)=>a.desc.localeCompare(b.desc,'pt'));
+  }
+
+  // CC recorrentes únicos por desc+cartao
+  function ccRecUniq(){
+    const map={};
+    S.tx.filter(t=>t.recorrente&&t.tipo==='gasto'&&t.meio==='crédito'&&t.cartao).forEach(t=>{
+      const k=t.desc+'|'+t.cartao;
+      if(!map[k]||t.data>map[k].data)map[k]=t;
+    });
+    return Object.values(map);
+  }
+
+  const fv=v=>'R$ '+Math.abs(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  // Items recorrentes
+  const recItems=recUniq('receita');
+  const despItems=recUniq('gasto');
+  const ccRecs=ccRecUniq();
+
+  // Cartões únicos com algum gasto
+  const cartoesSet=new Set();
+  S.tx.filter(t=>t.tipo==='gasto'&&t.meio==='crédito'&&t.cartao).forEach(t=>cartoesSet.add(t.cartao));
+  const cartoes=[...cartoesSet].sort();
+
+  // Dados por mês
+  const MD=Array.from({length:12},(_,m)=>{
+    const txs=txM(m);
+    const st=mSt(m);
+    const fut=st==='fut';
+
+    // Receitas
+    const recPD={};let recTot=0;
+    if(!fut){
+      txs.filter(t=>t.tipo==='receita').forEach(t=>{recPD[t.desc]=(recPD[t.desc]||0)+t.valor;recTot+=t.valor;});
+    } else {
+      recItems.forEach(t=>{recPD[t.desc]=(recPD[t.desc]||0)+t.valor;recTot+=t.valor;});
+    }
+
+    // Despesas fixas (recorrentes)
+    const despPD={};let despTot=0;
+    if(!fut){
+      txs.filter(t=>t.tipo==='gasto'&&t.recorrente).forEach(t=>{
+        const v=t.valor/(t.parcelas||1);despPD[t.desc]=(despPD[t.desc]||0)+v;despTot+=v;
+      });
+    } else {
+      despItems.forEach(t=>{const v=t.valor/(t.parcelas||1);despPD[t.desc]=(despPD[t.desc]||0)+v;despTot+=v;});
+    }
+
+    // Cartão de crédito
+    const ccPC={};let ccTot=0;
+    if(!fut){
+      txs.filter(t=>t.tipo==='gasto'&&t.meio==='crédito'&&t.cartao).forEach(t=>{
+        const v=t.valor/(t.parcelas||1);ccPC[t.cartao]=(ccPC[t.cartao]||0)+v;ccTot+=v;
+      });
+    } else {
+      // projeção: apenas CC recorrentes
+      ccRecs.forEach(t=>{const v=t.valor/(t.parcelas||1);ccPC[t.cartao]=(ccPC[t.cartao]||0)+v;ccTot+=v;});
+    }
+
+    // Gastos variáveis (não recorrentes, não crédito)
+    let varTot=0;
+    if(!fut){
+      txs.filter(t=>t.tipo==='gasto'&&!t.recorrente&&t.meio!=='crédito').forEach(t=>varTot+=t.valor/(t.parcelas||1));
+    }
+
+    const saldo=recTot-despTot-ccTot-varTot;
+    return{st,recPD,recTot,despPD,despTot,ccPC,ccTot,varTot,saldo};
+  });
+
+  // Acumulado
+  let acum=0;
+  const ACUM=MD.map(d=>{acum+=d.saldo;return acum;});
+
+  // Verifica se há algum dado
+  const temDados=S.tx.some(t=>t.data&&new Date(t.data+'T12:00').getFullYear()===ano)||recItems.length>0||despItems.length>0;
+
+  // ── Helpers de célula ──
+  const thStyle=m=>{const s=mSt(m);return s==='cur'?'color:var(--accent);border-bottom:2px solid var(--accent)':'';};
+
+  function valCell(v,st,bold){
+    if(v===0&&st==='fut')return`<td style="color:var(--t3)">—</td>`;
+    const c=st==='fut'?'pj-future':'';
+    return`<td class="${c}"${bold?' style="font-weight:700"':''}>${fv(v)}</td>`;
+  }
+
+  function saldoCell(v,st){
+    const cl=v>=0?'pj-pos':'pj-neg';
+    const ar=v>=0?'↑':'↓';
+    const c=st==='fut'?' pj-future':'';
+    return`<td><span class="${cl}${c}">${ar} ${fv(v)}</span></td>`;
+  }
+
+  function hasTxMes(m,tipo,desc,rec){
+    return S.tx.some(t=>{
+      if(!t.data)return false;
+      const d=new Date(t.data+'T12:00');
+      return d.getFullYear()===ano&&d.getMonth()===m&&t.tipo===tipo&&t.desc===desc&&(!rec||t.recorrente);
+    });
+  }
+
+  function secRow(icon,label){
+    return`<tr class="planej-sec"><td colspan="13">${icon} ${label}</td></tr>`;
+  }
+  function totalRow(label,vals,bold){
+    const cells=vals.map((v,i)=>valCell(v,MD[i].st,bold)).join('');
+    return`<tr class="planej-total"><td>${label}</td>${cells}</tr>`;
+  }
+
+  // ── Montar cabeçalho ──
+  head.innerHTML=`<th></th>`+LBL.map((l,m)=>`<th style="${thStyle(m)}">${l}/${String(ano).slice(2)}</th>`).join('');
+
+  // ── Montar corpo ──
+  if(!temDados){
+    body.innerHTML=`<tr><td colspan="13" style="text-align:center;padding:32px;color:var(--t3)">Nenhum dado para ${ano}. Adicione transações recorrentes para ver a projeção.</td></tr>`;
+    return;
+  }
+
+  let rows='';
+
+  // ──── RECEITAS ────
+  rows+=secRow('💰','Receitas');
+  if(recItems.length){
+    recItems.forEach(item=>{
+      const cells=MD.map((d,m)=>{
+        const v=d.recPD[item.desc]||0;
+        const dot=d.st!=='fut'?`<span class="pj-dot ${hasTxMes(m,'receita',item.desc)?'ok':'no'}"></span>`:'';
+        const cls=d.st==='fut'?' class="pj-future"':'';
+        return`<td${cls}>${dot}${v>0?fv(v):'—'}</td>`;
+      }).join('');
+      rows+=`<tr><td>💰 ${item.desc}</td>${cells}</tr>`;
+    });
+  }
+  rows+=totalRow('Total Receitas',MD.map(d=>d.recTot),true);
+
+  // ──── DESPESAS FIXAS ────
+  rows+=secRow('📌','Despesas Fixas');
+  if(despItems.length){
+    despItems.forEach(item=>{
+      const cells=MD.map((d,m)=>{
+        const v=d.despPD[item.desc]||0;
+        const dot=d.st!=='fut'?`<span class="pj-dot ${hasTxMes(m,'gasto',item.desc,true)?'ok':'no'}"></span>`:'';
+        const cls=d.st==='fut'?' class="pj-future"':'';
+        return`<td${cls}>${dot}${v>0?fv(v):'—'}</td>`;
+      }).join('');
+      rows+=`<tr><td>📌 ${item.desc}</td>${cells}</tr>`;
+    });
+  } else {
+    rows+=`<tr><td colspan="13" style="text-align:center;color:var(--t3);padding:14px;font-size:12px">Marque gastos como recorrentes para aparecerem aqui</td></tr>`;
+  }
+  rows+=totalRow('Total Desp. Fixas',MD.map(d=>d.despTot),true);
+
+  // ──── CARTÃO DE CRÉDITO ────
+  if(cartoes.length){
+    rows+=secRow('💳','Cartão de Crédito');
+    cartoes.forEach(cartao=>{
+      const cells=MD.map((d,i)=>{
+        const v=d.ccPC[cartao]||0;
+        const cls=d.st==='fut'?' class="pj-future"':'';
+        return`<td${cls}>${v>0?fv(v):'—'}</td>`;
+      }).join('');
+      rows+=`<tr><td>💳 ${cartao}</td>${cells}</tr>`;
+    });
+    rows+=totalRow('Total Cartão',MD.map(d=>d.ccTot),true);
+  }
+
+  // ──── BALANÇO GERAL ────
+  rows+=secRow('📊','Balanço Geral');
+  rows+=totalRow('Total Receitas',MD.map(d=>d.recTot),false);
+  rows+=totalRow('Total Desp. Fixas',MD.map(d=>d.despTot),false);
+  if(cartoes.length)rows+=totalRow('Total Cartão',MD.map(d=>d.ccTot),false);
+  if(MD.some(d=>d.varTot>0))rows+=totalRow('Gastos Variáveis',MD.map(d=>d.varTot),false);
+  // Saldo do mês
+  const saldoCells=MD.map((d,i)=>saldoCell(d.saldo,d.st)).join('');
+  rows+=`<tr class="planej-total"><td>Saldo do mês</td>${saldoCells}</tr>`;
+
+  // ──── ACUMULADO ────
+  rows+=secRow('📈','Acumulado Mês a Mês');
+  const acumCells=ACUM.map((v,i)=>saldoCell(v,MD[i].st)).join('');
+  rows+=`<tr class="planej-acum"><td>Acumulado</td>${acumCells}</tr>`;
+
+  body.innerHTML=rows;
+
+  // Subtitle
+  const sub=document.getElementById('planejmSub');
+  if(sub)sub.textContent=`Visão completa de ${ano} · meses futuros = projeção automática`;
 }
 
 function renderDonutChart(catMap){
@@ -2283,6 +2596,7 @@ function renderAll(){
   renderPatri();
   renderFins();
   renderSaude();
+  renderPlanej();
 }
 
 // ─── DADOS DE EXEMPLO ───
