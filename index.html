@@ -408,6 +408,49 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;p
 .planej-legend span{display:flex;align-items:center;gap:5px;}
 .planej-editable{cursor:pointer;transition:background .12s;}
 .planej-editable:hover{background:rgba(0,200,110,.1) !important;}
+
+/* ── PLANOS / UPGRADE ── */
+.plan-badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:100px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .15s;}
+.plan-badge.free{background:var(--s3);color:var(--t3);border:1px solid var(--border);}
+.plan-badge.pro{background:linear-gradient(90deg,rgba(0,200,110,.18),rgba(0,200,110,.08));color:var(--accent);border:1px solid rgba(0,200,110,.3);}
+.plan-badge.family{background:linear-gradient(90deg,rgba(139,92,246,.18),rgba(139,92,246,.08));color:#8b5cf6;border:1px solid rgba(139,92,246,.3);}
+.plan-badge:hover{filter:brightness(1.15);}
+
+@keyframes upgradeIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.upgrade-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(10px);}
+.upgrade-overlay.open{display:flex;}
+.upgrade-box{background:var(--surface);border:1px solid var(--border);border-radius:24px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;animation:upgradeIn .22s ease;}
+.upgrade-top{padding:28px 28px 0;text-align:center;}
+.upgrade-top h2{font-size:22px;font-weight:900;margin-bottom:6px;}
+.upgrade-top p{font-size:13px;color:var(--t2);line-height:1.5;}
+.upgrade-plans{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:24px 28px;}
+@media(max-width:560px){.upgrade-plans{grid-template-columns:1fr;}}
+.uplan{border:2px solid var(--border);border-radius:18px;padding:20px 16px;position:relative;transition:border-color .2s;}
+.uplan.highlight{border-color:var(--accent);background:linear-gradient(160deg,rgba(0,200,110,.06),var(--surface));}
+.uplan.family-plan{border-color:rgba(139,92,246,.4);}
+.uplan-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:10px;font-weight:800;padding:3px 12px;border-radius:100px;white-space:nowrap;text-transform:uppercase;letter-spacing:.05em;}
+.uplan-badge.fam{background:#8b5cf6;color:#fff;}
+.uplan-name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:8px;}
+.uplan-price{font-size:28px;font-weight:900;letter-spacing:-.04em;line-height:1;margin-bottom:2px;}
+.uplan-period{font-size:11px;color:var(--t3);margin-bottom:14px;}
+.uplan-features{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:18px;}
+.uplan-features li{font-size:12px;color:var(--t2);display:flex;align-items:center;gap:7px;}
+.uplan-features li::before{content:'✓';color:var(--accent);font-weight:900;font-size:11px;flex-shrink:0;}
+.uplan-features li.no{color:var(--t3);}
+.uplan-features li.no::before{content:'✕';color:var(--t3);}
+.uplan-btn{width:100%;padding:11px;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font);border:none;transition:all .18s;}
+.uplan-btn.free-btn{background:var(--s3);color:var(--t2);}
+.uplan-btn.pro-btn{background:var(--accent);color:#000;}
+.uplan-btn.pro-btn:hover{background:#00e67e;}
+.uplan-btn.fam-btn{background:#8b5cf6;color:#fff;}
+.uplan-btn.fam-btn:hover{background:#7c3aed;}
+.upgrade-close{display:block;text-align:center;padding:0 28px 24px;font-size:12px;color:var(--t3);cursor:pointer;}
+.upgrade-close:hover{color:var(--t);}
+
+/* Paywall inline blocker */
+.paywall-banner{background:linear-gradient(135deg,rgba(0,200,110,.06),rgba(0,200,110,.02));border:1px solid rgba(0,200,110,.2);border-radius:var(--r);padding:20px;text-align:center;margin:8px 0;}
+.paywall-banner h4{font-size:14px;font-weight:800;margin-bottom:4px;}
+.paywall-banner p{font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.5;}
 </style>
 </head>
 <body>
@@ -468,6 +511,7 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;p
       <span class="month-lbl" id="monthLbl"></span>
       <button class="hbtn" id="nextMonth">›</button>
       <button class="hbtn" id="themeBtn" title="Tema">🌙</button>
+      <span class="plan-badge free" id="planBadge" onclick="showUpgrade()">FREE</span>
     </div>
   </div>
 </header>
@@ -682,6 +726,20 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;p
     </div>
   </div>
   <div class="pref-section">
+    <div class="pref-title">✨ Assinatura</div>
+    <div id="planInfoBox" style="background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <span style="font-size:13px;font-weight:600">Plano atual</span>
+        <span class="plan-badge free" id="planBadgePerfil">FREE</span>
+      </div>
+      <div id="planInfoDesc" style="font-size:12px;color:var(--t2);line-height:1.5">Você está no plano gratuito. Faça upgrade para desbloquear tudo.</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="export-btn" id="btnUpgradePerfil" onclick="showUpgrade()" style="color:var(--accent);border-color:rgba(0,200,110,.3)">⚡ Ver planos</button>
+      <button class="export-btn" id="btnManageSubscription" style="display:none" onclick="manageSubscription()">⚙️ Gerenciar assinatura</button>
+    </div>
+  </div>
+  <div class="pref-section">
     <div class="pref-title">👤 Conta</div>
     <div id="authUserInfo" style="font-size:13px;color:var(--t2);margin-bottom:12px"></div>
     <button class="export-btn" onclick="signOut()" style="color:var(--red);border-color:rgba(242,95,122,.3)">🚪 Sair da conta</button>
@@ -739,6 +797,65 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;p
         <button class="btn-primary" onclick="csvImportar()">✅ Importar transações</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- UPGRADE / PRICING MODAL -->
+<div class="upgrade-overlay" id="upgradeOverlay" onclick="closeUpgradeOnBg(event)">
+  <div class="upgrade-box">
+    <div class="upgrade-top">
+      <h2>✨ Escolha seu plano</h2>
+      <p id="upgradeSubtitle">Desbloqueie tudo e tenha controle total das suas finanças.</p>
+    </div>
+    <div class="upgrade-plans">
+      <!-- FREE -->
+      <div class="uplan">
+        <div class="uplan-name">Free</div>
+        <div class="uplan-price" style="color:var(--t3)">R$ 0</div>
+        <div class="uplan-period">para sempre</div>
+        <ul class="uplan-features">
+          <li>30 transações por mês</li>
+          <li>1 cartão de crédito</li>
+          <li>1 meta financeira</li>
+          <li class="no">Planejamento anual</li>
+          <li class="no">Exportar relatórios</li>
+          <li class="no">WhatsApp inteligente</li>
+        </ul>
+        <button class="uplan-btn free-btn" onclick="closeUpgrade()">Continuar grátis</button>
+      </div>
+      <!-- PRO -->
+      <div class="uplan highlight">
+        <div class="uplan-badge">Mais popular</div>
+        <div class="uplan-name">Pro</div>
+        <div class="uplan-price" style="color:var(--accent)">R$ 19,90</div>
+        <div class="uplan-period">por mês</div>
+        <ul class="uplan-features">
+          <li>Transações ilimitadas</li>
+          <li>Cartões ilimitados</li>
+          <li>Metas ilimitadas</li>
+          <li>Planejamento anual</li>
+          <li>Exportar relatórios</li>
+          <li>WhatsApp inteligente <span style="font-size:10px;color:var(--t3)">(em breve)</span></li>
+        </ul>
+        <button class="uplan-btn pro-btn" onclick="startCheckout('pro')">Assinar Pro →</button>
+      </div>
+      <!-- FAMILY -->
+      <div class="uplan family-plan">
+        <div class="uplan-badge fam">3 contas</div>
+        <div class="uplan-name">Family</div>
+        <div class="uplan-price" style="color:#8b5cf6">R$ 34,90</div>
+        <div class="uplan-period">por mês · até 3 pessoas</div>
+        <ul class="uplan-features">
+          <li>Tudo do plano Pro</li>
+          <li>3 contas independentes</li>
+          <li>Convide cônjuge/familiar</li>
+          <li>Economia de R$ 24,80/mês</li>
+          <li>WhatsApp inteligente <span style="font-size:10px;color:var(--t3)">(em breve)</span></li>
+        </ul>
+        <button class="uplan-btn fam-btn" onclick="startCheckout('family')">Assinar Family →</button>
+      </div>
+    </div>
+    <span class="upgrade-close" onclick="closeUpgrade()">Fechar · Continuar no plano gratuito</span>
   </div>
 </div>
 
@@ -974,6 +1091,90 @@ let txFilter = 'todos';
 let sheetTipo = 'gasto';
 let charts = {};
 
+// ─── PLANOS ───
+// 🔗 Substitua pelos Payment Links reais após criar no Stripe
+const STRIPE_LINKS = {
+  pro:    'https://buy.stripe.com/PLACEHOLDER_PRO',
+  family: 'https://buy.stripe.com/PLACEHOLDER_FAMILY'
+};
+const FREE_LIMITS = {tx:30, cartoes:1, metas:1};
+
+function isPro(){ return S.prefs.plan==='pro'||S.prefs.plan==='family'; }
+function getUserPlan(){ return S.prefs.plan||'free'; }
+
+function renderPlanBadge(){
+  const plan=getUserPlan();
+  const label=plan==='family'?'FAMILY':plan==='pro'?'PRO':'FREE';
+  // Header badge
+  const badge=document.getElementById('planBadge');
+  if(badge){badge.className='plan-badge '+plan;badge.textContent=label;}
+  // Perfil badge
+  const badgeP=document.getElementById('planBadgePerfil');
+  if(badgeP){badgeP.className='plan-badge '+plan;badgeP.textContent=label;}
+  // Perfil info text
+  const desc=document.getElementById('planInfoDesc');
+  if(desc){
+    if(plan==='pro')desc.textContent='Você tem acesso completo a todos os recursos do Dincon. ✅';
+    else if(plan==='family')desc.textContent='Plano Family ativo — até 3 contas com acesso Pro completo. 👨‍👩‍👧';
+    else desc.textContent='Plano gratuito: 30 transações/mês, 1 cartão, 1 meta. Faça upgrade para desbloquear tudo.';
+  }
+  // Botões de gerenciamento
+  const btnUpg=document.getElementById('btnUpgradePerfil');
+  const btnMng=document.getElementById('btnManageSubscription');
+  if(btnUpg)btnUpg.style.display=isPro()?'none':'';
+  if(btnMng)btnMng.style.display=isPro()?'':'none';
+}
+
+// 🔗 Substitua pelo link real do Stripe Customer Portal após configurar
+const STRIPE_PORTAL='https://billing.stripe.com/PLACEHOLDER_PORTAL';
+function manageSubscription(){
+  if(STRIPE_PORTAL.includes('PLACEHOLDER')){toast('⚙️ Portal ainda não configurado.',3000);return;}
+  window.open(STRIPE_PORTAL,'_blank');
+}
+
+function showUpgrade(reason){
+  const sub=document.getElementById('upgradeSubtitle');
+  const msgs={
+    tx:'Você atingiu o limite de 30 transações no mês. Assine o Pro para lançamentos ilimitados.',
+    cartoes:'O plano Free permite apenas 1 cartão. Assine o Pro para adicionar ilimitados.',
+    metas:'O plano Free permite apenas 1 meta. Assine o Pro para criar quantas quiser.',
+    planej:'O Planejamento Anual é exclusivo do plano Pro.',
+    export:'Exportar relatórios é exclusivo do plano Pro.'
+  };
+  if(sub&&reason&&msgs[reason])sub.textContent=msgs[reason];
+  else if(sub)sub.textContent='Desbloqueie tudo e tenha controle total das suas finanças.';
+  document.getElementById('upgradeOverlay').classList.add('open');
+}
+function closeUpgrade(){ document.getElementById('upgradeOverlay').classList.remove('open'); }
+function closeUpgradeOnBg(e){ if(e.target===document.getElementById('upgradeOverlay'))closeUpgrade(); }
+
+function startCheckout(plan){
+  if(!currentUser){toast('Faça login primeiro.');return;}
+  const email=encodeURIComponent(currentUser.email||'');
+  const uid=currentUser.id;
+  const base=STRIPE_LINKS[plan];
+  if(base.includes('PLACEHOLDER')){
+    toast('⚙️ Link de pagamento ainda não configurado.',3000);return;
+  }
+  window.open(`${base}?client_reference_id=${uid}&prefilled_email=${email}`,'_blank');
+}
+
+function checkFreeLimit(type){
+  if(isPro())return true;
+  if(type==='tx'){
+    const m=cur.getMonth(),y=cur.getFullYear();
+    const count=S.tx.filter(t=>{
+      if(!t.data)return false;
+      const d=new Date(t.data+'T12:00');
+      return d.getFullYear()===y&&d.getMonth()===m&&!t.recorrente;
+    }).length;
+    if(count>=FREE_LIMITS.tx){showUpgrade('tx');return false;}
+  }
+  if(type==='cartoes'&&S.cartoes.length>=FREE_LIMITS.cartoes){showUpgrade('cartoes');return false;}
+  if(type==='metas'&&S.metas.length>=FREE_LIMITS.metas){showUpgrade('metas');return false;}
+  return true;
+}
+
 // ─── SUPABASE ───
 const SUPA_URL='https://uhquauhfyelgzqhmkznn.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVocXVhdWhmeWVsZ3pxaG1rem5uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1ODcyNjQsImV4cCI6MjA5NTE2MzI2NH0.-Q2OqY5rfBOSF-nPKkI0intKp8D398osEJSZqASc_KU';
@@ -1053,7 +1254,7 @@ async function loadFromSupabase(){
     if(pR.data)  S.passivos=pR.data;
     if(fR.data)  S.fins=fR.data.map(f=>({...f,desc:f.descricao}));
     if(oR.data)  S.orc=oR.data;
-    if(prR.data) S.prefs={nome:prR.data.nome||'',renda:prR.data.renda||0,meta_poup:prR.data.meta_poup||20,tema:prR.data.tema||'dark'};
+    if(prR.data) S.prefs={nome:prR.data.nome||'',renda:prR.data.renda||0,meta_poup:prR.data.meta_poup||20,tema:prR.data.tema||'dark',plan:prR.data.plan||'free'};
   }catch(e){console.warn('Supabase load error:',e);loadAll();}
 }
 
@@ -1118,7 +1319,7 @@ async function authSubmit(){
     currentUser=data.user;
     await loadFromSupabase();
     hideAuthScreen();
-    applyTheme();loadPerfil();updateMonthLbl();renderAll();
+    applyTheme();loadPerfil();updateMonthLbl();renderAll();renderPlanBadge();
     toast('👋 Bem-vindo de volta, '+(S.prefs.nome||'')+'!');
   } else {
     const nome=document.getElementById('authNome').value.trim();
@@ -1135,7 +1336,7 @@ async function authSubmit(){
     S.prefs.nome=nome;
     await sb.from('profiles').upsert({id:currentUser.id,nome,renda:0,meta_poup:20,tema:'dark'},{onConflict:'id'});
     hideAuthScreen();
-    applyTheme();loadPerfil();updateMonthLbl();renderAll();
+    applyTheme();loadPerfil();updateMonthLbl();renderAll();renderPlanBadge();
     checkOnboarding();
     toast('🎉 Conta criada! Bem-vindo, '+nome+'!',3000);
   }
@@ -1195,6 +1396,8 @@ function goTabNoRoute(tab){
   if(fab)fab.style.display=tab==='dash'?'flex':'none';
 }
 function goTab(tab){
+  // Bloqueia aba de planejamento no plano Free
+  if(tab==='planej'&&!isPro()){showUpgrade('planej');return;}
   goTabNoRoute(tab);
   pushRoute(ROUTES[tab]||'/dashboard');
 }
@@ -1398,6 +1601,8 @@ function salvarTx(){
   if(!valor||valor<=0){toast('⚠️ Informe o valor');return;}
   if(!desc){toast('⚠️ Informe a descrição');return;}
   const editId=document.getElementById('sheetEditId').value;
+  // Limite Free: só bloqueia novas transações (não edições)
+  if(!editId&&sheetTipo==='gasto'&&!checkFreeLimit('tx'))return;
   const t={
     id:editId||uid(), tipo:sheetTipo, valor, desc,
     cat:document.getElementById('sheetCat').value,
@@ -2258,6 +2463,7 @@ function openAddCC(editIdx=-1){
   openModal('ccOverlay');
 }
 function salvarCC(){
+  if(!checkFreeLimit('cartoes'))return;
   const nome=document.getElementById('ccNome').value.trim();
   if(!nome){toast('⚠️ Informe o nome do cartão');return;}
   const dados={nome,banco:document.getElementById('ccBanco').value.trim(),limite:parseFloat(document.getElementById('ccLimite').value)||0,venc:document.getElementById('ccVenc').value,ult4:document.getElementById('ccUlt4').value.trim()};
@@ -2313,6 +2519,7 @@ function openAddMeta(editIdx=-1){
   openModal('metaOverlay');
 }
 function salvarMeta(){
+  if(_editMeta<0&&!checkFreeLimit('metas'))return;
   const nome=document.getElementById('metaNome').value.trim();const target=parseFloat(document.getElementById('metaTarget').value);
   if(!nome||!target){toast('⚠️ Preencha nome e valor alvo');return;}
   const dados={nome,target,atual:parseFloat(document.getElementById('metaAtual').value)||0,emoji:document.getElementById('metaEmoji').value||'🎯',prazo:document.getElementById('metaPrazo').value||''};
@@ -2724,6 +2931,7 @@ function loadPerfil(){
 
 // ─── RELATÓRIO MENSAL ───
 function gerarRelatorio(){
+  if(!isPro()){showUpgrade('export');return;}
   const txs=txDoMes();
   const rec=txs.filter(t=>t.tipo==='receita').reduce((s,t)=>s+t.valor,0);
   const desp=txs.filter(t=>t.tipo==='gasto').reduce((s,t)=>s+t.valor/(t.parcelas||1),0);
@@ -3034,11 +3242,13 @@ function csvImportar(){
 
 // ─── EXPORT / IMPORT ───
 function exportarJSON(){
+  if(!isPro()){showUpgrade('export');return;}
   const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='dincon_backup.json';a.click();
   toast('✅ Exportado!');
 }
 function exportarCSV(){
+  if(!isPro()){showUpgrade('export');return;}
   const rows=[['Tipo','Descrição','Categoria','Valor','Data','Pagamento','Cartão','Parcelas','Nota']];
   S.tx.forEach(t=>rows.push([t.tipo,t.desc,t.cat||'',t.valor,t.data,t.meio||'',t.cartao||'',t.parcelas||1,t.nota||'']));
   const csv=rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('\n');
