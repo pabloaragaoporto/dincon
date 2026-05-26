@@ -369,19 +369,20 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;p
 @keyframes splashLoad{from{width:0}to{width:100%}}
 
 /* ── PLANEJAMENTO ANUAL ── */
-.planej-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--r);}
+.planej-wrap{overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 210px);-webkit-overflow-scrolling:touch;border-radius:var(--r);}
 .planej-tbl{width:100%;min-width:880px;border-collapse:collapse;font-size:12px;}
-.planej-tbl th{background:var(--s3);color:var(--t2);font-weight:700;text-align:right;padding:9px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid var(--border);white-space:nowrap;}
-.planej-tbl th:first-child{text-align:left;min-width:170px;position:sticky;left:0;background:var(--s3);z-index:2;}
+.planej-tbl th{background:var(--s3);color:var(--t2);font-weight:700;text-align:right;padding:9px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid var(--border);white-space:nowrap;position:sticky;top:0;z-index:2;}
+.planej-tbl th:first-child{text-align:left;min-width:170px;position:sticky;left:0;top:0;background:var(--s3);z-index:3;}
 .planej-tbl td{padding:7px 10px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap;}
 .planej-tbl td:first-child{text-align:left;position:sticky;left:0;background:var(--surface);z-index:1;font-weight:500;color:var(--t2);border-right:1px solid var(--border);}
 .planej-tbl tbody tr:hover td{background:var(--s2);}
 .planej-tbl tbody tr:hover td:first-child{background:var(--s2);}
 .planej-sec td{background:#141e33 !important;color:#60a5fa !important;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:10px 10px;}
+.planej-sec td:first-child{background:#141e33 !important;}
 .planej-total td{background:var(--s3) !important;font-weight:700;color:var(--t) !important;}
-.planej-total td:first-child{color:var(--t) !important;}
+.planej-total td:first-child{color:var(--t) !important;background:var(--s3) !important;}
 .planej-acum td{background:#081a10 !important;font-weight:700;}
-.planej-acum td:first-child{color:var(--accent) !important;}
+.planej-acum td:first-child{color:var(--accent) !important;background:#081a10 !important;}
 .pj-future{color:var(--t3);}
 .pj-pos{color:var(--accent);font-weight:700;}
 .pj-neg{color:var(--red);font-weight:700;}
