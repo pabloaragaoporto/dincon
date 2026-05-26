@@ -92,7 +92,6 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;p
 
 /* CHARTS */
 .charts-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:16px;}
-@media(min-width:640px){.charts-grid{grid-template-columns:1fr 1fr;}}
 
 /* TRANSACTION LIST */
 .tx-search{position:relative;margin-bottom:12px;}
@@ -466,7 +465,6 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;p
   <div id="dashAlert" style="display:none;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);border-radius:var(--rs);padding:12px 16px;margin-bottom:14px;font-size:13px;color:var(--yellow);gap:8px;align-items:flex-start;line-height:1.5;"></div>
   <div class="charts-grid">
     <div class="card"><div class="card-title" style="margin-bottom:14px">Evolução anual</div><canvas id="lineChart" height="180"></canvas></div>
-    <div class="card"><div class="card-title" style="margin-bottom:14px">Por categoria</div><canvas id="donutChart" height="180"></canvas></div>
   </div>
   <div class="card">
     <div class="card-hdr"><span class="card-title">Gastos por categoria</span></div>
@@ -1176,6 +1174,9 @@ document.getElementById('nextMonth').onclick=()=>{cur.setMonth(cur.getMonth()+1)
 // ─── AUTO-RECORRENTES ───
 function gerarRecorrentes(){
   const m=cur.getMonth(),y=cur.getFullYear();
+  // Só gerar recorrentes para o mês atual — nunca para passado ou futuro
+  const hoje=new Date();
+  if(y!==hoje.getFullYear()||m!==hoje.getMonth())return;
   // Pega todos os lançamentos recorrentes de qualquer mês anterior
   const recorrentes=S.tx.filter(t=>t.recorrente);
   if(!recorrentes.length)return;
@@ -1547,8 +1548,6 @@ function renderDash(){
 
   // Gráfico linha
   renderLineChart();
-  // Gráfico donut
-  renderDonutChart(catMap);
 }
 
 function setText(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
@@ -1703,6 +1702,49 @@ function editPlanCell(el,ano,mes,tipo,descEnc,baseVal){
   inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();inp.blur();}if(e.key==='Escape'){renderPlanej();}});
 }
 
+// Editar célula de cartão de crédito no Planejamento — cria lançamento planejado real
+function editCCCell(el,ano,mes,cartaoEnc,baseVal){
+  const cartaoNome=decodeURIComponent(cartaoEnc);
+  // Busca lançamento planejado existente para este cartão neste mês
+  const existing=S.tx.find(t=>{
+    if(!t.data)return false;
+    const d=new Date(t.data+'T12:00');
+    return d.getFullYear()===ano&&d.getMonth()===mes&&
+           t.tipo==='gasto'&&t.meio==='crédito'&&
+           t.cartao===cartaoNome&&t.nota==='📅 Planejado';
+  });
+  const currentVal=existing?existing.valor:(baseVal||0);
+  const inp=document.createElement('input');
+  inp.type='number';inp.step='0.01';inp.min='0';
+  inp.value=currentVal>0?currentVal.toFixed(2):'';
+  inp.style.cssText='width:110px;background:rgba(0,200,110,.12);border:1px solid var(--accent);border-radius:6px;outline:none;color:var(--accent);font-family:inherit;font-size:12px;font-weight:700;text-align:right;padding:3px 8px;';
+  el.innerHTML='';el.appendChild(inp);inp.focus();inp.select();
+  const commit=()=>{
+    const val=parseFloat(inp.value);
+    if(isNaN(val)||val<0){renderPlanej();return;}
+    if(val===0&&existing){
+      S.tx=S.tx.filter(t=>t.id!==existing.id);
+      if(existing.id)deleteFromSupabase('transactions',existing.id);
+      save('tx');toast('🗑️ Lançamento removido');
+    } else if(val>0){
+      if(existing){existing.valor=val;}
+      else{
+        const lastDay=new Date(ano,mes+1,0).getDate();
+        const cc=S.cartoes.find(c=>c.nome===cartaoNome);
+        const dia=cc?.vencimento?Math.min(parseInt(cc.vencimento),lastDay):lastDay;
+        const dataStr=`${ano}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
+        S.tx.push({id:uid(),tipo:'gasto',desc:`Gastos ${cartaoNome}`,
+          cat:'Outros',valor:val,data:dataStr,meio:'crédito',
+          cartao:cartaoNome,parcelas:1,nota:'📅 Planejado',recorrente:false});
+      }
+      save('tx');toast('✅ Lançamento salvo!');
+    }
+    renderAll();
+  };
+  inp.addEventListener('blur',commit);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();inp.blur();}if(e.key==='Escape'){renderPlanej();}});
+}
+
 function renderPlanej(){
   const head=document.getElementById('planejmHead');
   const body=document.getElementById('planejmBody');
@@ -1776,7 +1818,12 @@ function renderPlanej(){
     if(!fut){
       txs.filter(t=>t.tipo==='gasto'&&t.meio==='crédito'&&t.cartao).forEach(t=>{const v=t.valor/(t.parcelas||1);ccPC[t.cartao]=(ccPC[t.cartao]||0)+v;ccTot+=v;});
     } else {
-      ccRecs.forEach(t=>{const v=t.valor/(t.parcelas||1);ccPC[t.cartao]=(ccPC[t.cartao]||0)+v;ccTot+=v;});
+      // Meses futuros: lançamentos reais planejados têm prioridade sobre projeções
+      const ccTxsFut=txs.filter(t=>t.tipo==='gasto'&&t.meio==='crédito'&&t.cartao);
+      const cobertos=new Set();
+      ccTxsFut.forEach(t=>{const v=t.valor/(t.parcelas||1);ccPC[t.cartao]=(ccPC[t.cartao]||0)+v;ccTot+=v;cobertos.add(t.cartao);});
+      // Projeta recorrentes apenas para cartões sem lançamento real neste mês
+      ccRecs.forEach(t=>{if(!cobertos.has(t.cartao)){const v=t.valor/(t.parcelas||1);ccPC[t.cartao]=(ccPC[t.cartao]||0)+v;ccTot+=v;}});
     }
 
     // Variáveis (não recorrentes, não crédito)
@@ -1873,8 +1920,12 @@ function renderPlanej(){
     cartoes.forEach(cartao=>{
       const cells=MD.map((d,i)=>{
         const v=d.ccPC[cartao]||0;
-        const cls=d.st==='fut'?' class="pj-future"':'';
-        return`<td${cls}>${v>0?fv(v):'—'}</td>`;
+        if(d.st==='fut'){
+          const hasTx=v>0;
+          const display=hasTx?fv(v):'<span style="opacity:.4;font-size:10px">+ planejar</span>';
+          return`<td class="planej-editable pj-future" onclick="editCCCell(this,${ano},${i},'${encodeURIComponent(cartao)}',${v})" title="Clique para planejar gasto no cartão">${display}</td>`;
+        }
+        return`<td>${v>0?fv(v):'—'}</td>`;
       }).join('');
       rows+=`<tr><td>💳 ${cartao}</td>${cells}</tr>`;
     });
