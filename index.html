@@ -364,6 +364,8 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;p
 .pj-dot.no{background:var(--border);}
 .planej-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--t2);margin-bottom:12px;align-items:center;}
 .planej-legend span{display:flex;align-items:center;gap:5px;}
+.planej-editable{cursor:pointer;transition:background .12s;}
+.planej-editable:hover{background:rgba(0,200,110,.1) !important;}
 </style>
 </head>
 <body>
@@ -647,9 +649,10 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;p
     <div><div class="card-title">📅 Planejamento Anual</div><div style="font-size:12px;color:var(--t2);margin-top:3px" id="planejmSub">Visão completa dos 12 meses</div></div>
   </div>
   <div class="planej-legend">
-    <span><span class="pj-dot ok"></span>Confirmado</span>
-    <span><span class="pj-dot no"></span>Não lançado</span>
-    <span style="color:var(--t3)">Cinza = projeção futura</span>
+    <span><span class="pj-dot ok"></span>Lançado</span>
+    <span><span class="pj-dot no"></span>Sem lançamento</span>
+    <span style="color:var(--t3)">Cinza = projeção automática</span>
+    <span style="color:var(--accent)">✏️ Clique em qualquer célula para lançar</span>
   </div>
   <div class="card" style="padding:0;">
     <div class="planej-wrap">
@@ -1579,9 +1582,14 @@ function renderLineChart(){
     const inicio=ano===anoHoje?mesHoje+1:0;
     for(let m=inicio;m<12;m++){
       recList.forEach(t=>{
-        const pTipo=t.tipo==='receita'?'rec':'desp';
-        const planKey=`${ano}|${m}|${pTipo}|${t.desc}`;
-        const v=S.plan[planKey]!==undefined?S.plan[planKey]:t.valor/(t.parcelas||1);
+        // Se já existe lançamento real para este item neste mês, não projetar
+        const jaExiste=S.tx.some(tx=>{
+          if(!tx.data)return false;
+          const d=new Date(tx.data+'T12:00');
+          return d.getFullYear()===ano&&d.getMonth()===m&&tx.desc===t.desc&&tx.tipo===t.tipo;
+        });
+        if(jaExiste)return;
+        const v=t.valor/(t.parcelas||1);
         if(t.tipo==='receita')meses[m].rec+=v;
         else meses[m].desp+=v;
       });
@@ -1636,22 +1644,61 @@ function renderLineChart(){
 }
 
 // ─── PLANEJAMENTO ANUAL ───
-// Editar célula de projeção futura inline
+// Editar célula — cria/atualiza lançamento real em S.tx
 function editPlanCell(el,ano,mes,tipo,descEnc,baseVal){
   const desc=decodeURIComponent(descEnc);
-  const key=`${ano}|${mes}|${tipo}|${desc}`;
+  const tipoTx=tipo==='rec'?'receita':'gasto';
+
+  // Busca transação real já existente para este item+mês
+  const existing=S.tx.find(t=>{
+    if(!t.data)return false;
+    const d=new Date(t.data+'T12:00');
+    return d.getFullYear()===ano&&d.getMonth()===mes&&t.tipo===tipoTx&&t.desc===desc;
+  });
+  const currentVal=existing?(existing.valor/(existing.parcelas||1)):baseVal||0;
+
   const inp=document.createElement('input');
   inp.type='number';inp.step='0.01';inp.min='0';
-  inp.value=S.plan[key]!==undefined?S.plan[key]:baseVal||'';
-  inp.style.cssText='width:90px;background:rgba(0,200,110,.12);border:1px solid var(--accent);border-radius:6px;outline:none;color:var(--accent);font-family:inherit;font-size:12px;font-weight:700;text-align:right;padding:2px 6px;';
+  inp.value=currentVal>0?currentVal.toFixed(2):'';
+  inp.style.cssText='width:110px;background:rgba(0,200,110,.12);border:1px solid var(--accent);border-radius:6px;outline:none;color:var(--accent);font-family:inherit;font-size:12px;font-weight:700;text-align:right;padding:3px 8px;';
   el.innerHTML='';el.appendChild(inp);inp.focus();inp.select();
+
   const commit=()=>{
     const val=parseFloat(inp.value);
-    if(!isNaN(val)&&val>=0){
-      if(val===0)delete S.plan[key]; else S.plan[key]=val;
-      saveLocal('plan');renderPlanej();renderLineChart();
-    } else {renderPlanej();}
+    if(isNaN(val)||val<0){renderPlanej();return;}
+
+    if(val===0&&existing){
+      // Remove o lançamento
+      S.tx=S.tx.filter(t=>t.id!==existing.id);
+      if(existing.id)deleteFromSupabase('transactions',existing.id);
+      save('tx');toast('🗑️ Lançamento removido');
+    } else if(val>0){
+      if(existing){
+        // Atualiza o existente
+        existing.valor=val;existing.parcelas=1;
+      } else {
+        // Cria novo lançamento usando template do recorrente como base
+        const tmpl=S.tx.filter(t=>t.desc===desc&&t.tipo===tipoTx)
+                       .sort((a,b)=>(b.data||'').localeCompare(a.data||''))[0];
+        const dia=tmpl?.data?parseInt(tmpl.data.split('-')[2]):1;
+        const lastDay=new Date(ano,mes+1,0).getDate();
+        const diaFinal=Math.min(dia,lastDay);
+        const dataStr=`${ano}-${String(mes+1).padStart(2,'0')}-${String(diaFinal).padStart(2,'0')}`;
+        S.tx.push({
+          id:uid(),tipo:tipoTx,desc,
+          cat:tmpl?.cat||(tipoTx==='receita'?'Salário':'Outros'),
+          valor:val,data:dataStr,
+          meio:tmpl?.meio||'pix',
+          cartao:tmpl?.cartao||'',
+          parcelas:1,nota:'📅 Planejado',
+          recorrente:!!tmpl?.recorrente
+        });
+      }
+      save('tx');toast('✅ Lançamento salvo!');
+    }
+    renderAll();
   };
+
   inp.addEventListener('blur',commit);
   inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();inp.blur();}if(e.key==='Escape'){renderPlanej();}});
 }
@@ -1702,27 +1749,25 @@ function renderPlanej(){
     const st=mSt(m);
     const fut=st==='fut';
 
-    // Receitas
+    // Receitas: lançamentos reais primeiro
     const recPD={};let recTot=0;
-    if(!fut){
-      txs.filter(t=>t.tipo==='receita').forEach(t=>{recPD[t.desc]=(recPD[t.desc]||0)+t.valor;recTot+=t.valor;});
-    } else {
+    txs.filter(t=>t.tipo==='receita').forEach(t=>{recPD[t.desc]=(recPD[t.desc]||0)+t.valor;recTot+=t.valor;});
+    // Meses futuros: projeta recorrentes que ainda não têm lançamento real
+    if(fut){
       recItems.forEach(t=>{
-        const ov=planVal(m,'rec',t.desc);
-        const v=ov!==undefined?ov:t.valor;
-        recPD[t.desc]=(recPD[t.desc]||0)+v;recTot+=v;
+        if(recPD[t.desc]===undefined){recPD[t.desc]=t.valor;recTot+=t.valor;}
       });
     }
 
-    // Despesas fixas
+    // Despesas fixas: lançamentos reais recorrentes primeiro
     const despPD={};let despTot=0;
-    if(!fut){
-      txs.filter(t=>t.tipo==='gasto'&&t.recorrente).forEach(t=>{const v=t.valor/(t.parcelas||1);despPD[t.desc]=(despPD[t.desc]||0)+v;despTot+=v;});
-    } else {
+    txs.filter(t=>t.tipo==='gasto'&&t.recorrente).forEach(t=>{
+      const v=t.valor/(t.parcelas||1);despPD[t.desc]=(despPD[t.desc]||0)+v;despTot+=v;
+    });
+    // Meses futuros: projeta recorrentes sem lançamento real
+    if(fut){
       despItems.forEach(t=>{
-        const ov=planVal(m,'desp',t.desc);
-        const v=ov!==undefined?ov:t.valor/(t.parcelas||1);
-        despPD[t.desc]=(despPD[t.desc]||0)+v;despTot+=v;
+        if(despPD[t.desc]===undefined){const v=t.valor/(t.parcelas||1);despPD[t.desc]=v;despTot+=v;}
       });
     }
 
@@ -1734,7 +1779,7 @@ function renderPlanej(){
       ccRecs.forEach(t=>{const v=t.valor/(t.parcelas||1);ccPC[t.cartao]=(ccPC[t.cartao]||0)+v;ccTot+=v;});
     }
 
-    // Variáveis
+    // Variáveis (não recorrentes, não crédito)
     let varTot=0;
     if(!fut){txs.filter(t=>t.tipo==='gasto'&&!t.recorrente&&t.meio!=='crédito').forEach(t=>varTot+=t.valor/(t.parcelas||1));}
 
@@ -1785,16 +1830,25 @@ function renderPlanej(){
 
   let rows='';
 
+  // Célula editável universal (qualquer mês)
+  function editableCell(m,tipo,desc,baseVal){
+    const tipoTx=tipo==='rec'?'receita':'gasto';
+    const v=tipo==='rec'?(MD[m].recPD[desc]||0):(MD[m].despPD[desc]||0);
+    const hasTx=hasTxM(m,tipoTx,desc,tipo==='desp');
+    const fut=MD[m].st==='fut';
+    // Indicador: verde=lançado, cinza=não lançado, vazio=projeção futura sem lançamento
+    const dot=!fut?`<span class="pj-dot ${hasTx?'ok':'no'}"></span>`:(hasTx?`<span class="pj-dot ok"></span>`:'');
+    const isFutureProj=fut&&!hasTx;
+    const cellStyle=isFutureProj?'color:var(--t3);':'';
+    const display=v>0?fv(v):(isFutureProj?'<span style="opacity:.4;font-size:10px">+ planejar</span>':'—');
+    return`<td class="planej-editable" onclick="editPlanCell(this,${ano},${m},'${tipo}','${encodeURIComponent(desc)}',${baseVal})" title="Clique para ${hasTx?'editar':'planejar'}" style="${cellStyle}">${dot}${display}</td>`;
+  }
+
   // ──── RECEITAS ────
   rows+=secRow('💰','Receitas');
   if(recItems.length){
     recItems.forEach(item=>{
-      const cells=MD.map((d,m)=>{
-        if(d.st==='fut') return editCell(m,'rec',item.desc,item.valor);
-        const v=d.recPD[item.desc]||0;
-        const dot=`<span class="pj-dot ${hasTxM(m,'receita',item.desc)?'ok':'no'}"></span>`;
-        return`<td>${dot}${v>0?fv(v):'—'}</td>`;
-      }).join('');
+      const cells=MD.map((d,m)=>editableCell(m,'rec',item.desc,item.valor)).join('');
       rows+=`<tr><td>💰 ${item.desc}</td>${cells}</tr>`;
     });
   }
@@ -1805,12 +1859,7 @@ function renderPlanej(){
   if(despItems.length){
     despItems.forEach(item=>{
       const baseV=item.valor/(item.parcelas||1);
-      const cells=MD.map((d,m)=>{
-        if(d.st==='fut') return editCell(m,'desp',item.desc,baseV);
-        const v=d.despPD[item.desc]||0;
-        const dot=`<span class="pj-dot ${hasTxM(m,'gasto',item.desc,true)?'ok':'no'}"></span>`;
-        return`<td>${dot}${v>0?fv(v):'—'}</td>`;
-      }).join('');
+      const cells=MD.map((d,m)=>editableCell(m,'desp',item.desc,baseV)).join('');
       rows+=`<tr><td>📌 ${item.desc}</td>${cells}</tr>`;
     });
   } else {
