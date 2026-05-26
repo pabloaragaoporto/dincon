@@ -1638,11 +1638,11 @@ function renderDashWidgets(rec,desp,econ){
     } else {
       const top=S.metas.slice(0,3);
       const bars=top.map(m=>{
-        const pct=m.alvo>0?Math.min(Math.round((m.atual/m.alvo)*100),100):0;
+        const pct=m.target>0?Math.min(Math.round((m.atual/m.target)*100),100):0;
         const c=pct>=100?'var(--accent)':pct>=50?'var(--yellow)':'var(--t3)';
         return`<div style="margin-bottom:7px">
           <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px">
-            <span style="color:var(--t);font-weight:500">${m.nome}</span>
+            <span style="color:var(--t);font-weight:500">${m.emoji||'🎯'} ${m.nome}</span>
             <span style="color:${c};font-weight:700">${pct}%</span>
           </div>
           <div style="height:4px;background:var(--s3);border-radius:100px">
@@ -1650,7 +1650,7 @@ function renderDashWidgets(rec,desp,econ){
           </div>
         </div>`;
       }).join('');
-      const concluidas=S.metas.filter(m=>m.atual>=m.alvo).length;
+      const concluidas=S.metas.filter(m=>m.atual>=m.target).length;
       ovM.innerHTML=`
         <div class="ov-lbl">🎯 Metas <span style="background:rgba(0,200,110,.15);color:var(--accent);padding:1px 7px;border-radius:100px;font-size:11px;font-weight:700">${S.metas.length}</span><span style="font-size:10px;opacity:.6">ver mais →</span></div>
         ${bars}
