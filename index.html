@@ -1610,9 +1610,7 @@ function renderDashWidgets(rec,desp,econ){
   }
 
   // ── PATRIMÔNIO ──
-  const totalAtivo=S.ativos.reduce((s,a)=>s+a.val,0);
-  const totalPassivo=S.passivos.reduce((s,p)=>s+p.val,0)+S.fins.filter(f=>f.pg<f.n).reduce((s,f)=>s+f.parc*(f.n-f.pg),0);
-  const liq=totalAtivo-totalPassivo;
+  const{totalAtivo,totalPassivo,liq}=calcPatrimonio();
   const patriCls=liq>0?'ok':liq===0?'warn':'bad';
   const liqColor=liq>0?'var(--accent)':liq===0?'var(--yellow)':'var(--red)';
   const ativoBarW=totalAtivo+totalPassivo>0?Math.round((totalAtivo/(totalAtivo+totalPassivo))*100):50;
@@ -2393,11 +2391,25 @@ function salvarOrc(){
 function delOrc(i){ const id=S.orc[i]?.id;S.orc.splice(i,1);save('orc');if(id)deleteFromSupabase('budgets',id);renderOrc(); }
 
 // ─── PATRIMÔNIO ───
-function renderPatri(){
-  const totalAtivo=S.ativos.reduce((s,a)=>s+a.val,0);
+function finEmoji(desc){
+  const d=(desc||'').toLowerCase();
+  if(/carro|auto|veículo|moto|caminhão/.test(d))return'🚗';
+  if(/casa|imóvel|apartamento|ap\b|mcmv|minha casa|habitação/.test(d))return'🏠';
+  return'🔑';
+}
+function calcPatrimonio(){
+  // Ativos manuais + valor total dos financiamentos (o bem pertence ao usuário pelo contrato)
+  const ativoManual=S.ativos.reduce((s,a)=>s+a.val,0);
+  const ativoFins=S.fins.reduce((s,f)=>s+f.parc*f.n,0);
+  const totalAtivo=ativoManual+ativoFins;
+  // Passivos manuais + saldo devedor dos financiamentos
   const totalPassivo=S.passivos.reduce((s,p)=>s+p.val,0)+S.fins.filter(f=>f.pg<f.n).reduce((s,f)=>s+f.parc*(f.n-f.pg),0);
-  const liq=totalAtivo-totalPassivo;
-  // Mostrar sinal correto e cor no patrimônio líquido
+  const liq=totalAtivo-totalPassivo; // = equity: o que realmente é do usuário
+  return{totalAtivo,totalPassivo,liq};
+}
+function renderPatri(){
+  const{totalAtivo,totalPassivo,liq}=calcPatrimonio();
+  // Patrimônio líquido com sinal correto
   const patriLiqEl=document.getElementById('patriLiq');
   if(patriLiqEl){
     patriLiqEl.textContent=(liq<0?'- ':'')+fmt(liq);
@@ -2405,28 +2417,42 @@ function renderPatri(){
   }
   setText('patriAtivo',fmt(totalAtivo));
   setText('patriPassivo',fmt(totalPassivo));
-  renderPatriChart(S.ativos,S.passivos);
-  // Aviso: financiamentos sem ativo cadastrado
-  const finsComDivida=S.fins.filter(f=>f.pg<f.n);
+  renderPatriChart();
+  // Aviso só quando patrimônio está negativo (dívidas > ativos)
   const avisoEl=document.getElementById('patriAviso');
   if(avisoEl){
-    if(finsComDivida.length>0&&totalAtivo===0){
-      const totalFin=finsComDivida.reduce((s,f)=>s+f.parc*f.n,0);
+    if(liq<0){
       avisoEl.style.display='flex';
-      avisoEl.innerHTML=`💡 Você tem <strong>${finsComDivida.length} financiamento(s)</strong> ativo(s), mas nenhum ativo cadastrado. Adicione o bem financiado (ex: imóvel, veículo) como ativo para calcular o patrimônio líquido real. O valor total financiado é <strong>${fmt(totalFin)}</strong>. <button class="add-btn" style="margin-left:8px;flex-shrink:0" onclick="openAddAtivo()">+ Adicionar ativo</button>`;
-    } else if(finsComDivida.length>0&&liq<0){
-      avisoEl.style.display='flex';
-      avisoEl.innerHTML=`⚠️ Patrimônio líquido negativo — suas dívidas superam seus ativos. Continue quitando os financiamentos para melhorar este número.`;
+      avisoEl.innerHTML=`⚠️ Patrimônio líquido negativo — suas dívidas ainda superam o valor total dos bens. Continue quitando os financiamentos para construir patrimônio.`;
     } else {
       avisoEl.style.display='none';
     }
   }
+  // Ativos manuais + ativos virtuais dos financiamentos
   const ativosEl=document.getElementById('ativosList');
-  if(ativosEl) ativosEl.innerHTML=S.ativos.length?S.ativos.map((a,i)=>`
-    <div class="orc-card" style="border-left:3px solid #00c86e;margin-bottom:8px">
-      <div class="orc-top"><div class="orc-cat"><span style="font-size:20px">${tipoAtivoEmoji(a.tipo)}</span><div><div class="orc-name">${a.nome}</div><div style="font-size:11px;color:var(--t2)">${a.tipo}</div></div></div>
-      <div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px;font-weight:800;color:var(--accent)">${fmt(a.val)}</span><button class="btn-sm btn-ghost" style="padding:4px 9px" onclick="openAddAtivo(${i})">✏️</button><button class="del-btn" onclick="delAtivo(${i})">✕</button></div></div>
-    </div>`).join(''):`<div class="empty"><div class="empty-icon">🏦</div><div class="empty-lbl">Nenhum ativo cadastrado</div><div class="empty-sub">Adicione investimentos, imóveis e bens</div><button class="add-btn" style="margin-top:14px" onclick="openAddAtivo()">+ Adicionar ativo</button></div>`;
+  if(ativosEl){
+    const manuaisHtml=S.ativos.map((a,i)=>`
+      <div class="orc-card" style="border-left:3px solid #00c86e;margin-bottom:8px">
+        <div class="orc-top">
+          <div class="orc-cat"><span style="font-size:20px">${tipoAtivoEmoji(a.tipo)}</span><div><div class="orc-name">${a.nome}</div><div style="font-size:11px;color:var(--t2)">${a.tipo}</div></div></div>
+          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px;font-weight:800;color:var(--accent)">${fmt(a.val)}</span><button class="btn-sm btn-ghost" style="padding:4px 9px" onclick="openAddAtivo(${i})">✏️</button><button class="del-btn" onclick="delAtivo(${i})">✕</button></div>
+        </div>
+      </div>`).join('');
+    const finsHtml=S.fins.map(f=>{
+      const total=f.parc*f.n,pago=f.parc*f.pg,pct=Math.round((f.pg/f.n)*100);
+      return`<div class="orc-card" style="border-left:3px solid #7c6af5;margin-bottom:8px">
+        <div class="orc-top">
+          <div class="orc-cat"><span style="font-size:20px">${finEmoji(f.desc)}</span>
+            <div><div class="orc-name">${f.desc}</div>
+              <div style="font-size:11px;color:var(--t2)">Bem financiado · ${pct}% quitado &nbsp;·&nbsp; Equity: <strong style="color:var(--accent)">${fmt(pago)}</strong></div>
+            </div>
+          </div>
+          <div style="text-align:right"><span style="font-size:16px;font-weight:800;color:#7c6af5">${fmt(total)}</span><div style="font-size:10px;color:var(--t3);margin-top:2px">valor do bem</div></div>
+        </div>
+      </div>`;
+    }).join('');
+    ativosEl.innerHTML=(manuaisHtml+finsHtml)||`<div class="empty"><div class="empty-icon">🏦</div><div class="empty-lbl">Nenhum ativo cadastrado</div><div class="empty-sub">Adicione investimentos, imóveis e bens</div><button class="add-btn" style="margin-top:14px" onclick="openAddAtivo()">+ Adicionar ativo</button></div>`;
+  }
   const passivosEl=document.getElementById('passivosList');
   if(passivosEl) passivosEl.innerHTML=S.passivos.length?S.passivos.map((p,i)=>`
     <div class="orc-card" style="border-left:3px solid var(--red);margin-bottom:8px">
@@ -2434,13 +2460,21 @@ function renderPatri(){
       <div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px;font-weight:800;color:var(--red)">${fmt(p.val)}</span><button class="btn-sm btn-ghost" style="padding:4px 9px" onclick="openAddPassivo(${i})">✏️</button><button class="del-btn" onclick="delPassivo(${i})">✕</button></div></div>
     </div>`).join(''):`<div class="empty"><div class="empty-icon">📋</div><div class="empty-lbl">Nenhum passivo cadastrado</div><div class="empty-sub">Registre dívidas e obrigações financeiras</div><button class="add-btn" style="margin-top:14px" onclick="openAddPassivo()">+ Adicionar passivo</button></div>`;
 }
-function renderPatriChart(ativos,passivos){
+function renderPatriChart(){
   const ctx=document.getElementById('patriChart');if(!ctx)return;
   if(charts.patri)charts.patri.destroy();
   const labels=[];const data=[];const colors=[];
-  ativos.forEach(a=>{labels.push(a.nome);data.push(a.val);colors.push('#00c86e');});
-  passivos.forEach(p=>{labels.push(p.nome+' (passivo)');data.push(p.val);colors.push('#f25f7a');});
-  S.fins.filter(f=>f.pg<f.n).forEach(f=>{labels.push(f.desc+' (fin.)');data.push(f.parc*(f.n-f.pg));colors.push('#f25f7a');});
+  // Ativos manuais (verde)
+  S.ativos.forEach(a=>{labels.push(a.nome);data.push(a.val);colors.push('#00c86e');});
+  // Equity dos financiamentos (roxo) — o que já foi pago
+  S.fins.forEach(f=>{
+    const pago=f.parc*f.pg;
+    if(pago>0){labels.push('Equity: '+f.desc);data.push(pago);colors.push('#7c6af5');}
+  });
+  // Passivos manuais (vermelho)
+  S.passivos.forEach(p=>{labels.push(p.nome+' (passivo)');data.push(p.val);colors.push('#f25f7a');});
+  // Saldo devedor dos financiamentos (vermelho escuro)
+  S.fins.filter(f=>f.pg<f.n).forEach(f=>{labels.push(f.desc+' (dívida)');data.push(f.parc*(f.n-f.pg));colors.push('#c94065');});
   if(!data.length){ctx.parentElement.style.display='none';return;}
   ctx.parentElement.style.display='';
   charts.patri=new Chart(ctx,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:4}]},options:{maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{color:'#a0a0b8',font:{size:11},boxWidth:12}},tooltip:{callbacks:{label:c=>' '+fmt(c.raw)}}}}});
