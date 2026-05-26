@@ -91,22 +91,28 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;p
 .section-title{font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:12px;}
 
 /* OVERVIEW PANORAMA */
-.ov-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+@keyframes ovFadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.ov-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
 @media(max-width:480px){.ov-grid{grid-template-columns:1fr;}}
-.ov-card{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--border);border-radius:var(--rl);padding:16px 18px;cursor:pointer;transition:all .15s;}
-.ov-card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,.25);}
-.ov-card.ok{border-left-color:var(--accent);}
-.ov-card.warn{border-left-color:var(--yellow);}
-.ov-card.bad{border-left-color:var(--red);}
-.ov-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--t2);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;}
-.ov-val{font-size:21px;font-weight:800;margin-bottom:4px;letter-spacing:-.02em;line-height:1.1;}
+.ov-card{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--border);border-radius:var(--rl);padding:18px 20px 16px;cursor:pointer;transition:all .18s;animation:ovFadeUp .4s ease both;}
+.ov-grid .ov-card:nth-child(1){animation-delay:.04s}
+.ov-grid .ov-card:nth-child(2){animation-delay:.10s}
+.ov-grid .ov-card:nth-child(3){animation-delay:.16s}
+.ov-grid .ov-card:nth-child(4){animation-delay:.22s}
+.ov-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.28);}
+.ov-card.ok{border-top-color:var(--accent);background:linear-gradient(145deg,var(--surface) 55%,rgba(0,200,110,.06) 100%);}
+.ov-card.warn{border-top-color:var(--yellow);background:linear-gradient(145deg,var(--surface) 55%,rgba(245,166,35,.06) 100%);}
+.ov-card.bad{border-top-color:var(--red);background:linear-gradient(145deg,var(--surface) 55%,rgba(242,95,122,.06) 100%);}
+.ov-deco{position:absolute;top:6px;right:14px;font-size:68px;opacity:.08;pointer-events:none;line-height:1;user-select:none;filter:grayscale(20%);}
+.ov-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--t2);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.ov-val{font-size:22px;font-weight:800;margin-bottom:4px;letter-spacing:-.025em;line-height:1.1;}
 .ov-sub{font-size:12px;color:var(--t2);line-height:1.6;}
-.ov-badge{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:2px 9px;border-radius:100px;margin-bottom:6px;}
-.ov-badge.ok{background:rgba(0,200,110,.12);color:var(--accent);}
-.ov-badge.warn{background:rgba(245,166,35,.12);color:var(--yellow);}
-.ov-badge.bad{background:rgba(242,95,122,.12);color:var(--red);}
-.ov-mbar{height:5px;background:var(--s3);border-radius:100px;margin-top:10px;overflow:hidden;}
-.ov-mbar-fill{height:100%;border-radius:100px;transition:width .5s;}
+.ov-badge{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;margin-bottom:6px;}
+.ov-badge.ok{background:rgba(0,200,110,.14);color:var(--accent);}
+.ov-badge.warn{background:rgba(245,166,35,.14);color:var(--yellow);}
+.ov-badge.bad{background:rgba(242,95,122,.14);color:var(--red);}
+.ov-mbar{height:5px;background:var(--s3);border-radius:100px;margin-top:12px;overflow:hidden;}
+.ov-mbar-fill{height:100%;border-radius:100px;transition:width .6s ease;}
 .ov-sec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t2);margin-bottom:8px;margin-top:4px;}
 
 /* CHARTS */
@@ -485,7 +491,7 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;p
   </div>
   <div id="dashAlert" style="display:none;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);border-radius:var(--rs);padding:12px 16px;margin-bottom:14px;font-size:13px;color:var(--yellow);gap:8px;align-items:flex-start;line-height:1.5;"></div>
   <div class="charts-grid">
-    <div class="card"><div class="card-title" style="margin-bottom:14px">Evolução anual</div><canvas id="lineChart" height="180"></canvas></div>
+    <div class="card"><div class="card-title" style="margin-bottom:14px">Evolução anual</div><div style="position:relative;height:260px"><canvas id="lineChart"></canvas></div></div>
   </div>
   <div class="ov-sec">Panorama geral</div>
   <div class="ov-grid">
@@ -1602,7 +1608,8 @@ function renderDashWidgets(rec,desp,econ){
   if(ovS){
     ovS.className=`ov-card ${saudeCls}`;
     ovS.innerHTML=`
-      <div class="ov-lbl">❤️ Saúde Financeira <span style="font-size:10px;opacity:.6">ver mais →</span></div>
+      <div class="ov-deco">❤️</div>
+      <div class="ov-lbl">❤️ Saúde Financeira <span style="font-size:10px;opacity:.5">ver mais →</span></div>
       <div class="ov-val" style="color:${saudeColor}">${score}<span style="font-size:13px;font-weight:500;color:var(--t2)">/100</span></div>
       <div><span class="ov-badge ${saudeCls}">${saudeLabel}</span></div>
       <div class="ov-sub">Poupança: <strong>${econ}%</strong> · Comprometido: <strong>${comprometido}%</strong></div>
@@ -1618,7 +1625,8 @@ function renderDashWidgets(rec,desp,econ){
   if(ovP){
     ovP.className=`ov-card ${patriCls}`;
     ovP.innerHTML=`
-      <div class="ov-lbl">🏦 Patrimônio <span style="font-size:10px;opacity:.6">ver mais →</span></div>
+      <div class="ov-deco">🏦</div>
+      <div class="ov-lbl">🏦 Patrimônio <span style="font-size:10px;opacity:.5">ver mais →</span></div>
       <div class="ov-val" style="color:${liqColor}">${liq<0?'- ':''}${fmt(liq)}</div>
       <div class="ov-sub">Ativos: <strong style="color:var(--accent)">${fmt(totalAtivo)}</strong></div>
       <div class="ov-sub">Passivos: <strong style="color:var(--red)">${fmt(totalPassivo)}</strong></div>
@@ -1632,7 +1640,8 @@ function renderDashWidgets(rec,desp,econ){
     ovM.className=`ov-card ${metasCls}`;
     if(!S.metas.length){
       ovM.innerHTML=`
-        <div class="ov-lbl">🎯 Metas <span style="font-size:10px;opacity:.6">ver mais →</span></div>
+        <div class="ov-deco">🎯</div>
+        <div class="ov-lbl">🎯 Metas <span style="font-size:10px;opacity:.5">ver mais →</span></div>
         <div class="ov-val" style="color:var(--t3)">Nenhuma</div>
         <div class="ov-sub">Defina objetivos financeiros<br>para acompanhar seu progresso.</div>`;
     } else {
@@ -1646,13 +1655,14 @@ function renderDashWidgets(rec,desp,econ){
             <span style="color:${c};font-weight:700">${pct}%</span>
           </div>
           <div style="height:4px;background:var(--s3);border-radius:100px">
-            <div style="width:${pct}%;height:100%;border-radius:100px;background:${c};transition:width .5s"></div>
+            <div style="width:${pct}%;height:100%;border-radius:100px;background:${c};transition:width .6s ease"></div>
           </div>
         </div>`;
       }).join('');
       const concluidas=S.metas.filter(m=>m.atual>=m.target).length;
       ovM.innerHTML=`
-        <div class="ov-lbl">🎯 Metas <span style="background:rgba(0,200,110,.15);color:var(--accent);padding:1px 7px;border-radius:100px;font-size:11px;font-weight:700">${S.metas.length}</span><span style="font-size:10px;opacity:.6">ver mais →</span></div>
+        <div class="ov-deco">🎯</div>
+        <div class="ov-lbl">🎯 Metas <span style="background:rgba(0,200,110,.15);color:var(--accent);padding:1px 7px;border-radius:100px;font-size:11px;font-weight:700">${S.metas.length}</span><span style="font-size:10px;opacity:.5">ver mais →</span></div>
         ${bars}
         <div class="ov-sub" style="margin-top:4px">${concluidas} de ${S.metas.length} concluída(s)</div>`;
     }
@@ -1668,6 +1678,7 @@ function renderDashWidgets(rec,desp,econ){
     ovF.className=`ov-card ${finsCls}`;
     if(!finsAtivos.length){
       ovF.innerHTML=`
+        <div class="ov-deco">🏠</div>
         <div class="ov-lbl">📅 Financiamentos <span style="font-size:10px;opacity:.6">ver mais →</span></div>
         <div class="ov-val" style="color:var(--accent)">Livre! 🎉</div>
         <div class="ov-sub">Nenhum financiamento ativo.<br>Ótima situação!</div>`;
@@ -1682,6 +1693,7 @@ function renderDashWidgets(rec,desp,econ){
         </div>`;
       }).join('');
       ovF.innerHTML=`
+        <div class="ov-deco">🏠</div>
         <div class="ov-lbl">📅 Financiamentos <span style="background:rgba(242,95,122,.15);color:var(--red);padding:1px 7px;border-radius:100px;font-size:11px;font-weight:700">${finsAtivos.length}</span><span style="font-size:10px;opacity:.6">ver mais →</span></div>
         <div class="ov-val" style="color:var(--red)">${fmt(totalDivida)}</div>
         <div class="ov-sub" style="margin-bottom:8px">Parcela/mês: <strong>${fmt(parcelaMes)}</strong> · ${comprometido}% da renda</div>
@@ -1771,6 +1783,7 @@ function renderLineChart(){
      segment:{borderDash:ctx=>meses[ctx.p1DataIndex]?.proj?[5,3]:undefined,
                borderColor:ctx=>meses[ctx.p1DataIndex]?.proj?'rgba(242,95,122,.4)':'#f25f7a'}},
   ]},options:{
+    maintainAspectRatio:false,
     plugins:{
       legend:{display:true,position:'top',align:'end',labels:{color:'#a0a0b8',font:{size:10},boxWidth:12,padding:12}},
       tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${fmt(c.raw)}${meses[c.dataIndex]?.proj?' (projeção)':''}`}}
