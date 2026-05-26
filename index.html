@@ -217,9 +217,11 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;p
 .fin-prog-labels strong{font-size:12px;color:#fff;font-weight:700;}
 .fin-prog-track{height:6px;background:rgba(255,255,255,.15);border-radius:100px;overflow:hidden;}
 .fin-prog-fill{height:100%;border-radius:100px;background:rgba(255,255,255,.8);transition:width .6s;}
-.fin-body{display:grid;grid-template-columns:1fr 1fr 1fr;padding:14px 18px;border-top:1px solid var(--border);}
+.fin-body{display:grid;grid-template-columns:repeat(4,1fr);padding:14px 18px;border-top:1px solid var(--border);}
+@media(max-width:480px){.fin-body{grid-template-columns:1fr 1fr;}}
 .fin-stat{padding:4px 0;}
 .fin-stat:not(:first-child){padding-left:14px;border-left:1px solid var(--border);}
+@media(max-width:480px){.fin-stat:nth-child(odd){padding-left:0;border-left:none;}.fin-stat:nth-child(even){padding-left:14px;border-left:1px solid var(--border);}}
 .fin-stat-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:4px;}
 .fin-stat-val{font-size:15px;font-weight:800;}
 
@@ -568,6 +570,7 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;p
       <div class="patri-col"><div class="patri-col-lbl">Passivos</div><div class="patri-col-val" style="color:#fca5a5" id="patriPassivo">R$ 0</div></div>
     </div>
   </div>
+  <div id="patriAviso" style="display:none;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);border-radius:var(--rs);padding:12px 16px;margin-bottom:14px;font-size:13px;color:var(--yellow);gap:8px;align-items:center;line-height:1.5;flex-wrap:wrap;"></div>
   <div class="card mb-16">
     <div class="card-title" style="margin-bottom:14px">Composição patrimonial</div>
     <div style="position:relative;height:240px"><canvas id="patriChart"></canvas></div>
@@ -1618,7 +1621,7 @@ function renderDashWidgets(rec,desp,econ){
     ovP.className=`ov-card ${patriCls}`;
     ovP.innerHTML=`
       <div class="ov-lbl">🏦 Patrimônio <span style="font-size:10px;opacity:.6">ver mais →</span></div>
-      <div class="ov-val" style="color:${liqColor}">${fmt(liq)}</div>
+      <div class="ov-val" style="color:${liqColor}">${liq<0?'- ':''}${fmt(liq)}</div>
       <div class="ov-sub">Ativos: <strong style="color:var(--accent)">${fmt(totalAtivo)}</strong></div>
       <div class="ov-sub">Passivos: <strong style="color:var(--red)">${fmt(totalPassivo)}</strong></div>
       <div class="ov-mbar"><div class="ov-mbar-fill" style="width:${ativoBarW}%;background:var(--accent)"></div></div>`;
@@ -2394,10 +2397,30 @@ function renderPatri(){
   const totalAtivo=S.ativos.reduce((s,a)=>s+a.val,0);
   const totalPassivo=S.passivos.reduce((s,p)=>s+p.val,0)+S.fins.filter(f=>f.pg<f.n).reduce((s,f)=>s+f.parc*(f.n-f.pg),0);
   const liq=totalAtivo-totalPassivo;
-  setText('patriLiq',fmt(liq));
+  // Mostrar sinal correto e cor no patrimônio líquido
+  const patriLiqEl=document.getElementById('patriLiq');
+  if(patriLiqEl){
+    patriLiqEl.textContent=(liq<0?'- ':'')+fmt(liq);
+    patriLiqEl.style.color=liq>=0?'':'#fca5a5';
+  }
   setText('patriAtivo',fmt(totalAtivo));
   setText('patriPassivo',fmt(totalPassivo));
   renderPatriChart(S.ativos,S.passivos);
+  // Aviso: financiamentos sem ativo cadastrado
+  const finsComDivida=S.fins.filter(f=>f.pg<f.n);
+  const avisoEl=document.getElementById('patriAviso');
+  if(avisoEl){
+    if(finsComDivida.length>0&&totalAtivo===0){
+      const totalFin=finsComDivida.reduce((s,f)=>s+f.parc*f.n,0);
+      avisoEl.style.display='flex';
+      avisoEl.innerHTML=`💡 Você tem <strong>${finsComDivida.length} financiamento(s)</strong> ativo(s), mas nenhum ativo cadastrado. Adicione o bem financiado (ex: imóvel, veículo) como ativo para calcular o patrimônio líquido real. O valor total financiado é <strong>${fmt(totalFin)}</strong>. <button class="add-btn" style="margin-left:8px;flex-shrink:0" onclick="openAddAtivo()">+ Adicionar ativo</button>`;
+    } else if(finsComDivida.length>0&&liq<0){
+      avisoEl.style.display='flex';
+      avisoEl.innerHTML=`⚠️ Patrimônio líquido negativo — suas dívidas superam seus ativos. Continue quitando os financiamentos para melhorar este número.`;
+    } else {
+      avisoEl.style.display='none';
+    }
+  }
   const ativosEl=document.getElementById('ativosList');
   if(ativosEl) ativosEl.innerHTML=S.ativos.length?S.ativos.map((a,i)=>`
     <div class="orc-card" style="border-left:3px solid #00c86e;margin-bottom:8px">
@@ -2495,6 +2518,7 @@ function renderFins(){
       </div>
       <div class="fin-body">
         <div class="fin-stat"><div class="fin-stat-lbl">Parcela</div><div class="fin-stat-val" style="color:#7c6af5">${fmt(f.parc)}</div></div>
+        <div class="fin-stat"><div class="fin-stat-lbl">Já pago</div><div class="fin-stat-val" style="color:var(--accent)">${fmt(pagoFin)}</div></div>
         <div class="fin-stat"><div class="fin-stat-lbl">Restante</div><div class="fin-stat-val" style="color:#f25f7a">${fmt(f.parc*rest)}</div></div>
         <div class="fin-stat"><div class="fin-stat-lbl">Total</div><div class="fin-stat-val">${fmt(totalFin)}</div></div>
       </div>
