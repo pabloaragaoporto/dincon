@@ -189,7 +189,7 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;p
 .fin-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:14px;transition:transform .18s;}
 .fin-card:hover{transform:translateY(-2px);}
 .fin-hdr{padding:18px 18px 14px;position:relative;overflow:hidden;}
-.fin-hdr::before{content:'';position:absolute;inset:0;opacity:.1;}
+.fin-hdr::before{content:'';position:absolute;inset:0;opacity:.1;pointer-events:none;}
 .fin-name{font-size:16px;font-weight:700;color:#fff;margin-bottom:2px;}
 .fin-bank{font-size:12px;color:rgba(255,255,255,.55);}
 .fin-prog{margin-top:14px;}
@@ -544,7 +544,7 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;p
   </div>
   <div class="card mb-16">
     <div class="card-title" style="margin-bottom:14px">Composição patrimonial</div>
-    <canvas id="patriChart" height="180"></canvas>
+    <div style="position:relative;height:240px"><canvas id="patriChart"></canvas></div>
   </div>
   <div class="row mb-16"><span class="card-title">Ativos</span><button class="add-btn" onclick="openAddAtivo()">+ Ativo</button></div>
   <div id="ativosList"></div>
@@ -1830,8 +1830,22 @@ function renderPlanej(){
     let varTot=0;
     if(!fut){txs.filter(t=>t.tipo==='gasto'&&!t.recorrente&&t.meio!=='crédito').forEach(t=>varTot+=t.valor/(t.parcelas||1));}
 
-    const saldo=recTot-despTot-ccTot-varTot;
-    return{st,recPD,recTot,despPD,despTot,ccPC,ccTot,varTot,saldo};
+    // Financiamentos
+    let finTot=0;
+    S.fins.filter(f=>f.n-f.pg>0).forEach(f=>{
+      if(!fut){
+        // Meses passados/atual: busca transação real "Parcela {desc}"
+        if(txs.some(t=>t.tipo==='gasto'&&t.desc===`Parcela ${f.desc}`)) finTot+=f.parc;
+      } else {
+        // Meses futuros: projeta se ainda há parcelas a vencer
+        const restante=f.n-f.pg;
+        const mesesFuturo=(ano-anoHoje)*12+(m-mesHoje);
+        if(mesesFuturo<restante) finTot+=f.parc;
+      }
+    });
+
+    const saldo=recTot-despTot-ccTot-varTot-finTot;
+    return{st,recPD,recTot,despPD,despTot,ccPC,ccTot,varTot,finTot,saldo};
   });
 
   let acum=0;
@@ -1932,11 +1946,39 @@ function renderPlanej(){
     rows+=totalRow('Total Cartão',MD.map(d=>d.ccTot),true);
   }
 
+  // ──── FINANCIAMENTOS ────
+  const finsAtivos=S.fins.filter(f=>f.n-f.pg>0);
+  if(finsAtivos.length){
+    rows+=secRow('📅','Financiamentos');
+    finsAtivos.forEach(f=>{
+      const cells=MD.map((d,m)=>{
+        const fut=d.st==='fut';
+        if(!fut){
+          // Mês passado/atual: mostra transação real se houver
+          const txsFin=txM(m).filter(t=>t.tipo==='gasto'&&t.desc===`Parcela ${f.desc}`);
+          const v=txsFin.reduce((s,t)=>s+t.valor,0);
+          const dot=v>0?`<span class="pj-dot ok"></span>`:`<span class="pj-dot no"></span>`;
+          return`<td>${dot}${v>0?fv(v):'—'}</td>`;
+        } else {
+          const restante=f.n-f.pg;
+          const mesesFuturo=(ano-anoHoje)*12+(m-mesHoje);
+          if(mesesFuturo<restante){
+            return`<td class="pj-future" style="color:var(--t3)">${fv(f.parc)}</td>`;
+          }
+          return`<td>—</td>`;
+        }
+      }).join('');
+      rows+=`<tr><td>📅 ${f.desc}</td>${cells}</tr>`;
+    });
+    rows+=totalRow('Total Financiamentos',MD.map(d=>d.finTot),true);
+  }
+
   // ──── BALANÇO ────
   rows+=secRow('📊','Balanço Geral');
   rows+=totalRow('Total Receitas',MD.map(d=>d.recTot),false);
   rows+=totalRow('Total Desp. Fixas',MD.map(d=>d.despTot),false);
   if(cartoes.length)rows+=totalRow('Total Cartão',MD.map(d=>d.ccTot),false);
+  if(finsAtivos.length)rows+=totalRow('Financiamentos',MD.map(d=>d.finTot),false);
   if(MD.some(d=>d.varTot>0))rows+=totalRow('Gastos Variáveis',MD.map(d=>d.varTot),false);
   const saldoCells=MD.map((d,i)=>saldoCell(d.saldo,d.st)).join('');
   rows+=`<tr class="planej-total"><td>Saldo do mês</td>${saldoCells}</tr>`;
@@ -2239,7 +2281,7 @@ function renderPatriChart(ativos,passivos){
   S.fins.filter(f=>f.pg<f.n).forEach(f=>{labels.push(f.desc+' (fin.)');data.push(f.parc*(f.n-f.pg));colors.push('#f25f7a');});
   if(!data.length){ctx.parentElement.style.display='none';return;}
   ctx.parentElement.style.display='';
-  charts.patri=new Chart(ctx,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:4}]},options:{cutout:'60%',plugins:{legend:{position:'bottom',labels:{color:'#a0a0b8',font:{size:11},boxWidth:12}},tooltip:{callbacks:{label:c=>' '+fmt(c.raw)}}}}});
+  charts.patri=new Chart(ctx,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:4}]},options:{maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{color:'#a0a0b8',font:{size:11},boxWidth:12}},tooltip:{callbacks:{label:c=>' '+fmt(c.raw)}}}}});
 }
 function tipoAtivoEmoji(t){return{imóvel:'🏠',investimento:'📈',veículo:'🚗',conta:'🏦',outro:'📦'}[t]||'📦';}
 function openAddAtivo(editIdx=-1){
