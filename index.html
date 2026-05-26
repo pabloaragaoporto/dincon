@@ -251,6 +251,7 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;p
 
 /* SHEET (modal) */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:flex-end;z-index:200;backdrop-filter:blur(10px);}
+@media(min-width:769px){#txOverlay{align-items:center;}.sheet{border-radius:var(--rl);max-width:500px;margin:0 auto;max-height:80vh;}}
 .overlay.open{display:flex;}
 .sheet{background:var(--surface);border-radius:26px 26px 0 0;padding:22px 20px max(32px,env(safe-area-inset-bottom));width:100%;max-height:94vh;overflow-y:auto;}
 .sheet-handle{width:36px;height:4px;border-radius:2px;background:var(--b2);margin:0 auto 20px;}
@@ -650,7 +651,7 @@ header{border-bottom:1px solid var(--border);padding:18px 0;margin-bottom:24px;p
     <span><span class="pj-dot no"></span>Não lançado</span>
     <span style="color:var(--t3)">Cinza = projeção futura</span>
   </div>
-  <div class="card" style="padding:0;overflow:hidden;">
+  <div class="card" style="padding:0;">
     <div class="planej-wrap">
       <table class="planej-tbl">
         <thead><tr id="planejmHead"></tr></thead>
@@ -911,7 +912,8 @@ const CC_COLORS = ['linear-gradient(135deg,#6c3baa,#3d1f6e)','linear-gradient(13
 // ─── ESTADO ───
 const S = {
   tx:[], cartoes:[], metas:[], ativos:[], passivos:[], fins:[], orc:[],
-  prefs:{nome:'',renda:0,meta_poup:20,tema:'dark'}
+  prefs:{nome:'',renda:0,meta_poup:20,tema:'dark'},
+  plan:{}
 };
 
 // ─── PERÍODO ───
@@ -927,7 +929,7 @@ const sb=window.supabase.createClient(SUPA_URL,SUPA_KEY);
 let currentUser=null;
 
 // ─── STORAGE ───
-const KS = {tx:'dc_tx',cartoes:'dc_cc',metas:'dc_m',ativos:'dc_a',passivos:'dc_p',fins:'dc_f',orc:'dc_o',prefs:'dc_pref'};
+const KS = {tx:'dc_tx',cartoes:'dc_cc',metas:'dc_m',ativos:'dc_a',passivos:'dc_p',fins:'dc_f',orc:'dc_o',prefs:'dc_pref',plan:'dc_plan'};
 
 function saveLocal(k){ try{localStorage.setItem(KS[k],JSON.stringify(S[k]));}catch(e){} }
 function save(k){ saveLocal(k); if(currentUser)saveToSupabase(k); }
@@ -1577,7 +1579,9 @@ function renderLineChart(){
     const inicio=ano===anoHoje?mesHoje+1:0;
     for(let m=inicio;m<12;m++){
       recList.forEach(t=>{
-        const v=t.valor/(t.parcelas||1);
+        const pTipo=t.tipo==='receita'?'rec':'desp';
+        const planKey=`${ano}|${m}|${pTipo}|${t.desc}`;
+        const v=S.plan[planKey]!==undefined?S.plan[planKey]:t.valor/(t.parcelas||1);
         if(t.tipo==='receita')meses[m].rec+=v;
         else meses[m].desp+=v;
       });
@@ -1632,6 +1636,26 @@ function renderLineChart(){
 }
 
 // ─── PLANEJAMENTO ANUAL ───
+// Editar célula de projeção futura inline
+function editPlanCell(el,ano,mes,tipo,descEnc,baseVal){
+  const desc=decodeURIComponent(descEnc);
+  const key=`${ano}|${mes}|${tipo}|${desc}`;
+  const inp=document.createElement('input');
+  inp.type='number';inp.step='0.01';inp.min='0';
+  inp.value=S.plan[key]!==undefined?S.plan[key]:baseVal||'';
+  inp.style.cssText='width:90px;background:rgba(0,200,110,.12);border:1px solid var(--accent);border-radius:6px;outline:none;color:var(--accent);font-family:inherit;font-size:12px;font-weight:700;text-align:right;padding:2px 6px;';
+  el.innerHTML='';el.appendChild(inp);inp.focus();inp.select();
+  const commit=()=>{
+    const val=parseFloat(inp.value);
+    if(!isNaN(val)&&val>=0){
+      if(val===0)delete S.plan[key]; else S.plan[key]=val;
+      saveLocal('plan');renderPlanej();renderLineChart();
+    } else {renderPlanej();}
+  };
+  inp.addEventListener('blur',commit);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();inp.blur();}if(e.key==='Escape'){renderPlanej();}});
+}
+
 function renderPlanej(){
   const head=document.getElementById('planejmHead');
   const body=document.getElementById('planejmBody');
@@ -1642,54 +1666,37 @@ function renderPlanej(){
   const mesHoje=hoje.getMonth(),anoHoje=hoje.getFullYear();
   const LBL=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 
-  // Status do mês
   function mSt(m){
     if(ano<anoHoje||(ano===anoHoje&&m<mesHoje))return'past';
     if(ano===anoHoje&&m===mesHoje)return'cur';
     return'fut';
   }
-
-  // Transações do mês
   function txM(m){
-    return S.tx.filter(t=>{
-      if(!t.data)return false;
-      const d=new Date(t.data+'T12:00');
-      return d.getFullYear()===ano&&d.getMonth()===m;
-    });
+    return S.tx.filter(t=>{if(!t.data)return false;const d=new Date(t.data+'T12:00');return d.getFullYear()===ano&&d.getMonth()===m;});
   }
-
-  // Recorrentes únicos mais recentes por desc+tipo
   function recUniq(tipo){
     const map={};
-    S.tx.filter(t=>t.recorrente&&t.tipo===tipo).forEach(t=>{
-      if(!map[t.desc]||t.data>map[t.desc].data)map[t.desc]=t;
-    });
+    S.tx.filter(t=>t.recorrente&&t.tipo===tipo).forEach(t=>{if(!map[t.desc]||t.data>map[t.desc].data)map[t.desc]=t;});
     return Object.values(map).sort((a,b)=>a.desc.localeCompare(b.desc,'pt'));
   }
-
-  // CC recorrentes únicos por desc+cartao
   function ccRecUniq(){
     const map={};
-    S.tx.filter(t=>t.recorrente&&t.tipo==='gasto'&&t.meio==='crédito'&&t.cartao).forEach(t=>{
-      const k=t.desc+'|'+t.cartao;
-      if(!map[k]||t.data>map[k].data)map[k]=t;
-    });
+    S.tx.filter(t=>t.recorrente&&t.tipo==='gasto'&&t.meio==='crédito'&&t.cartao).forEach(t=>{const k=t.desc+'|'+t.cartao;if(!map[k]||t.data>map[k].data)map[k]=t;});
     return Object.values(map);
   }
 
   const fv=v=>'R$ '+Math.abs(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 
-  // Items recorrentes
   const recItems=recUniq('receita');
   const despItems=recUniq('gasto');
   const ccRecs=ccRecUniq();
-
-  // Cartões únicos com algum gasto
   const cartoesSet=new Set();
   S.tx.filter(t=>t.tipo==='gasto'&&t.meio==='crédito'&&t.cartao).forEach(t=>cartoesSet.add(t.cartao));
   const cartoes=[...cartoesSet].sort();
 
-  // Dados por mês
+  // Helper: ler override do plan
+  function planVal(m,tipo,desc){const k=`${ano}|${m}|${tipo}|${desc}`;return S.plan[k];}
+
   const MD=Array.from({length:12},(_,m)=>{
     const txs=txM(m);
     const st=mSt(m);
@@ -1700,48 +1707,45 @@ function renderPlanej(){
     if(!fut){
       txs.filter(t=>t.tipo==='receita').forEach(t=>{recPD[t.desc]=(recPD[t.desc]||0)+t.valor;recTot+=t.valor;});
     } else {
-      recItems.forEach(t=>{recPD[t.desc]=(recPD[t.desc]||0)+t.valor;recTot+=t.valor;});
+      recItems.forEach(t=>{
+        const ov=planVal(m,'rec',t.desc);
+        const v=ov!==undefined?ov:t.valor;
+        recPD[t.desc]=(recPD[t.desc]||0)+v;recTot+=v;
+      });
     }
 
-    // Despesas fixas (recorrentes)
+    // Despesas fixas
     const despPD={};let despTot=0;
     if(!fut){
-      txs.filter(t=>t.tipo==='gasto'&&t.recorrente).forEach(t=>{
-        const v=t.valor/(t.parcelas||1);despPD[t.desc]=(despPD[t.desc]||0)+v;despTot+=v;
-      });
+      txs.filter(t=>t.tipo==='gasto'&&t.recorrente).forEach(t=>{const v=t.valor/(t.parcelas||1);despPD[t.desc]=(despPD[t.desc]||0)+v;despTot+=v;});
     } else {
-      despItems.forEach(t=>{const v=t.valor/(t.parcelas||1);despPD[t.desc]=(despPD[t.desc]||0)+v;despTot+=v;});
+      despItems.forEach(t=>{
+        const ov=planVal(m,'desp',t.desc);
+        const v=ov!==undefined?ov:t.valor/(t.parcelas||1);
+        despPD[t.desc]=(despPD[t.desc]||0)+v;despTot+=v;
+      });
     }
 
-    // Cartão de crédito
+    // Cartão
     const ccPC={};let ccTot=0;
     if(!fut){
-      txs.filter(t=>t.tipo==='gasto'&&t.meio==='crédito'&&t.cartao).forEach(t=>{
-        const v=t.valor/(t.parcelas||1);ccPC[t.cartao]=(ccPC[t.cartao]||0)+v;ccTot+=v;
-      });
+      txs.filter(t=>t.tipo==='gasto'&&t.meio==='crédito'&&t.cartao).forEach(t=>{const v=t.valor/(t.parcelas||1);ccPC[t.cartao]=(ccPC[t.cartao]||0)+v;ccTot+=v;});
     } else {
-      // projeção: apenas CC recorrentes
       ccRecs.forEach(t=>{const v=t.valor/(t.parcelas||1);ccPC[t.cartao]=(ccPC[t.cartao]||0)+v;ccTot+=v;});
     }
 
-    // Gastos variáveis (não recorrentes, não crédito)
+    // Variáveis
     let varTot=0;
-    if(!fut){
-      txs.filter(t=>t.tipo==='gasto'&&!t.recorrente&&t.meio!=='crédito').forEach(t=>varTot+=t.valor/(t.parcelas||1));
-    }
+    if(!fut){txs.filter(t=>t.tipo==='gasto'&&!t.recorrente&&t.meio!=='crédito').forEach(t=>varTot+=t.valor/(t.parcelas||1));}
 
     const saldo=recTot-despTot-ccTot-varTot;
     return{st,recPD,recTot,despPD,despTot,ccPC,ccTot,varTot,saldo};
   });
 
-  // Acumulado
   let acum=0;
   const ACUM=MD.map(d=>{acum+=d.saldo;return acum;});
 
-  // Verifica se há algum dado
   const temDados=S.tx.some(t=>t.data&&new Date(t.data+'T12:00').getFullYear()===ano)||recItems.length>0||despItems.length>0;
-
-  // ── Helpers de célula ──
   const thStyle=m=>{const s=mSt(m);return s==='cur'?'color:var(--accent);border-bottom:2px solid var(--accent)':'';};
 
   function valCell(v,st,bold){
@@ -1749,34 +1753,31 @@ function renderPlanej(){
     const c=st==='fut'?'pj-future':'';
     return`<td class="${c}"${bold?' style="font-weight:700"':''}>${fv(v)}</td>`;
   }
-
   function saldoCell(v,st){
-    const cl=v>=0?'pj-pos':'pj-neg';
-    const ar=v>=0?'↑':'↓';
+    const cl=v>=0?'pj-pos':'pj-neg';const ar=v>=0?'↑':'↓';
     const c=st==='fut'?' pj-future':'';
     return`<td><span class="${cl}${c}">${ar} ${fv(v)}</span></td>`;
   }
-
-  function hasTxMes(m,tipo,desc,rec){
-    return S.tx.some(t=>{
-      if(!t.data)return false;
-      const d=new Date(t.data+'T12:00');
-      return d.getFullYear()===ano&&d.getMonth()===m&&t.tipo===tipo&&t.desc===desc&&(!rec||t.recorrente);
-    });
+  function hasTxM(m,tipo,desc,rec){
+    return S.tx.some(t=>{if(!t.data)return false;const d=new Date(t.data+'T12:00');return d.getFullYear()===ano&&d.getMonth()===m&&t.tipo===tipo&&t.desc===desc&&(!rec||t.recorrente);});
   }
-
-  function secRow(icon,label){
-    return`<tr class="planej-sec"><td colspan="13">${icon} ${label}</td></tr>`;
+  // Célula editável para meses futuros
+  function editCell(m,tipo,desc,baseVal){
+    const v=planVal(m,tipo,desc);
+    const hasOv=v!==undefined;
+    const disp=hasOv?v:baseVal;
+    const hint=hasOv?'title="Valor editado — clique para alterar"':'title="Clique para personalizar"';
+    const style=hasOv?'cursor:pointer;color:var(--accent);font-weight:700;text-decoration:underline dotted;':'cursor:pointer;color:var(--t3);';
+    return`<td onclick="editPlanCell(this,${ano},${m},'${tipo}','${encodeURIComponent(desc)}',${baseVal})" ${hint} style="${style}">${disp>0?fv(disp):'—'}</td>`;
   }
+  function secRow(icon,label){return`<tr class="planej-sec"><td colspan="13">${icon} ${label}</td></tr>`;}
   function totalRow(label,vals,bold){
     const cells=vals.map((v,i)=>valCell(v,MD[i].st,bold)).join('');
     return`<tr class="planej-total"><td>${label}</td>${cells}</tr>`;
   }
 
-  // ── Montar cabeçalho ──
   head.innerHTML=`<th></th>`+LBL.map((l,m)=>`<th style="${thStyle(m)}">${l}/${String(ano).slice(2)}</th>`).join('');
 
-  // ── Montar corpo ──
   if(!temDados){
     body.innerHTML=`<tr><td colspan="13" style="text-align:center;padding:32px;color:var(--t3)">Nenhum dado para ${ano}. Adicione transações recorrentes para ver a projeção.</td></tr>`;
     return;
@@ -1789,10 +1790,10 @@ function renderPlanej(){
   if(recItems.length){
     recItems.forEach(item=>{
       const cells=MD.map((d,m)=>{
+        if(d.st==='fut') return editCell(m,'rec',item.desc,item.valor);
         const v=d.recPD[item.desc]||0;
-        const dot=d.st!=='fut'?`<span class="pj-dot ${hasTxMes(m,'receita',item.desc)?'ok':'no'}"></span>`:'';
-        const cls=d.st==='fut'?' class="pj-future"':'';
-        return`<td${cls}>${dot}${v>0?fv(v):'—'}</td>`;
+        const dot=`<span class="pj-dot ${hasTxM(m,'receita',item.desc)?'ok':'no'}"></span>`;
+        return`<td>${dot}${v>0?fv(v):'—'}</td>`;
       }).join('');
       rows+=`<tr><td>💰 ${item.desc}</td>${cells}</tr>`;
     });
@@ -1803,11 +1804,12 @@ function renderPlanej(){
   rows+=secRow('📌','Despesas Fixas');
   if(despItems.length){
     despItems.forEach(item=>{
+      const baseV=item.valor/(item.parcelas||1);
       const cells=MD.map((d,m)=>{
+        if(d.st==='fut') return editCell(m,'desp',item.desc,baseV);
         const v=d.despPD[item.desc]||0;
-        const dot=d.st!=='fut'?`<span class="pj-dot ${hasTxMes(m,'gasto',item.desc,true)?'ok':'no'}"></span>`:'';
-        const cls=d.st==='fut'?' class="pj-future"':'';
-        return`<td${cls}>${dot}${v>0?fv(v):'—'}</td>`;
+        const dot=`<span class="pj-dot ${hasTxM(m,'gasto',item.desc,true)?'ok':'no'}"></span>`;
+        return`<td>${dot}${v>0?fv(v):'—'}</td>`;
       }).join('');
       rows+=`<tr><td>📌 ${item.desc}</td>${cells}</tr>`;
     });
@@ -1816,7 +1818,7 @@ function renderPlanej(){
   }
   rows+=totalRow('Total Desp. Fixas',MD.map(d=>d.despTot),true);
 
-  // ──── CARTÃO DE CRÉDITO ────
+  // ──── CARTÃO ────
   if(cartoes.length){
     rows+=secRow('💳','Cartão de Crédito');
     cartoes.forEach(cartao=>{
@@ -1830,13 +1832,12 @@ function renderPlanej(){
     rows+=totalRow('Total Cartão',MD.map(d=>d.ccTot),true);
   }
 
-  // ──── BALANÇO GERAL ────
+  // ──── BALANÇO ────
   rows+=secRow('📊','Balanço Geral');
   rows+=totalRow('Total Receitas',MD.map(d=>d.recTot),false);
   rows+=totalRow('Total Desp. Fixas',MD.map(d=>d.despTot),false);
   if(cartoes.length)rows+=totalRow('Total Cartão',MD.map(d=>d.ccTot),false);
   if(MD.some(d=>d.varTot>0))rows+=totalRow('Gastos Variáveis',MD.map(d=>d.varTot),false);
-  // Saldo do mês
   const saldoCells=MD.map((d,i)=>saldoCell(d.saldo,d.st)).join('');
   rows+=`<tr class="planej-total"><td>Saldo do mês</td>${saldoCells}</tr>`;
 
@@ -1847,9 +1848,8 @@ function renderPlanej(){
 
   body.innerHTML=rows;
 
-  // Subtitle
   const sub=document.getElementById('planejmSub');
-  if(sub)sub.textContent=`Visão completa de ${ano} · meses futuros = projeção automática`;
+  if(sub)sub.textContent=`${ano} · clique em célula futura para personalizar · valores editados em verde`;
 }
 
 function renderDonutChart(catMap){
@@ -1917,6 +1917,7 @@ function renderCC(){
           <div style="display:flex;justify-content:space-between;margin-top:4px"><span style="font-size:10px;color:rgba(255,255,255,.5)">Comprometido: ${fmt(comprometido)} / ${fmt(c.limite||0)}</span><span style="font-size:10px;color:rgba(255,255,255,.5)">${usoPct}%</span></div>
         </div>
         ${vencBadge}
+        <button onclick="openAddCC(${i})" style="position:absolute;top:14px;right:48px;background:rgba(255,255,255,.15);border:none;border-radius:8px;padding:5px 9px;color:#fff;cursor:pointer;font-size:12px">✏️</button>
         <button onclick="delCC(${i})" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.15);border:none;border-radius:8px;padding:5px 9px;color:#fff;cursor:pointer;font-size:12px">✕</button>
       </div>`;
     }).join('');
@@ -1927,12 +1928,31 @@ function renderCC(){
   ccTxEl.innerHTML=ccTxs.length?ccTxs.map(t=>txItemHTML(t)).join(''):`<div class="empty"><div class="empty-icon">💳</div><div class="empty-lbl">Nenhum gasto no crédito este mês</div></div>`;
 }
 
-function openAddCC(){ openModal('ccOverlay'); }
+let _editCC=-1,_editMeta=-1,_editAtivo=-1,_editPassivo=-1,_editFin=-1;
+function _mTitle(id,txt){const el=document.querySelector('#'+id+' h3');if(el)el.textContent=txt;}
+function openAddCC(editIdx=-1){
+  _editCC=editIdx;
+  if(editIdx>=0){
+    const c=S.cartoes[editIdx];
+    document.getElementById('ccNome').value=c.nome||'';
+    document.getElementById('ccBanco').value=c.banco||'';
+    document.getElementById('ccLimite').value=c.limite||'';
+    document.getElementById('ccVenc').value=c.venc||'';
+    document.getElementById('ccUlt4').value=c.ult4||'';
+    _mTitle('ccOverlay','✏️ Editar cartão');
+  } else {
+    ['ccNome','ccBanco','ccLimite','ccVenc','ccUlt4'].forEach(id=>document.getElementById(id).value='');
+    _mTitle('ccOverlay','💳 Novo cartão');
+  }
+  openModal('ccOverlay');
+}
 function salvarCC(){
   const nome=document.getElementById('ccNome').value.trim();
   if(!nome){toast('⚠️ Informe o nome do cartão');return;}
-  S.cartoes.push({id:uid(),nome,banco:document.getElementById('ccBanco').value.trim(),limite:parseFloat(document.getElementById('ccLimite').value)||0,venc:document.getElementById('ccVenc').value,ult4:document.getElementById('ccUlt4').value.trim()});
-  save('cartoes');closeModal('ccOverlay');renderCC();toast('✅ Cartão adicionado!');
+  const dados={nome,banco:document.getElementById('ccBanco').value.trim(),limite:parseFloat(document.getElementById('ccLimite').value)||0,venc:document.getElementById('ccVenc').value,ult4:document.getElementById('ccUlt4').value.trim()};
+  if(_editCC>=0){S.cartoes[_editCC]={...S.cartoes[_editCC],...dados};_editCC=-1;toast('✅ Cartão atualizado!');}
+  else{S.cartoes.push({id:uid(),...dados});toast('✅ Cartão adicionado!');}
+  save('cartoes');closeModal('ccOverlay');renderCC();
 }
 function delCC(i){ if(!confirm('Remover cartão?'))return; const id=S.cartoes[i]?.id; S.cartoes.splice(i,1);save('cartoes');if(id)deleteFromSupabase('credit_cards',id);renderCC(); }
 
@@ -1955,6 +1975,7 @@ function renderMetas(){
       <div class="meta-prog"><div class="meta-fill" style="width:${pct}%;background:${concluida?'#f5a623':'#00c86e'}"></div></div>
       <div class="meta-actions">
         ${!concluida?`<button class="btn-sm btn-green" onclick="openContrib(${i})">+ Adicionar</button>`:''}
+        <button class="btn-sm btn-ghost" onclick="openAddMeta(${i})">✏️ Editar</button>
         ${m.historico&&m.historico.length?`<button class="btn-sm btn-ghost" onclick="toggleMetaHist(this,${i})">📋 Histórico (${m.historico.length})</button>`:''}
         <button class="btn-sm btn-ghost" onclick="delMeta(${i})">Remover</button>
       </div>
@@ -1964,12 +1985,29 @@ function renderMetas(){
     </div>`;
   }).join('');
 }
-function openAddMeta(){ document.getElementById('metaNome').value='';document.getElementById('metaTarget').value='';document.getElementById('metaAtual').value='';document.getElementById('metaEmoji').value='';openModal('metaOverlay'); }
+function openAddMeta(editIdx=-1){
+  _editMeta=editIdx;
+  if(editIdx>=0){
+    const m=S.metas[editIdx];
+    document.getElementById('metaNome').value=m.nome||'';
+    document.getElementById('metaTarget').value=m.target||'';
+    document.getElementById('metaAtual').value=m.atual||'';
+    document.getElementById('metaEmoji').value=m.emoji||'';
+    document.getElementById('metaPrazo').value=m.prazo||'';
+    _mTitle('metaOverlay','✏️ Editar meta');
+  } else {
+    ['metaNome','metaTarget','metaAtual','metaEmoji','metaPrazo'].forEach(id=>document.getElementById(id).value='');
+    _mTitle('metaOverlay','🎯 Nova meta');
+  }
+  openModal('metaOverlay');
+}
 function salvarMeta(){
   const nome=document.getElementById('metaNome').value.trim();const target=parseFloat(document.getElementById('metaTarget').value);
   if(!nome||!target){toast('⚠️ Preencha nome e valor alvo');return;}
-  S.metas.push({id:uid(),nome,target,atual:parseFloat(document.getElementById('metaAtual').value)||0,emoji:document.getElementById('metaEmoji').value||'🎯',prazo:document.getElementById('metaPrazo').value||''});
-  save('metas');closeModal('metaOverlay');renderMetas();toast('✅ Meta criada!');
+  const dados={nome,target,atual:parseFloat(document.getElementById('metaAtual').value)||0,emoji:document.getElementById('metaEmoji').value||'🎯',prazo:document.getElementById('metaPrazo').value||''};
+  if(_editMeta>=0){S.metas[_editMeta]={...S.metas[_editMeta],...dados};_editMeta=-1;toast('✅ Meta atualizada!');}
+  else{S.metas.push({id:uid(),...dados,historico:[]});toast('✅ Meta criada!');}
+  save('metas');closeModal('metaOverlay');renderMetas();
 }
 function openContrib(i){
   const m=S.metas[i];
@@ -2041,14 +2079,26 @@ function renderOrc(){
     const cls=pct>=100?'over':pct>=80?'warn':'';
     const cat=getCat(o.cat);
     return `<div class="orc-card">
-      <div class="orc-top"><div class="orc-cat"><span style="font-size:20px">${cat.e}</span><span class="orc-name">${o.cat}</span></div><button class="del-btn" onclick="delOrc(${i})">✕</button></div>
+      <div class="orc-top"><div class="orc-cat"><span style="font-size:20px">${cat.e}</span><span class="orc-name">${o.cat}</span></div><div style="display:flex;gap:6px"><button class="btn-sm btn-ghost" style="padding:4px 9px" onclick="openAddOrc(${i})">✏️</button><button class="del-btn" onclick="delOrc(${i})">✕</button></div></div>
       <div class="orc-vals">Gasto: ${fmt(gasto)} · Limite: ${fmt(o.limite)}</div>
       <div class="orc-bar"><div class="orc-fill ${cls}" style="width:${Math.min(pct,100)}%"></div></div>
       <div class="orc-pct ${cls||'ok'}">${pct}%${pct>=100?' ⚠️ Limite excedido!':''}</div>
     </div>`;
   }).join('');
 }
-function openAddOrc(){ buildOrcSelect();openModal('orcOverlay'); }
+function openAddOrc(editIdx=-1){
+  buildOrcSelect();
+  if(editIdx>=0){
+    const o=S.orc[editIdx];
+    document.getElementById('orcCat').value=o.cat||'';
+    document.getElementById('orcLimite').value=o.limite||'';
+    _mTitle('orcOverlay','✏️ Editar orçamento');
+  } else {
+    document.getElementById('orcLimite').value='';
+    _mTitle('orcOverlay','📋 Definir orçamento');
+  }
+  openModal('orcOverlay');
+}
 function salvarOrc(){
   const cat=document.getElementById('orcCat').value;const limite=parseFloat(document.getElementById('orcLimite').value);
   if(!cat||!limite){toast('⚠️ Preencha categoria e limite');return;}
@@ -2071,13 +2121,13 @@ function renderPatri(){
   if(ativosEl) ativosEl.innerHTML=S.ativos.length?S.ativos.map((a,i)=>`
     <div class="orc-card" style="border-left:3px solid #00c86e;margin-bottom:8px">
       <div class="orc-top"><div class="orc-cat"><span style="font-size:20px">${tipoAtivoEmoji(a.tipo)}</span><div><div class="orc-name">${a.nome}</div><div style="font-size:11px;color:var(--t2)">${a.tipo}</div></div></div>
-      <div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px;font-weight:800;color:var(--accent)">${fmt(a.val)}</span><button class="del-btn" onclick="delAtivo(${i})">✕</button></div></div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px;font-weight:800;color:var(--accent)">${fmt(a.val)}</span><button class="btn-sm btn-ghost" style="padding:4px 9px" onclick="openAddAtivo(${i})">✏️</button><button class="del-btn" onclick="delAtivo(${i})">✕</button></div></div>
     </div>`).join(''):`<div class="empty"><div class="empty-icon">🏦</div><div class="empty-lbl">Nenhum ativo cadastrado</div><div class="empty-sub">Adicione investimentos, imóveis e bens</div><button class="add-btn" style="margin-top:14px" onclick="openAddAtivo()">+ Adicionar ativo</button></div>`;
   const passivosEl=document.getElementById('passivosList');
   if(passivosEl) passivosEl.innerHTML=S.passivos.length?S.passivos.map((p,i)=>`
     <div class="orc-card" style="border-left:3px solid var(--red);margin-bottom:8px">
       <div class="orc-top"><div class="orc-name">${p.nome}</div>
-      <div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px;font-weight:800;color:var(--red)">${fmt(p.val)}</span><button class="del-btn" onclick="delPassivo(${i})">✕</button></div></div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px;font-weight:800;color:var(--red)">${fmt(p.val)}</span><button class="btn-sm btn-ghost" style="padding:4px 9px" onclick="openAddPassivo(${i})">✏️</button><button class="del-btn" onclick="delPassivo(${i})">✕</button></div></div>
     </div>`).join(''):`<div class="empty"><div class="empty-icon">📋</div><div class="empty-lbl">Nenhum passivo cadastrado</div><div class="empty-sub">Registre dívidas e obrigações financeiras</div><button class="add-btn" style="margin-top:14px" onclick="openAddPassivo()">+ Adicionar passivo</button></div>`;
 }
 function renderPatriChart(ativos,passivos){
@@ -2092,20 +2142,49 @@ function renderPatriChart(ativos,passivos){
   charts.patri=new Chart(ctx,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:4}]},options:{cutout:'60%',plugins:{legend:{position:'bottom',labels:{color:'#a0a0b8',font:{size:11},boxWidth:12}},tooltip:{callbacks:{label:c=>' '+fmt(c.raw)}}}}});
 }
 function tipoAtivoEmoji(t){return{imóvel:'🏠',investimento:'📈',veículo:'🚗',conta:'🏦',outro:'📦'}[t]||'📦';}
-function openAddAtivo(){ document.getElementById('ativoNome').value='';document.getElementById('ativoVal').value='';openModal('ativoOverlay'); }
+function openAddAtivo(editIdx=-1){
+  _editAtivo=editIdx;
+  if(editIdx>=0){
+    const a=S.ativos[editIdx];
+    document.getElementById('ativoNome').value=a.nome||'';
+    document.getElementById('ativoTipo').value=a.tipo||'outro';
+    document.getElementById('ativoVal').value=a.val||'';
+    _mTitle('ativoOverlay','✏️ Editar ativo');
+  } else {
+    document.getElementById('ativoNome').value='';document.getElementById('ativoVal').value='';
+    _mTitle('ativoOverlay','🏦 Novo ativo');
+  }
+  openModal('ativoOverlay');
+}
 function salvarAtivo(){
   const nome=document.getElementById('ativoNome').value.trim();const val=parseFloat(document.getElementById('ativoVal').value);
   if(!nome||!val){toast('⚠️ Preencha nome e valor');return;}
-  S.ativos.push({id:uid(),nome,tipo:document.getElementById('ativoTipo').value,val});
-  save('ativos');closeModal('ativoOverlay');renderPatri();toast('✅ Ativo adicionado!');
+  const dados={nome,tipo:document.getElementById('ativoTipo').value,val};
+  if(_editAtivo>=0){S.ativos[_editAtivo]={...S.ativos[_editAtivo],...dados};_editAtivo=-1;toast('✅ Ativo atualizado!');}
+  else{S.ativos.push({id:uid(),...dados});toast('✅ Ativo adicionado!');}
+  save('ativos');closeModal('ativoOverlay');renderPatri();
 }
 function delAtivo(i){ if(!confirm('Remover ativo?'))return;const id=S.ativos[i]?.id;S.ativos.splice(i,1);save('ativos');if(id)deleteFromSupabase('assets',id);renderPatri(); }
-function openAddPassivo(){ document.getElementById('passivoNome').value='';document.getElementById('passivoVal').value='';openModal('passivoOverlay'); }
+function openAddPassivo(editIdx=-1){
+  _editPassivo=editIdx;
+  if(editIdx>=0){
+    const p=S.passivos[editIdx];
+    document.getElementById('passivoNome').value=p.nome||'';
+    document.getElementById('passivoVal').value=p.val||'';
+    _mTitle('passivoOverlay','✏️ Editar passivo');
+  } else {
+    document.getElementById('passivoNome').value='';document.getElementById('passivoVal').value='';
+    _mTitle('passivoOverlay','⚠️ Novo passivo');
+  }
+  openModal('passivoOverlay');
+}
 function salvarPassivo(){
   const nome=document.getElementById('passivoNome').value.trim();const val=parseFloat(document.getElementById('passivoVal').value);
   if(!nome||!val){toast('⚠️ Preencha nome e valor');return;}
-  S.passivos.push({id:uid(),nome,val});
-  save('passivos');closeModal('passivoOverlay');renderPatri();toast('✅ Passivo adicionado!');
+  const dados={nome,val};
+  if(_editPassivo>=0){S.passivos[_editPassivo]={...S.passivos[_editPassivo],...dados};_editPassivo=-1;toast('✅ Passivo atualizado!');}
+  else{S.passivos.push({id:uid(),...dados});toast('✅ Passivo adicionado!');}
+  save('passivos');closeModal('passivoOverlay');renderPatri();
 }
 function delPassivo(i){ if(!confirm('Remover passivo?'))return;const id=S.passivos[i]?.id;S.passivos.splice(i,1);save('passivos');if(id)deleteFromSupabase('liabilities',id);renderPatri(); }
 
@@ -2123,7 +2202,10 @@ function renderFins(){
       <div class="fin-hdr" style="background:${FIN_COLORS[i%FIN_COLORS.length]}">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
           <div><div class="fin-name">${f.desc}</div><div class="fin-bank">${f.banco||'—'} · Dia ${f.dia||1}</div></div>
-          <button onclick="delFin(${i})" style="background:rgba(255,255,255,.15);border:none;border-radius:8px;padding:4px 9px;color:#fff;cursor:pointer;font-size:12px">✕</button>
+          <div style="display:flex;gap:6px">
+            <button onclick="openAddFin(${i})" style="background:rgba(255,255,255,.15);border:none;border-radius:8px;padding:4px 9px;color:#fff;cursor:pointer;font-size:12px">✏️</button>
+            <button onclick="delFin(${i})" style="background:rgba(255,255,255,.15);border:none;border-radius:8px;padding:4px 9px;color:#fff;cursor:pointer;font-size:12px">✕</button>
+          </div>
         </div>
         <div class="fin-prog">
           <div class="fin-prog-labels"><span>Pago ${f.pg}/${f.n}</span><strong>${pct}%</strong></div>
@@ -2139,12 +2221,30 @@ function renderFins(){
     </div>`;
   }).join('');
 }
-function openAddFin(){ ['finDesc','finBanco','finParc','finN','finPg','finDia'].forEach(id=>document.getElementById(id).value='');openModal('finOverlay'); }
+function openAddFin(editIdx=-1){
+  _editFin=editIdx;
+  if(editIdx>=0){
+    const f=S.fins[editIdx];
+    document.getElementById('finDesc').value=f.desc||'';
+    document.getElementById('finBanco').value=f.banco||'';
+    document.getElementById('finParc').value=f.parc||'';
+    document.getElementById('finN').value=f.n||'';
+    document.getElementById('finPg').value=f.pg||'';
+    document.getElementById('finDia').value=f.dia||'';
+    _mTitle('finOverlay','✏️ Editar financiamento');
+  } else {
+    ['finDesc','finBanco','finParc','finN','finPg','finDia'].forEach(id=>document.getElementById(id).value='');
+    _mTitle('finOverlay','📅 Novo financiamento');
+  }
+  openModal('finOverlay');
+}
 function salvarFin(){
   const desc=document.getElementById('finDesc').value.trim();const parc=parseFloat(document.getElementById('finParc').value);const n=parseInt(document.getElementById('finN').value);
   if(!desc||!parc||!n){toast('⚠️ Preencha os campos obrigatórios');return;}
-  S.fins.push({id:uid(),desc,banco:document.getElementById('finBanco').value.trim(),parc,n,pg:parseInt(document.getElementById('finPg').value)||0,dia:parseInt(document.getElementById('finDia').value)||1});
-  save('fins');closeModal('finOverlay');renderFins();toast('✅ Financiamento adicionado!');
+  const dados={desc,banco:document.getElementById('finBanco').value.trim(),parc,n,pg:parseInt(document.getElementById('finPg').value)||0,dia:parseInt(document.getElementById('finDia').value)||1};
+  if(_editFin>=0){S.fins[_editFin]={...S.fins[_editFin],...dados};_editFin=-1;toast('✅ Financiamento atualizado!');}
+  else{S.fins.push({id:uid(),...dados});toast('✅ Financiamento adicionado!');}
+  save('fins');closeModal('finOverlay');renderFins();
 }
 function pagarParcelaFin(i){
   if(S.fins[i].pg>=S.fins[i].n){toast('✅ Já quitado!');return;}
