@@ -1954,7 +1954,7 @@ function renderPlanej(){
       const cells=MD.map((d,m)=>{
         const fut=d.st==='fut';
         if(!fut){
-          // Mês passado/atual: mostra transação real se houver
+          // Meses passados/atual: só leitura — mostra transação real se houver
           const txsFin=txM(m).filter(t=>t.tipo==='gasto'&&t.desc===`Parcela ${f.desc}`);
           const v=txsFin.reduce((s,t)=>s+t.valor,0);
           const dot=v>0?`<span class="pj-dot ok"></span>`:`<span class="pj-dot no"></span>`;
