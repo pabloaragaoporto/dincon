@@ -1331,8 +1331,11 @@ async function authSubmit(){
     authSetLoading(false);
     if(error){err.textContent=error.message;return;}
     currentUser=data.user;
-    S.prefs.nome=nome;
-    await sb.from('profiles').upsert({id:currentUser.id,nome,renda:0,meta_poup:20,tema:'dark'},{onConflict:'id'});
+    // Limpa qualquer dado local do browser — nova conta começa do zero
+    for(const k in S){if(Array.isArray(S[k]))S[k]=[];}
+    S.prefs={nome,renda:0,meta_poup:20,tema:'dark',plan:'free'};
+    Object.values(KS).forEach(k=>localStorage.removeItem(k));
+    await sb.from('profiles').upsert({id:currentUser.id,nome,renda:0,meta_poup:20,tema:'dark',plan:'free'},{onConflict:'id'});
     hideAuthScreen();
     applyTheme();loadPerfil();updateMonthLbl();renderAll();renderPlanBadge();
     checkOnboarding();
