@@ -1092,10 +1092,9 @@ let sheetTipo = 'gasto';
 let charts = {};
 
 // ─── PLANOS ───
-// 🔗 Substitua pelos Payment Links reais após criar no Stripe
 const STRIPE_LINKS = {
-  pro:    'https://buy.stripe.com/PLACEHOLDER_PRO',
-  family: 'https://buy.stripe.com/PLACEHOLDER_FAMILY'
+  pro:    'https://buy.stripe.com/14A8wQ2AP8v7d1i7ac8og00',
+  family: 'https://buy.stripe.com/aFa14oa3hfXz4uMgKM8og01'
 };
 const FREE_LIMITS = {tx:30, cartoes:1, metas:1};
 
@@ -1125,8 +1124,7 @@ function renderPlanBadge(){
   if(btnMng)btnMng.style.display=isPro()?'':'none';
 }
 
-// 🔗 Substitua pelo link real do Stripe Customer Portal após configurar
-const STRIPE_PORTAL='https://billing.stripe.com/PLACEHOLDER_PORTAL';
+const STRIPE_PORTAL='https://billing.stripe.com/p/login/14A8wQ2AP8v7d1i7ac8og00';
 function manageSubscription(){
   if(STRIPE_PORTAL.includes('PLACEHOLDER')){toast('⚙️ Portal ainda não configurado.',3000);return;}
   window.open(STRIPE_PORTAL,'_blank');
