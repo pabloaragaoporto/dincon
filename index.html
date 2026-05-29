@@ -1330,6 +1330,14 @@ async function authSubmit(){
     const {data,error}=await sb.auth.signUp({email,password:pass});
     authSetLoading(false);
     if(error){err.textContent=error.message;return;}
+    // Se session é null, confirmação de e-mail é obrigatória
+    if(!data.session){
+      const errEl=document.getElementById('authErr');
+      errEl.style.color='var(--accent)';
+      errEl.textContent='📧 Enviamos um link de confirmação para '+email+'. Verifique seu e-mail para ativar a conta!';
+      authSetLoading(false);
+      return;
+    }
     currentUser=data.user;
     // Limpa qualquer dado local do browser — nova conta começa do zero
     for(const k in S){if(Array.isArray(S[k]))S[k]=[];}
@@ -3406,7 +3414,19 @@ async function init(){
   }
   if(currentUser&&!S.prefs.nome)checkOnboarding();
   // Listener de mudança de sessão (logout em outra aba, etc.)
-  sb.auth.onAuthStateChange((event,session)=>{
+  sb.auth.onAuthStateChange(async(event,session)=>{
+    if(event==='SIGNED_IN'&&session&&!currentUser){
+      // Usuário confirmou o e-mail e voltou ao app
+      currentUser=session.user;
+      for(const k in S){if(Array.isArray(S[k]))S[k]=[];}
+      S.prefs={nome:'',renda:0,meta_poup:20,tema:'dark',plan:'free'};
+      Object.values(KS).forEach(k=>localStorage.removeItem(k));
+      await loadFromSupabase();
+      hideAuthScreen();
+      applyTheme();loadPerfil();updateMonthLbl();renderAll();renderPlanBadge();
+      if(!S.prefs.nome)checkOnboarding();
+      toast('🎉 E-mail confirmado! Bem-vindo ao Dincon!',3000);
+    }
     if(event==='SIGNED_OUT'){
       currentUser=null;
       for(const k in S){if(Array.isArray(S[k]))S[k]=[];}
