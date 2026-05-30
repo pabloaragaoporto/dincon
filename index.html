@@ -1332,6 +1332,8 @@ async function authSubmit(){
     if(error){err.textContent=error.message;return;}
     // Se session é null, confirmação de e-mail é obrigatória
     if(!data.session){
+      // Salva o perfil agora para o nome não ser perdido após confirmação
+      if(data.user) await sb.from('profiles').upsert({id:data.user.id,nome,renda:0,meta_poup:20,tema:'dark',plan:'free'},{onConflict:'id'});
       const errEl=document.getElementById('authErr');
       errEl.style.color='var(--accent)';
       errEl.textContent='📧 Enviamos um link de confirmação para '+email+'. Verifique seu e-mail para ativar a conta!';
@@ -3391,17 +3393,23 @@ document.addEventListener('click',e=>{
 
 // ─── INIT ───
 async function init(){
+  // Se há token de auth na URL (confirmação de e-mail, reset de senha),
+  // não mostra tela de login — onAuthStateChange vai cuidar disso
+  const _hash=window.location.hash;
+  const _isAuthCallback=_hash.includes('access_token')||_hash.includes('type=signup')||_hash.includes('type=recovery')||_hash.includes('error=');
+
   // Verifica sessão ativa no Supabase
   const {data:{session}}=await sb.auth.getSession();
   if(session){
     currentUser=session.user;
     await loadFromSupabase();
     // Não carrega exemplos para usuários reais
-  } else {
+  } else if(!_isAuthCallback){
     loadAll();
     carregarExemplo(); // só para visitantes offline
     showAuthScreen();
   }
+  // Se _isAuthCallback: aguarda onAuthStateChange processar o token
   applyTheme();
   loadPerfil();
   updateMonthLbl();
