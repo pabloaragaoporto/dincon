@@ -64,25 +64,56 @@ nav{position:sticky;top:0;z-index:500;border-bottom:1px solid var(--border);back
 .trust-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--t2);}
 .trust-item::before{content:'✓';color:var(--accent);font-weight:900;font-size:12px;}
 
-/* Phone mockup */
-.phone-stage{display:flex;justify-content:center;align-items:center;position:relative;}
-.phone-glow-hero{position:absolute;width:440px;height:440px;border-radius:50%;background:radial-gradient(circle,rgba(0,200,110,.12) 0%,transparent 65%);pointer-events:none;top:50%;left:50%;transform:translate(-50%,-50%);}
-.phone{width:270px;border-radius:44px;border:2px solid rgba(255,255,255,.12);box-shadow:0 60px 140px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.04),inset 0 0 0 1px rgba(255,255,255,.02);overflow:hidden;position:relative;z-index:1;animation:float 6s ease-in-out infinite;}
-.phone img{width:100%;height:100%;object-fit:cover;display:block;}
-.phone-notch-bar{height:14px;background:#0a0a14;display:flex;align-items:center;justify-content:center;}
-.phone-notch{width:80px;height:5px;background:#1a1a28;border-radius:100px;}
-@keyframes float{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-14px) rotate(1.5deg)}}
+/* Phone mockup 3D hero */
+.phone-stage{display:flex;justify-content:center;align-items:center;position:relative;height:520px;}
+.phone-glow-hero{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(0,200,110,.1) 0%,transparent 65%);pointer-events:none;top:50%;left:50%;transform:translate(-50%,-50%);}
+.phone-3d-wrap{position:relative;width:420px;height:460px;}
+.phone{position:absolute;border-radius:38px;border:2px solid rgba(255,255,255,.13);overflow:hidden;box-shadow:0 50px 120px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.04);}
+.phone img{width:100%;display:block;}
+.phone-back{width:220px;top:30px;right:0;transform:perspective(900px) rotateY(-18deg) rotateX(4deg);z-index:1;opacity:.85;}
+.phone-front{width:240px;bottom:0;left:0;transform:perspective(900px) rotateY(-8deg) rotateX(2deg);z-index:2;animation:float3d 6s ease-in-out infinite;}
+.phone-notch-bar{height:12px;background:#080810;display:flex;align-items:center;justify-content:center;}
+.phone-notch{width:70px;height:4px;background:#18182a;border-radius:100px;}
+@keyframes float3d{0%,100%{transform:perspective(900px) rotateY(-8deg) rotateX(2deg) translateY(0)}50%{transform:perspective(900px) rotateY(-8deg) rotateX(2deg) translateY(-12px)}}
+@media(max-width:960px){.phone-stage{height:380px;}.phone-3d-wrap{width:320px;height:360px;}.phone-front{width:190px;}.phone-back{width:175px;}}
 
 /* Floating cards */
-.float-card{position:absolute;background:rgba(15,15,24,.95);border:1px solid var(--border);border-radius:16px;padding:12px 16px;backdrop-filter:blur(12px);z-index:2;white-space:nowrap;box-shadow:0 20px 60px rgba(0,0,0,.5);}
-.float-card-1{left:-60px;top:20%;}
-.float-card-2{right:-50px;bottom:25%;}
+.float-card{position:absolute;background:rgba(12,12,22,.96);border:1px solid var(--border);border-radius:14px;padding:11px 15px;backdrop-filter:blur(14px);z-index:10;white-space:nowrap;box-shadow:0 16px 48px rgba(0,0,0,.6);}
+.float-card-1{left:-20px;top:15%;z-index:10;}
+.float-card-2{right:-10px;bottom:20%;z-index:10;}
 @media(max-width:960px){.float-card{display:none;}}
 .fc-label{font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:4px;}
-.fc-val{font-size:18px;font-weight:900;letter-spacing:-.03em;}
+.fc-val{font-size:17px;font-weight:900;letter-spacing:-.03em;}
 .fc-sub{font-size:11px;color:var(--t2);margin-top:2px;}
 .fc-green{color:#00c86e;}
 .fc-red{color:#f87171;}
+
+/* ── ORBIT MODULES ── */
+.orbit-section{padding:110px 32px;background:var(--s1);overflow:hidden;}
+.orbit-wrap{max-width:1160px;margin:0 auto;}
+.orbit-stage{position:relative;width:540px;height:540px;margin:64px auto 0;flex-shrink:0;}
+@media(max-width:680px){.orbit-stage{width:320px;height:320px;}}
+.orbit-ring{position:absolute;border-radius:50%;border:1px dashed rgba(0,200,110,.15);top:50%;left:50%;transform:translate(-50%,-50%);}
+.orbit-ring-1{width:540px;height:540px;}
+.orbit-ring-2{width:340px;height:340px;}
+@media(max-width:680px){.orbit-ring-1{width:320px;height:320px;}.orbit-ring-2{width:200px;height:200px;}}
+.orbit-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:22px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:900;color:#000;z-index:5;box-shadow:0 0 60px rgba(0,200,110,.3);}
+.orbit-node{position:absolute;transform:translate(-50%,-50%);z-index:4;}
+.orbit-pill{background:var(--s3);border:1px solid var(--border);border-radius:100px;padding:9px 16px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--t);white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4);transition:border-color .2s,box-shadow .2s;}
+.orbit-pill:hover{border-color:rgba(0,200,110,.3);box-shadow:0 8px 32px rgba(0,200,110,.1);}
+.orbit-pill span{font-size:16px;}
+@media(max-width:680px){.orbit-pill{padding:6px 11px;font-size:11px;gap:6px;}.orbit-pill span{font-size:14px;}}
+.orbit-dot{width:6px;height:6px;border-radius:50%;background:rgba(0,200,110,.4);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);}
+
+/* ── SUPPORT CARD ── */
+.support-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:32px 28px;max-width:340px;}
+.support-badge{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--accent);margin-bottom:12px;}
+.support-card h3{font-size:20px;font-weight:900;letter-spacing:-.03em;margin-bottom:10px;}
+.support-card p{font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:22px;}
+.support-email{font-size:13px;color:var(--t3);margin-top:14px;text-align:center;}
+.support-email a{color:var(--t2);}
+.pricing-bottom{display:flex;justify-content:center;margin-top:52px;}
+@media(max-width:820px){.support-card{max-width:100%;}}
 
 /* ── STATS ── */
 .stats{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--s1);}
@@ -254,12 +285,18 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
       <div class="phone-glow-hero"></div>
       <div class="float-card float-card-1">
         <div class="fc-label">Saldo do mês</div>
-        <div class="fc-val fc-green">R$ 2.203,67</div>
+        <div class="fc-val fc-green">R$ 2.999,40</div>
         <div class="fc-sub">✓ Positivo</div>
       </div>
-      <div class="phone">
-        <div class="phone-notch-bar"><div class="phone-notch"></div></div>
-        <img src="/screenshots/s1.jpg" alt="Dashboard Dincon" onerror="this.style.display='none'">
+      <div class="phone-3d-wrap">
+        <div class="phone phone-back">
+          <div class="phone-notch-bar"><div class="phone-notch"></div></div>
+          <img src="/screenshots/s3.jpg" alt="Categorias Dincon">
+        </div>
+        <div class="phone phone-front">
+          <div class="phone-notch-bar"><div class="phone-notch"></div></div>
+          <img src="/screenshots/s1.jpg" alt="Dashboard Dincon">
+        </div>
       </div>
       <div class="float-card float-card-2">
         <div class="fc-label">Economia</div>
@@ -487,6 +524,50 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
   </div>
 </section>
 
+<!-- ═══ MÓDULOS / ÓRBITA ═══ -->
+<section class="orbit-section">
+  <div class="orbit-wrap">
+    <div class="sec-header fade">
+      <div class="sec-label">Tudo em um só lugar</div>
+      <h2 class="sec-title">Não tem um jeito certo de usar.<br><em style="color:var(--accent)">Tem o seu jeito.</em></h2>
+      <p class="sec-sub">Acesse os módulos que fazem sentido para você. Dashboard, metas, financiamentos, saúde financeira e muito mais — tudo integrado.</p>
+    </div>
+    <div class="orbit-stage fade">
+      <!-- Anéis -->
+      <div class="orbit-ring orbit-ring-1"></div>
+      <div class="orbit-ring orbit-ring-2"></div>
+      <!-- Centro -->
+      <div class="orbit-center">D</div>
+      <!-- Nós externos (anel externo) -->
+      <div class="orbit-node" style="top:5%;left:50%;">
+        <div class="orbit-pill"><span>📊</span>Dashboard</div>
+      </div>
+      <div class="orbit-node" style="top:22%;left:95%;">
+        <div class="orbit-pill"><span>💸</span>Transações</div>
+      </div>
+      <div class="orbit-node" style="top:72%;left:95%;">
+        <div class="orbit-pill"><span>💳</span>Cartões</div>
+      </div>
+      <div class="orbit-node" style="top:95%;left:50%;">
+        <div class="orbit-pill"><span>🎯</span>Metas</div>
+      </div>
+      <div class="orbit-node" style="top:72%;left:5%;">
+        <div class="orbit-pill"><span>🏠</span>Financiamentos</div>
+      </div>
+      <div class="orbit-node" style="top:22%;left:5%;">
+        <div class="orbit-pill"><span>📅</span>Planejamento</div>
+      </div>
+      <!-- Nós internos (anel interno) -->
+      <div class="orbit-node" style="top:28%;left:68%;">
+        <div class="orbit-pill"><span>❤️</span>Saúde</div>
+      </div>
+      <div class="orbit-node" style="top:68%;left:32%;">
+        <div class="orbit-pill"><span>📋</span>Orçamentos</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══ PRICING ═══ -->
 <section class="section" id="precos">
   <div class="section-inner">
@@ -549,6 +630,17 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
     </div>
   </div>
 </section>
+
+<!-- ═══ SUPORTE ═══ -->
+<div class="pricing-bottom">
+  <div class="support-card fade">
+    <div class="support-badge">Suporte humano</div>
+    <h3>Fale com a nossa equipe</h3>
+    <p>Precisa de ajuda para escolher um plano ou acessar sua conta? Nossa equipe está pronta para te atender.</p>
+    <a href="mailto:contato@dincon.com.br" class="btn btn-primary" style="width:100%;justify-content:center;border-radius:12px;padding:14px;">✉️ Enviar e-mail</a>
+    <div class="support-email"><a href="mailto:contato@dincon.com.br">contato@dincon.com.br</a></div>
+  </div>
+</div>
 
 <!-- ═══ FAQ ═══ -->
 <section class="section section-dark" id="faq">
