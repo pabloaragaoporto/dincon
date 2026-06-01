@@ -3,6 +3,7 @@
     { "src": "^/$", "dest": "/landing.html" },
     { "src": "^/privacidade$", "dest": "/privacy.html" },
     { "src": "^/termos$", "dest": "/terms.html" },
+    { "src": "^/screenshots/(.+)", "dest": "/screenshots/$1" },
     { "src": "^/(.*)", "dest": "/index.html" }
   ]
 }
