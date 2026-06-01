@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Política de Privacidade — Dincon</title>
+<meta name="description" content="Política de Privacidade do Dincon. Saiba como coletamos, usamos e protegemos seus dados pessoais.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
+:root{
+  --bg:#080810;--s1:#0f0f18;--s2:#14141e;--s3:#1c1c28;
+  --border:rgba(255,255,255,.07);
+  --accent:#00c86e;
+  --t:#f2f2f7;--t2:#8888a8;--t3:#44445a;
+  --r:16px;--font:'Inter',system-ui,sans-serif;
+}
+body{background:var(--bg);color:var(--t);font-family:var(--font);line-height:1.7;}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;border-bottom:1px solid var(--border);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);background:rgba(8,8,16,.82);}
+.nav-inner{max-width:800px;margin:0 auto;padding:0 28px;height:62px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-ic{width:34px;height:34px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:#000;}
+.logo-name{font-weight:900;font-size:17px;letter-spacing:-.02em;color:var(--t);}
+.logo-name em{color:var(--accent);font-style:normal;}
+.back-btn{font-size:13px;color:var(--t2);display:flex;align-items:center;gap:6px;transition:color .15s;}
+.back-btn:hover{color:var(--accent);text-decoration:none;}
+
+/* CONTENT */
+.container{max-width:800px;margin:0 auto;padding:60px 28px 100px;}
+.page-header{margin-bottom:52px;padding-bottom:32px;border-bottom:1px solid var(--border);}
+.page-header h1{font-size:clamp(28px,4vw,40px);font-weight:900;letter-spacing:-.04em;margin-bottom:10px;}
+.page-header p{font-size:14px;color:var(--t2);}
+.page-header .updated{display:inline-flex;align-items:center;gap:6px;background:rgba(0,200,110,.1);border:1px solid rgba(0,200,110,.2);color:var(--accent);padding:4px 12px;border-radius:100px;font-size:12px;font-weight:600;margin-top:14px;}
+
+/* SECTIONS */
+.section{margin-bottom:48px;}
+.section h2{font-size:18px;font-weight:800;letter-spacing:-.02em;color:var(--t);margin-bottom:16px;padding-left:14px;border-left:3px solid var(--accent);}
+.section p{font-size:15px;color:var(--t2);margin-bottom:14px;}
+.section p:last-child{margin-bottom:0;}
+.section ul{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.section ul li{font-size:15px;color:var(--t2);padding-left:22px;position:relative;}
+.section ul li::before{content:'→';position:absolute;left:0;color:var(--accent);font-size:13px;top:2px;}
+
+/* INFO CARDS */
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:20px 0;}
+@media(max-width:520px){.info-grid{grid-template-columns:1fr;}}
+.info-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:18px 20px;}
+.info-card h3{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);margin-bottom:8px;}
+.info-card p{font-size:14px;color:var(--t2);margin:0;}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;margin:20px 0;}
+table{width:100%;border-collapse:collapse;}
+th{text-align:left;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);padding:10px 16px;border-bottom:1px solid var(--border);}
+td{font-size:14px;color:var(--t2);padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.04);}
+tr:last-child td{border-bottom:none;}
+td:first-child{color:var(--t);font-weight:600;}
+
+/* HIGHLIGHT */
+.highlight{background:rgba(0,200,110,.06);border:1px solid rgba(0,200,110,.15);border-radius:14px;padding:20px 22px;margin:20px 0;}
+.highlight p{font-size:14px;color:var(--t2);margin:0;}
+.highlight strong{color:var(--accent);}
+
+/* CONTACT */
+.contact-card{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:28px 24px;text-align:center;margin-top:48px;}
+.contact-card h2{font-size:18px;font-weight:800;margin-bottom:8px;}
+.contact-card p{font-size:14px;color:var(--t2);margin-bottom:18px;}
+.contact-card a{display:inline-block;background:var(--accent);color:#000;font-size:14px;font-weight:700;padding:11px 28px;border-radius:100px;text-decoration:none;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);}
+.footer-inner{max-width:800px;margin:0 auto;padding:24px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.footer-links{display:flex;gap:20px;}
+.footer-links a{font-size:13px;color:var(--t2);}
+.footer-copy{font-size:12px;color:var(--t3);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo">
+      <div class="logo-ic">D</div>
+      <span class="logo-name">din<em>con</em></span>
+    </a>
+    <a href="/" class="back-btn">← Voltar ao início</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div class="page-header">
+    <h1>Política de Privacidade</h1>
+    <p>Esta política descreve como o Dincon coleta, utiliza e protege seus dados pessoais, em conformidade com a <strong>Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018)</strong>.</p>
+    <div class="updated">📅 Última atualização: maio de 2026</div>
+  </div>
+
+  <!-- 1 -->
+  <div class="section">
+    <h2>1. Quem somos</h2>
+    <p>O <strong>Dincon</strong> é um aplicativo de controle financeiro pessoal disponível em <a href="https://www.dincon.com.br">dincon.com.br</a>. O responsável pelo tratamento dos seus dados é:</p>
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>Controlador</h3>
+        <p>Pablo Aragão Porto<br>Dincon</p>
+      </div>
+      <div class="info-card">
+        <h3>Contato</h3>
+        <p>contato@dincon.com.br<br>dincon.com.br</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="section">
+    <h2>2. Dados que coletamos</h2>
+    <p>Coletamos apenas os dados necessários para a prestação do serviço:</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Dado</th><th>Finalidade</th><th>Obrigatoriedade</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Nome</td><td>Personalizar sua experiência no app</td><td>Obrigatório</td></tr>
+          <tr><td>E-mail</td><td>Autenticação e comunicações da conta</td><td>Obrigatório</td></tr>
+          <tr><td>Senha</td><td>Segurança da conta (armazenada com hash)</td><td>Obrigatório</td></tr>
+          <tr><td>Dados financeiros</td><td>Transações, metas, orçamentos inseridos por você</td><td>Opcional</td></tr>
+          <tr><td>Dados de pagamento</td><td>Processamento de assinatura Pro/Family via Stripe</td><td>Opcional</td></tr>
+          <tr><td>Dados de uso</td><td>Melhorias no produto (sem identificação pessoal)</td><td>Automático</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="highlight">
+      <p>⚠️ <strong>Importante:</strong> seus dados financeiros (transações, saldos, metas) são inseridos voluntariamente por você e nunca são compartilhados com terceiros para fins comerciais.</p>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="section">
+    <h2>3. Como usamos seus dados</h2>
+    <ul>
+      <li>Criar e gerenciar sua conta no Dincon</li>
+      <li>Sincronizar seus dados financeiros entre dispositivos</li>
+      <li>Enviar e-mails transacionais (confirmação de conta, redefinição de senha)</li>
+      <li>Processar pagamentos de assinatura (planos Pro e Family)</li>
+      <li>Melhorar a experiência e funcionalidades do produto</li>
+      <li>Cumprir obrigações legais e regulatórias</li>
+    </ul>
+    <p>Não utilizamos seus dados para publicidade de terceiros, não vendemos seus dados e não realizamos perfilamento para fins de marketing.</p>
+  </div>
+
+  <!-- 4 -->
+  <div class="section">
+    <h2>4. Base legal para o tratamento</h2>
+    <p>O tratamento dos seus dados é fundamentado nas seguintes bases legais previstas na LGPD:</p>
+    <ul>
+      <li><strong>Execução de contrato</strong> — para fornecer o serviço que você contratou</li>
+      <li><strong>Consentimento</strong> — para envio de comunicações e uso de cookies</li>
+      <li><strong>Legítimo interesse</strong> — para segurança, prevenção de fraudes e melhorias do produto</li>
+      <li><strong>Cumprimento de obrigação legal</strong> — quando exigido por lei</li>
+    </ul>
+  </div>
+
+  <!-- 5 -->
+  <div class="section">
+    <h2>5. Compartilhamento de dados</h2>
+    <p>Seus dados podem ser compartilhados apenas com os seguintes parceiros de tecnologia, estritamente para operação do serviço:</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Parceiro</th><th>Finalidade</th><th>Política</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Supabase</td><td>Banco de dados e autenticação</td><td><a href="https://supabase.com/privacy" target="_blank">Ver política</a></td></tr>
+          <tr><td>Stripe</td><td>Processamento de pagamentos</td><td><a href="https://stripe.com/br/privacy" target="_blank">Ver política</a></td></tr>
+          <tr><td>Resend</td><td>Envio de e-mails transacionais</td><td><a href="https://resend.com/legal/privacy-policy" target="_blank">Ver política</a></td></tr>
+          <tr><td>Vercel</td><td>Hospedagem do aplicativo</td><td><a href="https://vercel.com/legal/privacy-policy" target="_blank">Ver política</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Todos os parceiros são empresas reconhecidas no mercado, com certificações de segurança e conformidade com legislações de proteção de dados.</p>
+  </div>
+
+  <!-- 6 -->
+  <div class="section">
+    <h2>6. Armazenamento e segurança</h2>
+    <ul>
+      <li>Seus dados são armazenados em servidores seguros da Supabase (infraestrutura AWS)</li>
+      <li>Senhas são armazenadas com hash criptográfico — nunca em texto puro</li>
+      <li>A comunicação entre o app e os servidores utiliza criptografia TLS/HTTPS</li>
+      <li>O acesso aos dados é restrito ao seu usuário por políticas de Row Level Security (RLS)</li>
+    </ul>
+  </div>
+
+  <!-- 7 -->
+  <div class="section">
+    <h2>7. Retenção de dados</h2>
+    <p>Seus dados são mantidos enquanto sua conta estiver ativa. Caso você solicite a exclusão da conta:</p>
+    <ul>
+      <li>Seus dados pessoais e financeiros serão excluídos em até <strong>30 dias</strong></li>
+      <li>Dados de pagamento no Stripe são mantidos conforme exigência legal (5 anos para fins fiscais)</li>
+      <li>Backups são eliminados em até <strong>90 dias</strong> após a exclusão</li>
+    </ul>
+  </div>
+
+  <!-- 8 -->
+  <div class="section">
+    <h2>8. Seus direitos (LGPD)</h2>
+    <p>Como titular dos dados, você tem os seguintes direitos garantidos pela LGPD:</p>
+    <ul>
+      <li><strong>Acesso</strong> — solicitar uma cópia dos seus dados pessoais</li>
+      <li><strong>Correção</strong> — corrigir dados incompletos ou desatualizados</li>
+      <li><strong>Exclusão</strong> — solicitar a exclusão dos seus dados</li>
+      <li><strong>Portabilidade</strong> — receber seus dados em formato estruturado (JSON/CSV)</li>
+      <li><strong>Revogação do consentimento</strong> — retirar seu consentimento a qualquer momento</li>
+      <li><strong>Oposição</strong> — opor-se ao tratamento em determinadas situações</li>
+    </ul>
+    <p>Para exercer qualquer um desses direitos, entre em contato pelo e-mail <a href="mailto:contato@dincon.com.br">contato@dincon.com.br</a>. Respondemos em até <strong>15 dias úteis</strong>.</p>
+  </div>
+
+  <!-- 9 -->
+  <div class="section">
+    <h2>9. Cookies</h2>
+    <p>O Dincon utiliza cookies estritamente necessários para o funcionamento do serviço, incluindo autenticação e preferências do usuário. Não utilizamos cookies de rastreamento ou publicidade.</p>
+  </div>
+
+  <!-- 10 -->
+  <div class="section">
+    <h2>10. Menores de idade</h2>
+    <p>O Dincon não é destinado a menores de 18 anos. Não coletamos intencionalmente dados de crianças ou adolescentes. Se você identificar que um menor forneceu dados, entre em contato para que possamos excluí-los.</p>
+  </div>
+
+  <!-- 11 -->
+  <div class="section">
+    <h2>11. Alterações nesta política</h2>
+    <p>Podemos atualizar esta Política de Privacidade periodicamente. Alterações significativas serão comunicadas por e-mail ou por aviso destacado no aplicativo. A data da última atualização está sempre indicada no topo desta página.</p>
+  </div>
+
+  <!-- Contato -->
+  <div class="contact-card">
+    <h2>Dúvidas sobre privacidade?</h2>
+    <p>Entre em contato com nosso encarregado de dados (DPO). Respondemos em até 15 dias úteis.</p>
+    <a href="mailto:contato@dincon.com.br">contato@dincon.com.br</a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <a href="/" class="logo" style="text-decoration:none;">
+      <div class="logo-ic" style="width:28px;height:28px;border-radius:8px;font-size:14px;">D</div>
+      <span class="logo-name" style="font-size:15px;">din<em>con</em></span>
+    </a>
+    <div class="footer-links">
+      <a href="/privacidade">Privacidade</a>
+      <a href="/termos">Termos de Uso</a>
+    </div>
+    <span class="footer-copy">© 2026 Dincon</span>
+  </div>
+</footer>
+
+</body>
+</html>
