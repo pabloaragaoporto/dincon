@@ -56,20 +56,29 @@ nav{position:sticky;top:0;z-index:500;padding:14px 24px;background:transparent;}
 @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
 /* ── HERO FLOAT ICONS ── */
-.hero-float-icon{position:absolute;width:52px;height:52px;border-radius:50%;background:rgba(20,20,35,.92);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 8px 32px rgba(0,0,0,.5);z-index:3;backdrop-filter:blur(8px);}
-.hfi-1{top:12%;left:8%;animation:hfloat 5s ease-in-out infinite;}
-.hfi-2{top:28%;right:4%;animation:hfloat 6s ease-in-out infinite .8s;}
-.hfi-3{bottom:30%;left:4%;animation:hfloat 5.5s ease-in-out infinite 1.2s;}
-.hfi-4{bottom:15%;right:8%;animation:hfloat 7s ease-in-out infinite .4s;}
-.hfi-5{top:55%;left:2%;animation:hfloat 6.5s ease-in-out infinite 2s;}
-@keyframes hfloat{0%,100%{transform:translateY(0) rotate(0deg)}33%{transform:translateY(-10px) rotate(3deg)}66%{transform:translateY(5px) rotate(-2deg)}}
+.hero-float-icon{position:absolute;width:52px;height:52px;border-radius:50%;background:rgba(14,14,26,.94);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 8px 32px rgba(0,0,0,.6);z-index:4;backdrop-filter:blur(10px);}
+.hfi-1{top:5%;left:-18px;animation:hfloat 5s ease-in-out infinite;}
+.hfi-2{top:22%;right:-20px;animation:hfloat 6s ease-in-out infinite .8s;}
+.hfi-3{top:50%;right:-22px;animation:hfloat 5.5s ease-in-out infinite 1.2s;}
+.hfi-4{bottom:28%;right:-18px;animation:hfloat 7s ease-in-out infinite .4s;}
+.hfi-5{bottom:12%;left:-16px;animation:hfloat 6.5s ease-in-out infinite 2s;}
+@keyframes hfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @media(max-width:960px){.hero-float-icon{display:none;}}
 
+/* ── GRADIENT TEXT ── */
+.hero-grad{background:linear-gradient(135deg,#00c86e 0%,#5dffb0 45%,#00e07c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:gradShift 4s ease infinite;}
+@keyframes gradShift{0%,100%{background-position:0%}50%{background-position:100%}}
+
+/* ── FLOAT CARD ANIMATION ── */
+@keyframes floatCardIn{from{opacity:0;transform:translateY(20px) scale(.88)}to{opacity:1;transform:translateY(0) scale(1)}}
+.float-card-anim-1{animation:floatCardIn .65s cubic-bezier(.34,1.56,.64,1) 1.1s both;}
+.float-card-anim-2{animation:floatCardIn .65s cubic-bezier(.34,1.56,.64,1) 1.6s both;}
+
 /* ── HERO ── */
-.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;}
+.hero{min-height:calc(100vh - 86px);display:flex;align-items:center;position:relative;overflow:hidden;}
 .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 60% 40%,rgba(0,200,110,.07) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 80% 80%,rgba(139,92,246,.05) 0%,transparent 60%);}
-.hero-inner{max-width:1160px;margin:0 auto;padding:100px 32px 80px;display:grid;grid-template-columns:1fr 480px;gap:72px;align-items:center;position:relative;z-index:1;}
-@media(max-width:960px){.hero-inner{grid-template-columns:1fr;padding:80px 24px 60px;text-align:center;gap:56px;}}
+.hero-inner{max-width:1160px;margin:0 auto;padding:40px 32px 48px;display:grid;grid-template-columns:1fr 480px;gap:64px;align-items:center;position:relative;z-index:1;}
+@media(max-width:960px){.hero-inner{grid-template-columns:1fr;padding:40px 24px 40px;text-align:center;gap:40px;}}
 .hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(0,200,110,.1);border:1px solid rgba(0,200,110,.2);color:var(--accent);padding:6px 16px;border-radius:100px;font-size:12px;font-weight:700;margin-bottom:24px;letter-spacing:.05em;}
 .hero h1{font-size:clamp(40px,5.5vw,70px);font-weight:900;line-height:1.03;letter-spacing:-.05em;margin-bottom:22px;}
 .hero h1 em{color:var(--accent);font-style:normal;}
@@ -270,6 +279,9 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
     </a>
     <div class="nav-links">
       <a href="#funcionalidades">Funcionalidades</a>
+      <a href="#funcionalidades">Dashboard</a>
+      <a href="#funcionalidades">Cartões</a>
+      <a href="#funcionalidades">Metas</a>
       <a href="#precos">Planos</a>
       <a href="#faq">FAQ</a>
     </div>
@@ -283,16 +295,10 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 <!-- ═══ HERO ═══ -->
 <section class="hero">
   <div class="hero-bg"></div>
-  <!-- Ícones flutuantes -->
-  <div class="hero-float-icon hfi-1">📊</div>
-  <div class="hero-float-icon hfi-2">💳</div>
-  <div class="hero-float-icon hfi-3">🎯</div>
-  <div class="hero-float-icon hfi-4">❤️</div>
-  <div class="hero-float-icon hfi-5">📅</div>
   <div class="hero-inner">
     <div>
       <div class="hero-pill fade">🇧🇷 Feito para o Brasil</div>
-      <h1 class="fade fade-delay-1">Nunca mais perca o <em>controle</em> do seu <span>dinheiro.</span></h1>
+      <h1 class="fade fade-delay-1">Nunca mais perca o <span class="hero-grad">controle</span> do seu <span class="hero-grad">dinheiro.</span></h1>
       <p class="hero-sub fade fade-delay-2">Dashboard inteligente, metas financeiras, planejamento anual e score de saúde. Tudo que você precisa para organizar sua vida financeira — de graça.</p>
       <div class="hero-ctas fade fade-delay-3">
         <a href="/dashboard" class="btn btn-primary btn-lg">Criar conta gratuita →</a>
@@ -306,13 +312,20 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
     </div>
     <div class="phone-stage fade fade-delay-2">
       <div class="phone-glow-hero"></div>
-      <div class="float-card float-card-1">
+      <!-- Ícones flutuantes ao redor do celular -->
+      <div class="hero-float-icon hfi-1">📊</div>
+      <div class="hero-float-icon hfi-2">💳</div>
+      <div class="hero-float-icon hfi-3">🎯</div>
+      <div class="hero-float-icon hfi-4">❤️</div>
+      <div class="hero-float-icon hfi-5">📅</div>
+      <!-- Cards flutuantes com animação -->
+      <div class="float-card float-card-1 float-card-anim-1">
         <div class="fc-label">Saldo do mês</div>
         <div class="fc-val fc-green">R$ 2.999,40</div>
         <div class="fc-sub">✓ Positivo</div>
       </div>
       <img src="/screenshots/s7.jpg" alt="Dincon app" style="width:100%;max-width:420px;position:relative;z-index:1;filter:drop-shadow(0 40px 80px rgba(0,0,0,.7));">
-      <div class="float-card float-card-2">
+      <div class="float-card float-card-2 float-card-anim-2">
         <div class="fc-label">Economia</div>
         <div class="fc-val" style="color:var(--purple)">55%</div>
         <div class="fc-sub">Meta: 20% ↑</div>
