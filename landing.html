@@ -26,25 +26,44 @@ body{background:var(--bg);color:var(--t);font-family:var(--font);overflow-x:hidd
 a{text-decoration:none;color:inherit;}
 img{max-width:100%;}
 
-/* ── NAV ── */
-nav{position:sticky;top:0;z-index:500;border-bottom:1px solid var(--border);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);background:rgba(6,6,14,.85);}
-.nav-inner{max-width:1160px;margin:0 auto;padding:0 32px;height:68px;display:flex;align-items:center;justify-content:space-between;}
-.logo{display:flex;align-items:center;gap:10px;}
-.logo-ic{width:38px;height:38px;border-radius:11px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#000;flex-shrink:0;}
-.logo-name{font-weight:900;font-size:20px;letter-spacing:-.03em;color:var(--t);}
+/* ── NAV PILL ── */
+nav{position:sticky;top:0;z-index:500;padding:14px 24px;background:transparent;}
+.nav-pill{max-width:1100px;margin:0 auto;background:rgba(10,10,18,.88);border:1px solid rgba(255,255,255,.09);border-radius:100px;backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);padding:0 10px 0 18px;height:58px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 8px 40px rgba(0,0,0,.4);}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.logo-ic{width:36px;height:36px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#000;flex-shrink:0;}
+.logo-name{font-weight:900;font-size:19px;letter-spacing:-.03em;color:var(--t);}
 .logo-name em{color:var(--accent);font-style:normal;}
-.nav-links{display:flex;gap:32px;align-items:center;}
-.nav-links a{font-size:14px;color:var(--t2);font-weight:500;transition:color .15s;}
+.nav-links{display:flex;gap:28px;align-items:center;position:absolute;left:50%;transform:translateX(-50%);}
+.nav-links a{font-size:14px;color:var(--t2);font-weight:500;transition:color .15s;white-space:nowrap;}
 .nav-links a:hover{color:var(--t);}
-.nav-right{display:flex;gap:10px;align-items:center;}
+.nav-right{display:flex;gap:8px;align-items:center;flex-shrink:0;}
 .btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:100px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all .18s;border:none;white-space:nowrap;}
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--t2);}
 .btn-ghost:hover{border-color:var(--b2);color:var(--t);}
 .btn-primary{background:var(--accent);color:#000;}
 .btn-primary:hover{background:#00e07c;transform:translateY(-1px);box-shadow:0 8px 28px rgba(0,200,110,.3);}
+.btn-nav{padding:10px 22px;border-radius:100px;font-size:14px;}
 .btn-lg{padding:16px 36px;font-size:16px;border-radius:14px;}
 .btn-xl{padding:18px 44px;font-size:17px;border-radius:14px;}
 @media(max-width:768px){.nav-links{display:none;}.nav-right .btn-ghost{display:none;}}
+
+/* ── MARQUEE BAR ── */
+.marquee-bar{background:var(--s1);border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:14px 0;}
+.marquee-track{display:flex;gap:0;animation:marquee 28s linear infinite;width:max-content;}
+.marquee-bar:hover .marquee-track{animation-play-state:paused;}
+.marquee-item{display:flex;align-items:center;gap:8px;padding:0 40px;font-size:13px;color:var(--t2);font-weight:500;white-space:nowrap;border-right:1px solid var(--border);}
+.marquee-item .mi{font-size:15px;}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ── HERO FLOAT ICONS ── */
+.hero-float-icon{position:absolute;width:52px;height:52px;border-radius:50%;background:rgba(20,20,35,.92);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 8px 32px rgba(0,0,0,.5);z-index:3;backdrop-filter:blur(8px);}
+.hfi-1{top:12%;left:8%;animation:hfloat 5s ease-in-out infinite;}
+.hfi-2{top:28%;right:4%;animation:hfloat 6s ease-in-out infinite .8s;}
+.hfi-3{bottom:30%;left:4%;animation:hfloat 5.5s ease-in-out infinite 1.2s;}
+.hfi-4{bottom:15%;right:8%;animation:hfloat 7s ease-in-out infinite .4s;}
+.hfi-5{top:55%;left:2%;animation:hfloat 6.5s ease-in-out infinite 2s;}
+@keyframes hfloat{0%,100%{transform:translateY(0) rotate(0deg)}33%{transform:translateY(-10px) rotate(3deg)}66%{transform:translateY(5px) rotate(-2deg)}}
+@media(max-width:960px){.hero-float-icon{display:none;}}
 
 /* ── HERO ── */
 .hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;}
@@ -244,19 +263,19 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 
 <!-- ═══ NAV ═══ -->
 <nav>
-  <div class="nav-inner">
+  <div class="nav-pill">
     <a href="/" class="logo">
       <div class="logo-ic">D</div>
       <span class="logo-name">din<em>con</em></span>
     </a>
     <div class="nav-links">
       <a href="#funcionalidades">Funcionalidades</a>
-      <a href="#precos">Preços</a>
+      <a href="#precos">Planos</a>
       <a href="#faq">FAQ</a>
     </div>
     <div class="nav-right">
-      <a href="/dashboard" class="btn btn-ghost">Entrar</a>
-      <a href="/dashboard" class="btn btn-primary">Começar grátis</a>
+      <a href="/dashboard" class="btn btn-ghost btn-nav">Entrar</a>
+      <a href="/dashboard" class="btn btn-primary btn-nav">Começar agora →</a>
     </div>
   </div>
 </nav>
@@ -264,6 +283,12 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 <!-- ═══ HERO ═══ -->
 <section class="hero">
   <div class="hero-bg"></div>
+  <!-- Ícones flutuantes -->
+  <div class="hero-float-icon hfi-1">📊</div>
+  <div class="hero-float-icon hfi-2">💳</div>
+  <div class="hero-float-icon hfi-3">🎯</div>
+  <div class="hero-float-icon hfi-4">❤️</div>
+  <div class="hero-float-icon hfi-5">📅</div>
   <div class="hero-inner">
     <div>
       <div class="hero-pill fade">🇧🇷 Feito para o Brasil</div>
@@ -296,13 +321,31 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
   </div>
 </section>
 
-<!-- ═══ STATS ═══ -->
-<div class="stats">
-  <div class="stats-inner">
-    <div class="stat fade"><div class="stat-n">10+</div><div class="stat-l">Módulos financeiros</div></div>
-    <div class="stat fade fade-delay-1"><div class="stat-n">100%</div><div class="stat-l">Na nuvem e seguro</div></div>
-    <div class="stat fade fade-delay-2"><div class="stat-n">R$0</div><div class="stat-l">Para começar</div></div>
-    <div class="stat fade fade-delay-3"><div class="stat-n">3x</div><div class="stat-l">Mais controle financeiro</div></div>
+<!-- ═══ MARQUEE BAR ═══ -->
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <!-- Duplicado para loop infinito -->
+    <div class="marquee-item"><span class="mi">🔒</span>100% seguro e criptografado</div>
+    <div class="marquee-item"><span class="mi">☁️</span>Dados sempre na nuvem</div>
+    <div class="marquee-item"><span class="mi">🇧🇷</span>Feito para o Brasil</div>
+    <div class="marquee-item"><span class="mi">💳</span>Controle de cartões de crédito</div>
+    <div class="marquee-item"><span class="mi">🎯</span>Metas e orçamentos inteligentes</div>
+    <div class="marquee-item"><span class="mi">📊</span>Dashboard em tempo real</div>
+    <div class="marquee-item"><span class="mi">✅</span>Sem cartão de crédito para começar</div>
+    <div class="marquee-item"><span class="mi">📱</span>Funciona em qualquer dispositivo</div>
+    <div class="marquee-item"><span class="mi">🏠</span>Controle de financiamentos</div>
+    <div class="marquee-item"><span class="mi">📈</span>Patrimônio líquido em tempo real</div>
+    <!-- Duplicado para loop -->
+    <div class="marquee-item"><span class="mi">🔒</span>100% seguro e criptografado</div>
+    <div class="marquee-item"><span class="mi">☁️</span>Dados sempre na nuvem</div>
+    <div class="marquee-item"><span class="mi">🇧🇷</span>Feito para o Brasil</div>
+    <div class="marquee-item"><span class="mi">💳</span>Controle de cartões de crédito</div>
+    <div class="marquee-item"><span class="mi">🎯</span>Metas e orçamentos inteligentes</div>
+    <div class="marquee-item"><span class="mi">📊</span>Dashboard em tempo real</div>
+    <div class="marquee-item"><span class="mi">✅</span>Sem cartão de crédito para começar</div>
+    <div class="marquee-item"><span class="mi">📱</span>Funciona em qualquer dispositivo</div>
+    <div class="marquee-item"><span class="mi">🏠</span>Controle de financiamentos</div>
+    <div class="marquee-item"><span class="mi">📈</span>Patrimônio líquido em tempo real</div>
   </div>
 </div>
 
