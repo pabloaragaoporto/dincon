@@ -12,6 +12,7 @@
 <meta name="theme-color" content="#00c86e">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
@@ -27,14 +28,21 @@ a{text-decoration:none;color:inherit;}
 img{max-width:100%;}
 
 /* ── NAV PILL ── */
-nav{position:sticky;top:0;z-index:500;padding:14px 24px;background:transparent;}
-.nav-pill{max-width:1100px;margin:0 auto;background:rgba(10,10,18,.88);border:1px solid rgba(255,255,255,.09);border-radius:100px;backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);padding:0 10px 0 18px;height:58px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 8px 40px rgba(0,0,0,.4);}
+nav{position:sticky;top:0;z-index:500;padding:12px 24px;background:transparent;transition:padding .3s;}
+.nav-pill{max-width:1100px;margin:0 auto;background:rgba(10,10,18,.88);border:1px solid rgba(255,255,255,.09);border-radius:100px;backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);padding:0 10px 0 18px;height:58px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 8px 40px rgba(0,0,0,.4);transition:background .3s,border-color .3s,box-shadow .3s;}
+/* Nav sobre seção clara */
+nav.over-light .nav-pill{background:rgba(255,255,255,.92);border-color:rgba(0,0,0,.09);box-shadow:0 4px 24px rgba(0,0,0,.1);}
+nav.over-light .logo-name{color:#111;}
+nav.over-light .nav-links a{color:#444;}
+nav.over-light .nav-links a:hover{color:#111;}
+nav.over-light .btn-ghost{border-color:rgba(0,0,0,.12);color:#555;}
+nav.over-light .btn-ghost:hover{color:#111;}
 .logo{display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .logo-ic{width:36px;height:36px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#000;flex-shrink:0;}
-.logo-name{font-weight:900;font-size:19px;letter-spacing:-.03em;color:var(--t);}
+.logo-name{font-weight:900;font-size:19px;letter-spacing:-.03em;color:var(--t);transition:color .3s;}
 .logo-name em{color:var(--accent);font-style:normal;}
-.nav-links{display:flex;gap:28px;align-items:center;position:absolute;left:50%;transform:translateX(-50%);}
-.nav-links a{font-size:14px;color:var(--t2);font-weight:500;transition:color .15s;white-space:nowrap;}
+.nav-links{display:flex;gap:24px;align-items:center;position:absolute;left:50%;transform:translateX(-50%);}
+.nav-links a{font-size:13px;color:var(--t2);font-weight:500;transition:color .15s;white-space:nowrap;}
 .nav-links a:hover{color:var(--t);}
 .nav-right{display:flex;gap:8px;align-items:center;flex-shrink:0;}
 .btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:100px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all .18s;border:none;white-space:nowrap;}
@@ -42,10 +50,10 @@ nav{position:sticky;top:0;z-index:500;padding:14px 24px;background:transparent;}
 .btn-ghost:hover{border-color:var(--b2);color:var(--t);}
 .btn-primary{background:var(--accent);color:#000;}
 .btn-primary:hover{background:#00e07c;transform:translateY(-1px);box-shadow:0 8px 28px rgba(0,200,110,.3);}
-.btn-nav{padding:10px 22px;border-radius:100px;font-size:14px;}
+.btn-nav{padding:10px 22px;border-radius:100px;font-size:13px;}
 .btn-lg{padding:16px 36px;font-size:16px;border-radius:14px;}
 .btn-xl{padding:18px 44px;font-size:17px;border-radius:14px;}
-@media(max-width:768px){.nav-links{display:none;}.nav-right .btn-ghost{display:none;}}
+@media(max-width:900px){.nav-links{display:none;}.nav-right .btn-ghost{display:none;}}
 
 /* ── MARQUEE BAR ── */
 .marquee-bar{background:var(--s1);border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:14px 0;}
@@ -56,7 +64,8 @@ nav{position:sticky;top:0;z-index:500;padding:14px 24px;background:transparent;}
 @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
 /* ── HERO FLOAT ICONS ── */
-.hero-float-icon{position:absolute;width:52px;height:52px;border-radius:50%;background:rgba(14,14,26,.94);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 8px 32px rgba(0,0,0,.6);z-index:4;backdrop-filter:blur(10px);}
+.hero-float-icon{position:absolute;width:54px;height:54px;border-radius:50%;background:linear-gradient(145deg,#00e07c,#00a855);border:none;display:flex;align-items:center;justify-content:center;font-size:24px;z-index:4;box-shadow:0 6px 24px rgba(0,200,110,.45),inset 0 1px 0 rgba(255,255,255,.3),inset 0 -1px 0 rgba(0,0,0,.15);}
+.hero-float-icon i{font-size:22px;color:#fff;display:block;}
 .hfi-1{top:5%;left:-18px;animation:hfloat 5s ease-in-out infinite;}
 .hfi-2{top:22%;right:-20px;animation:hfloat 6s ease-in-out infinite .8s;}
 .hfi-3{top:50%;right:-22px;animation:hfloat 5.5s ease-in-out infinite 1.2s;}
@@ -64,6 +73,26 @@ nav{position:sticky;top:0;z-index:500;padding:14px 24px;background:transparent;}
 .hfi-5{bottom:12%;left:-16px;animation:hfloat 6.5s ease-in-out infinite 2s;}
 @keyframes hfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @media(max-width:960px){.hero-float-icon{display:none;}}
+
+/* ── MARQUEE ICONS ── */
+.marquee-item i{font-size:16px;color:var(--accent);flex-shrink:0;}
+
+/* ── SECTION LIGHT (branca) ── */
+.section-light{background:#f6f6f2 !important;}
+.section-light .feat-tag{color:#00a855;}
+.section-light .feat-tag-dot{background:#00a855;}
+.section-light .feat-title{color:#111118;}
+.section-light .feat-desc{color:#55556a;}
+.section-light .feat-list li{color:#444455;}
+.section-light .feat-list li .icon{background:rgba(0,160,85,.1);border-color:rgba(0,160,85,.2);}
+.section-light .sec-label{color:#00a855;}
+.section-light .sec-title{color:#111118;}
+.section-light .sec-sub{color:#55556a;}
+.section-light .testi-card{background:#fff;border-color:#e8e8e4;}
+.section-light .testi-card:hover{border-color:#ccc;}
+.section-light .testi-text{color:#555;}
+.section-light .testi-name{color:#111;}
+.section-light .testi-role{color:#888;}
 
 /* ── GRADIENT TEXT ── */
 .hero-grad{background:linear-gradient(135deg,#00c86e 0%,#5dffb0 45%,#00e07c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:gradShift 4s ease infinite;}
@@ -313,11 +342,11 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
     <div class="phone-stage fade fade-delay-2">
       <div class="phone-glow-hero"></div>
       <!-- Ícones flutuantes ao redor do celular -->
-      <div class="hero-float-icon hfi-1">📊</div>
-      <div class="hero-float-icon hfi-2">💳</div>
-      <div class="hero-float-icon hfi-3">🎯</div>
-      <div class="hero-float-icon hfi-4">❤️</div>
-      <div class="hero-float-icon hfi-5">📅</div>
+      <div class="hero-float-icon hfi-1"><i class="ph ph-chart-bar"></i></div>
+      <div class="hero-float-icon hfi-2"><i class="ph ph-credit-card"></i></div>
+      <div class="hero-float-icon hfi-3"><i class="ph ph-target"></i></div>
+      <div class="hero-float-icon hfi-4"><i class="ph ph-heart"></i></div>
+      <div class="hero-float-icon hfi-5"><i class="ph ph-calendar-blank"></i></div>
       <!-- Cards flutuantes com animação -->
       <div class="float-card float-card-1 float-card-anim-1">
         <div class="fc-label">Saldo do mês</div>
@@ -337,26 +366,26 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 <!-- ═══ MARQUEE BAR ═══ -->
 <div class="marquee-bar">
   <div class="marquee-track">
-    <!-- Duplicado para loop infinito -->
-    <div class="marquee-item"><span class="mi">🔒</span>100% seguro e criptografado</div>
-    <div class="marquee-item"><span class="mi">☁️</span>Dados sempre na nuvem</div>
-    <div class="marquee-item"><span class="mi">🇧🇷</span>Feito para o Brasil</div>
-    <div class="marquee-item"><span class="mi">💳</span>Controle de cartões de crédito</div>
-    <div class="marquee-item"><span class="mi">🎯</span>Metas e orçamentos inteligentes</div>
-    <div class="marquee-item"><span class="mi">📊</span>Dashboard em tempo real</div>
-    <div class="marquee-item"><span class="mi">✅</span>Sem cartão de crédito para começar</div>
-    <div class="marquee-item"><span class="mi">📱</span>Funciona em qualquer dispositivo</div>
-    <div class="marquee-item"><span class="mi">🏠</span>Controle de financiamentos</div>
-    <div class="marquee-item"><span class="mi">📈</span>Patrimônio líquido em tempo real</div>
+    <div class="marquee-item"><i class="ph ph-lock-simple"></i>100% seguro e criptografado</div>
+    <div class="marquee-item"><i class="ph ph-cloud"></i>Dados sempre na nuvem</div>
+    <div class="marquee-item"><i class="ph ph-flag"></i>Feito para o Brasil</div>
+    <div class="marquee-item"><i class="ph ph-credit-card"></i>Controle de cartões</div>
+    <div class="marquee-item"><i class="ph ph-target"></i>Metas e orçamentos</div>
+    <div class="marquee-item"><i class="ph ph-chart-bar"></i>Dashboard em tempo real</div>
+    <div class="marquee-item"><i class="ph ph-check-circle"></i>Grátis para começar</div>
+    <div class="marquee-item"><i class="ph ph-device-mobile"></i>Funciona em qualquer celular</div>
+    <div class="marquee-item"><i class="ph ph-house"></i>Controle de financiamentos</div>
+    <div class="marquee-item"><i class="ph ph-trend-up"></i>Patrimônio líquido em tempo real</div>
+    <div class="marquee-item"><i class="ph ph-calendar-blank"></i>Planejamento anual completo</div>
     <!-- Duplicado para loop -->
-    <div class="marquee-item"><span class="mi">🔒</span>100% seguro e criptografado</div>
-    <div class="marquee-item"><span class="mi">☁️</span>Dados sempre na nuvem</div>
-    <div class="marquee-item"><span class="mi">🇧🇷</span>Feito para o Brasil</div>
-    <div class="marquee-item"><span class="mi">💳</span>Controle de cartões de crédito</div>
-    <div class="marquee-item"><span class="mi">🎯</span>Metas e orçamentos inteligentes</div>
-    <div class="marquee-item"><span class="mi">📊</span>Dashboard em tempo real</div>
-    <div class="marquee-item"><span class="mi">✅</span>Sem cartão de crédito para começar</div>
-    <div class="marquee-item"><span class="mi">📱</span>Funciona em qualquer dispositivo</div>
+    <div class="marquee-item"><i class="ph ph-lock-simple"></i>100% seguro e criptografado</div>
+    <div class="marquee-item"><i class="ph ph-cloud"></i>Dados sempre na nuvem</div>
+    <div class="marquee-item"><i class="ph ph-flag"></i>Feito para o Brasil</div>
+    <div class="marquee-item"><i class="ph ph-credit-card"></i>Controle de cartões</div>
+    <div class="marquee-item"><i class="ph ph-target"></i>Metas e orçamentos</div>
+    <div class="marquee-item"><i class="ph ph-chart-bar"></i>Dashboard em tempo real</div>
+    <div class="marquee-item"><i class="ph ph-check-circle"></i>Grátis para começar</div>
+    <div class="marquee-item"><i class="ph ph-device-mobile"></i>Funciona em qualquer celular</div>
     <div class="marquee-item"><span class="mi">🏠</span>Controle de financiamentos</div>
     <div class="marquee-item"><span class="mi">📈</span>Patrimônio líquido em tempo real</div>
   </div>
@@ -366,7 +395,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 <div id="funcionalidades"></div>
 
 <!-- Feature 1 -->
-<section class="section">
+<section class="section section-light">
   <div class="section-inner">
     <div class="feat-row">
       <div class="fade">
@@ -388,7 +417,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 </section>
 
 <!-- Feature 2 -->
-<section class="section section-dark">
+<section class="section section-light">
   <div class="section-inner">
     <div class="feat-row reverse">
       <div class="fade">
@@ -410,7 +439,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 </section>
 
 <!-- Feature 3 -->
-<section class="section">
+<section class="section section-light">
   <div class="section-inner">
     <div class="feat-row">
       <div class="fade">
@@ -432,7 +461,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 </section>
 
 <!-- Feature 4 -->
-<section class="section section-dark">
+<section class="section section-light">
   <div class="section-inner">
     <div class="feat-row reverse">
       <div class="fade">
@@ -454,7 +483,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 </section>
 
 <!-- Feature 5 - Orçamentos -->
-<section class="section">
+<section class="section section-light">
   <div class="section-inner">
     <div class="feat-row">
       <div class="fade">
@@ -532,7 +561,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 </section>
 
 <!-- Feature Extra - Alertas inteligentes -->
-<section class="section section-dark">
+<section class="section section-light">
   <div class="section-inner">
     <div class="feat-row reverse">
       <div class="fade">
@@ -554,7 +583,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 </section>
 
 <!-- ═══ DEPOIMENTOS ═══ -->
-<section class="section section-darker">
+<section class="section section-light">
   <div class="section-inner">
     <div class="sec-header fade">
       <div class="sec-label">Depoimentos</div>
@@ -794,6 +823,21 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 </footer>
 
 <script>
+// Nav adaptativo (claro/escuro conforme seção)
+const navEl=document.querySelector('nav');
+const lightSections=document.querySelectorAll('.section-light');
+const navHeight=86;
+function checkNavColor(){
+  let overLight=false;
+  lightSections.forEach(s=>{
+    const r=s.getBoundingClientRect();
+    if(r.top<=navHeight&&r.bottom>navHeight)overLight=true;
+  });
+  navEl.classList.toggle('over-light',overLight);
+}
+window.addEventListener('scroll',checkNavColor,{passive:true});
+checkNavColor();
+
 // FAQ toggle
 function toggleFaq(el){
   const item=el.closest('.faq-item');
