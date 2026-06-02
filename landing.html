@@ -142,13 +142,11 @@ nav{position:sticky;top:0;z-index:500;border-bottom:1px solid var(--border);back
 .feat-list li{display:flex;align-items:flex-start;gap:10px;font-size:15px;color:var(--t2);}
 .feat-list li .icon{width:22px;height:22px;border-radius:7px;background:rgba(0,200,110,.12);border:1px solid rgba(0,200,110,.2);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px;}
 
-/* Phone in feature section */
-.feat-phone-wrap{display:flex;justify-content:center;align-items:center;position:relative;padding:40px 20px;}
-.feat-glow{position:absolute;width:360px;height:360px;border-radius:50%;pointer-events:none;top:50%;left:50%;transform:translate(-50%,-50%);}
-.feat-phone{width:240px;border-radius:40px;border:2px solid rgba(255,255,255,.1);box-shadow:0 40px 100px rgba(0,0,0,.7);overflow:hidden;position:relative;z-index:1;}
-.feat-phone img{width:100%;display:block;}
-.feat-phone-notch{height:12px;background:#09090f;display:flex;align-items:center;justify-content:center;}
-.feat-phone-notch-pill{width:70px;height:4px;background:#1c1c2a;border-radius:100px;}
+/* Imagem de feature (mockup já tem frame) */
+.feat-img-wrap{display:flex;justify-content:center;align-items:center;padding:20px;}
+.feat-img-wrap img{max-width:320px;width:100%;filter:drop-shadow(0 32px 64px rgba(0,0,0,.5));transition:filter .3s;}
+.feat-img-wrap img:hover{filter:drop-shadow(0 40px 80px rgba(0,0,0,.65));}
+@media(max-width:900px){.feat-img-wrap img{max-width:260px;}}
 
 /* ── TESTIMONIALS ── */
 .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px;}
@@ -288,16 +286,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
         <div class="fc-val fc-green">R$ 2.999,40</div>
         <div class="fc-sub">✓ Positivo</div>
       </div>
-      <div class="phone-3d-wrap">
-        <div class="phone phone-back">
-          <div class="phone-notch-bar"><div class="phone-notch"></div></div>
-          <img src="/screenshots/s3.jpg" alt="Categorias Dincon">
-        </div>
-        <div class="phone phone-front">
-          <div class="phone-notch-bar"><div class="phone-notch"></div></div>
-          <img src="/screenshots/s1.jpg" alt="Dashboard Dincon">
-        </div>
-      </div>
+      <img src="/screenshots/s7.jpg" alt="Dincon app" style="width:100%;max-width:420px;position:relative;z-index:1;filter:drop-shadow(0 40px 80px rgba(0,0,0,.7));">
       <div class="float-card float-card-2">
         <div class="fc-label">Economia</div>
         <div class="fc-val" style="color:var(--purple)">55%</div>
@@ -335,12 +324,8 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
           <li><span class="icon">🔔</span>Alertas automáticos de orçamento estourado</li>
         </ul>
       </div>
-      <div class="feat-phone-wrap fade fade-delay-1">
-        <div class="feat-glow" style="background:radial-gradient(circle,rgba(0,200,110,.1) 0%,transparent 65%);"></div>
-        <div class="feat-phone">
-          <div class="feat-phone-notch"><div class="feat-phone-notch-pill"></div></div>
-          <img src="/screenshots/s1.jpg" alt="Dashboard">
-        </div>
+      <div class="feat-img-wrap fade fade-delay-1">
+        <img src="/screenshots/s1.jpg" alt="Dashboard Dincon">
       </div>
     </div>
   </div>
@@ -351,22 +336,18 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
   <div class="section-inner">
     <div class="feat-row reverse">
       <div class="fade">
-        <div class="feat-tag"><div class="feat-tag-dot"></div>Transações</div>
-        <h2 class="feat-title">Controle cada centavo que entra e sai</h2>
-        <p class="feat-desc">Registre gastos e receitas em segundos. Filtre por data, categoria ou cartão. Veja o saldo em tempo real sem precisar fazer nenhuma conta.</p>
+        <div class="feat-tag"><div class="feat-tag-dot"></div>Cartões de crédito</div>
+        <h2 class="feat-title">Seus cartões de crédito sob controle</h2>
+        <p class="feat-desc">Cadastre seus cartões, acompanhe a fatura atual e o limite comprometido. Saiba exatamente quanto já gastou em cada cartão este mês.</p>
         <ul class="feat-list">
-          <li><span class="icon">⚡</span>Lançamento rápido com categorias automáticas</li>
-          <li><span class="icon">🔄</span>Despesas recorrentes — cadastre uma vez, controla sempre</li>
-          <li><span class="icon">🔍</span>Busca e filtros por data, tipo e categoria</li>
-          <li><span class="icon">💳</span>Separação entre débito, crédito e PIX</li>
+          <li><span class="icon">💳</span>Fatura atual e limite comprometido por cartão</li>
+          <li><span class="icon">📊</span>Barra visual de uso do limite</li>
+          <li><span class="icon">🔍</span>Gastos no crédito detalhados por lançamento</li>
+          <li><span class="icon">🏦</span>Suporte a múltiplos bancos e carteiras</li>
         </ul>
       </div>
-      <div class="feat-phone-wrap fade fade-delay-1">
-        <div class="feat-glow" style="background:radial-gradient(circle,rgba(96,165,250,.08) 0%,transparent 65%);"></div>
-        <div class="feat-phone">
-          <div class="feat-phone-notch"><div class="feat-phone-notch-pill"></div></div>
-          <img src="/screenshots/s2.jpg" alt="Transações">
-        </div>
+      <div class="feat-img-wrap fade fade-delay-1">
+        <img src="/screenshots/s2.jpg" alt="Cartões Dincon">
       </div>
     </div>
   </div>
@@ -377,22 +358,18 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
   <div class="section-inner">
     <div class="feat-row">
       <div class="fade">
-        <div class="feat-tag"><div class="feat-tag-dot"></div>Categorias</div>
-        <h2 class="feat-title">Descubra para onde seu dinheiro está indo</h2>
-        <p class="feat-desc">Gráficos de gastos por categoria mostram exatamente onde você está gastando mais. Identifique padrões e ajuste seus hábitos com clareza.</p>
+        <div class="feat-tag"><div class="feat-tag-dot"></div>Patrimônio</div>
+        <h2 class="feat-title">Veja seu patrimônio líquido crescer</h2>
+        <p class="feat-desc">Cadastre ativos e passivos para acompanhar seu patrimônio real. Gráfico de composição mostra onde está seu dinheiro de forma visual e clara.</p>
         <ul class="feat-list">
-          <li><span class="icon">🏠</span>Categorias: moradia, alimentação, saúde, lazer e mais</li>
-          <li><span class="icon">📉</span>Percentual de cada categoria no total de gastos</li>
-          <li><span class="icon">🎯</span>Compare com seus orçamentos mensais definidos</li>
-          <li><span class="icon">💡</span>Insights automáticos sobre onde economizar</li>
+          <li><span class="icon">🏡</span>Ativos: imóveis, investimentos, veículos e mais</li>
+          <li><span class="icon">📉</span>Passivos: financiamentos e dívidas deduzidos</li>
+          <li><span class="icon">🥧</span>Gráfico de composição patrimonial</li>
+          <li><span class="icon">📈</span>Patrimônio líquido calculado automaticamente</li>
         </ul>
       </div>
-      <div class="feat-phone-wrap fade fade-delay-1">
-        <div class="feat-glow" style="background:radial-gradient(circle,rgba(245,158,11,.08) 0%,transparent 65%);"></div>
-        <div class="feat-phone">
-          <div class="feat-phone-notch"><div class="feat-phone-notch-pill"></div></div>
-          <img src="/screenshots/s3.jpg" alt="Categorias">
-        </div>
+      <div class="feat-img-wrap fade fade-delay-1">
+        <img src="/screenshots/s3.jpg" alt="Patrimônio Dincon">
       </div>
     </div>
   </div>
@@ -403,45 +380,56 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
   <div class="section-inner">
     <div class="feat-row reverse">
       <div class="fade">
-        <div class="feat-tag"><div class="feat-tag-dot"></div>Financiamentos</div>
-        <h2 class="feat-title">Seus financiamentos sob total controle</h2>
-        <p class="feat-desc">Financiamento da casa, do carro, qualquer contrato. Acompanhe parcelas pagas, saldo devedor e progresso de cada financiamento em um só lugar.</p>
+        <div class="feat-tag"><div class="feat-tag-dot"></div>Gastos por categoria</div>
+        <h2 class="feat-title">Descubra para onde seu dinheiro vai</h2>
+        <p class="feat-desc">Veja exatamente quanto gastou em cada categoria do mês. Identifique onde está exagerando e ajuste seus hábitos com clareza e sem achismo.</p>
         <ul class="feat-list">
-          <li><span class="icon">🏡</span>Cadastre qualquer tipo de financiamento</li>
-          <li><span class="icon">📅</span>Registro de pagamentos com um clique</li>
-          <li><span class="icon">📊</span>Barra de progresso visual — veja o quanto já pagou</li>
-          <li><span class="icon">🔢</span>Saldo restante e total já pago sempre visíveis</li>
+          <li><span class="icon">🏠</span>Moradia, alimentação, saúde, lazer e muito mais</li>
+          <li><span class="icon">📊</span>Percentual de cada categoria no total</li>
+          <li><span class="icon">🎯</span>Compare com seus orçamentos definidos</li>
+          <li><span class="icon">📋</span>Últimas transações logo abaixo</li>
         </ul>
       </div>
-      <div class="feat-phone-wrap fade fade-delay-1">
-        <div class="feat-glow" style="background:radial-gradient(circle,rgba(139,92,246,.1) 0%,transparent 65%);"></div>
-        <div class="feat-phone">
-          <div class="feat-phone-notch"><div class="feat-phone-notch-pill"></div></div>
-          <img src="/screenshots/s4.jpg" alt="Financiamentos">
-        </div>
+      <div class="feat-img-wrap fade fade-delay-1">
+        <img src="/screenshots/s4.jpg" alt="Categorias Dincon">
       </div>
     </div>
   </div>
 </section>
 
-<!-- Feature 5 - Planejamento (sem screenshot, usa visual CSS) -->
+<!-- Feature 5 - Orçamentos -->
 <section class="section">
   <div class="section-inner">
     <div class="feat-row">
       <div class="fade">
-        <div class="feat-tag"><div class="feat-tag-dot"></div>Planejamento Anual</div>
-        <h2 class="feat-title">Planeje 12 meses à frente de uma vez</h2>
-        <p class="feat-desc">A tabela de planejamento anual te dá uma visão de 12 meses: receitas, despesas e saldo acumulado mês a mês. Visualize o futuro e evite surpresas.</p>
+        <div class="feat-tag"><div class="feat-tag-dot"></div>Orçamentos</div>
+        <h2 class="feat-title">Defina limites e pare de extrapolar</h2>
+        <p class="feat-desc">Configure orçamentos mensais por categoria e o Dincon te avisa quando você está chegando no limite. Chega de gastar mais do que planejou.</p>
         <ul class="feat-list">
-          <li><span class="icon">📅</span>Tabela completa com todos os 12 meses do ano</li>
-          <li><span class="icon">💵</span>Saldo acumulado mês a mês calculado automaticamente</li>
-          <li><span class="icon">🔒</span>Disponível no plano Pro — desbloqueie quando quiser</li>
-          <li><span class="icon">📤</span>Exportação em PDF e CSV para guardar seu planejamento</li>
+          <li><span class="icon">🎯</span>Limite personalizado por categoria de gasto</li>
+          <li><span class="icon">⚠️</span>Alerta visual quando o limite é ultrapassado</li>
+          <li><span class="icon">📊</span>Gráfico de visão geral de todos os limites</li>
+          <li><span class="icon">✅</span>Porcentagem de uso em tempo real</li>
         </ul>
       </div>
-      <div class="feat-phone-wrap fade fade-delay-1">
-        <div class="feat-glow" style="background:radial-gradient(circle,rgba(0,200,110,.09) 0%,transparent 65%);"></div>
-        <!-- CSS visual para planejamento -->
+      <div class="feat-img-wrap fade fade-delay-1">
+        <img src="/screenshots/s6.jpg" alt="Orçamentos Dincon">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Feature 6 - Planejamento Anual (CSS visual) -->
+<section class="section section-dark" style="display:none">
+  <div class="section-inner">
+    <div class="feat-row reverse">
+      <div class="fade">
+        <div class="feat-tag"><div class="feat-tag-dot"></div>Planejamento Anual</div>
+        <h2 class="feat-title">Planeje 12 meses à frente de uma vez</h2>
+        <p class="feat-desc">Tabela anual com receitas, despesas e saldo acumulado mês a mês. Visualize o futuro e evite surpresas.</p>
+      </div>
+      <div class="feat-img-wrap fade fade-delay-1">
+        <!-- placeholder -->
         <div style="width:260px;background:#0c0c16;border-radius:20px;border:1px solid rgba(255,255,255,.1);overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.7);">
           <div style="background:#0a0a14;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.06);">
             <div style="font-size:12px;font-weight:800;color:#f0f0f8;letter-spacing:-.01em;">Planejamento 2026</div>
