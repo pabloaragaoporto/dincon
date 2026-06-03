@@ -77,22 +77,39 @@ nav.over-light .btn-ghost:hover{color:#111;}
 /* ── MARQUEE ICONS ── */
 .marquee-item i{font-size:16px;color:var(--accent);flex-shrink:0;}
 
-/* ── SECTION LIGHT (branca) ── */
-.section-light{background:#f6f6f2 !important;}
-.section-light .feat-tag{color:#00a855;}
-.section-light .feat-tag-dot{background:#00a855;}
-.section-light .feat-title{color:#111118;}
-.section-light .feat-desc{color:#55556a;}
-.section-light .feat-list li{color:#444455;}
-.section-light .feat-list li .icon{background:rgba(0,160,85,.1);border-color:rgba(0,160,85,.2);}
-.section-light .sec-label{color:#00a855;}
+/* ── SECTION LIGHT — estilo meuassessor ── */
+.section-light{background:#ece8e3 !important;}
+
+/* Card branco que envolve o texto */
+.feat-card{background:#fff;border-radius:24px;padding:40px 36px;box-shadow:0 4px 32px rgba(0,0,0,.07);}
+@media(max-width:900px){.feat-card{padding:28px 22px;}}
+
+/* Tag de seção com gradiente */
+.feat-tag-pill{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,rgba(0,200,110,.12) 0%,rgba(139,92,246,.1) 100%);border:1px solid rgba(0,200,110,.22);color:#00a050;padding:7px 15px;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:.04em;margin-bottom:18px;}
+.feat-tag-pill i{font-size:14px;}
+
+/* Título e desc no card */
+.feat-card-title{font-size:clamp(26px,3vw,38px);font-weight:900;letter-spacing:-.04em;line-height:1.07;margin-bottom:12px;color:#111118;}
+.feat-card-desc{font-size:15px;color:#666675;line-height:1.75;margin-bottom:24px;}
+
+/* Bullets em pill — igual meuassessor */
+.feat-bullets{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.feat-bullets li{display:flex;align-items:center;gap:11px;background:#f6f4f0;border:1px solid #e4e0db;border-radius:100px;padding:10px 18px 10px 10px;font-size:14px;color:#333340;font-weight:500;}
+.bcheck{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#00c86e,#00a050);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(0,200,110,.3);}
+.bcheck i{font-size:12px;color:#fff;}
+
+/* Seção de depoimentos no tema claro */
+.section-light .sec-label{color:#00a050;}
 .section-light .sec-title{color:#111118;}
-.section-light .sec-sub{color:#55556a;}
-.section-light .testi-card{background:#fff;border-color:#e8e8e4;}
+.section-light .sec-sub{color:#666675;}
+.section-light .testi-card{background:#fff;border-color:#e0dcd6;}
 .section-light .testi-card:hover{border-color:#ccc;}
 .section-light .testi-text{color:#555;}
 .section-light .testi-name{color:#111;}
 .section-light .testi-role{color:#888;}
+
+/* Nav pill mais visível */
+.nav-pill{border-color:rgba(255,255,255,.18) !important;}
 
 /* ── GRADIENT TEXT ── */
 .hero-grad{background:linear-gradient(135deg,#00c86e 0%,#5dffb0 45%,#00e07c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:gradShift 4s ease infinite;}
@@ -398,15 +415,14 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 <section class="section section-light">
   <div class="section-inner">
     <div class="feat-row">
-      <div class="fade">
-        <div class="feat-tag"><div class="feat-tag-dot"></div>Dashboard</div>
-        <h2 class="feat-title">Visão completa da sua vida financeira</h2>
-        <p class="feat-desc">Chega de planilha. Com o Dincon, você abre o app e já vê tudo: receitas, despesas, saldo do mês e seu score de economia — em tempo real.</p>
-        <ul class="feat-list">
-          <li><span class="icon">💰</span>Receitas e despesas do mês com variação vs. mês anterior</li>
-          <li><span class="icon">📊</span>Score de economia com sua meta personalizada</li>
-          <li><span class="icon">📈</span>Gráfico de evolução anual com previsão futura</li>
-          <li><span class="icon">🔔</span>Alertas automáticos de orçamento estourado</li>
+      <div class="feat-card fade">
+        <div class="feat-tag-pill"><i class="ph ph-chart-bar"></i>Dashboard</div>
+        <h2 class="feat-card-title">Visão completa da sua vida financeira.</h2>
+        <p class="feat-card-desc">Chega de planilha. Com o Dincon, você abre o app e já vê tudo: receitas, despesas, saldo do mês e seu score de economia — em tempo real.</p>
+        <ul class="feat-bullets">
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Receitas e despesas com variação vs. mês anterior</li>
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Score de economia com sua meta personalizada</li>
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Gráfico de evolução anual com previsão futura</li>
         </ul>
       </div>
       <div class="feat-img-wrap fade fade-delay-1">
@@ -420,15 +436,14 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 <section class="section section-light">
   <div class="section-inner">
     <div class="feat-row reverse">
-      <div class="fade">
-        <div class="feat-tag"><div class="feat-tag-dot"></div>Cartões de crédito</div>
-        <h2 class="feat-title">Seus cartões de crédito sob controle</h2>
-        <p class="feat-desc">Cadastre seus cartões, acompanhe a fatura atual e o limite comprometido. Saiba exatamente quanto já gastou em cada cartão este mês.</p>
-        <ul class="feat-list">
-          <li><span class="icon">💳</span>Fatura atual e limite comprometido por cartão</li>
-          <li><span class="icon">📊</span>Barra visual de uso do limite</li>
-          <li><span class="icon">🔍</span>Gastos no crédito detalhados por lançamento</li>
-          <li><span class="icon">🏦</span>Suporte a múltiplos bancos e carteiras</li>
+      <div class="feat-card fade">
+        <div class="feat-tag-pill"><i class="ph ph-credit-card"></i>Cartões de crédito</div>
+        <h2 class="feat-card-title">Seus cartões de crédito sob controle.</h2>
+        <p class="feat-card-desc">Cadastre seus cartões, acompanhe a fatura atual e o limite comprometido. Saiba exatamente quanto já gastou em cada cartão este mês.</p>
+        <ul class="feat-bullets">
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Fatura atual e limite comprometido por cartão</li>
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Barra visual de uso do limite em tempo real</li>
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Suporte a múltiplos bancos e carteiras</li>
         </ul>
       </div>
       <div class="feat-img-wrap fade fade-delay-1">
@@ -442,15 +457,14 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 <section class="section section-light">
   <div class="section-inner">
     <div class="feat-row">
-      <div class="fade">
-        <div class="feat-tag"><div class="feat-tag-dot"></div>Patrimônio</div>
-        <h2 class="feat-title">Veja seu patrimônio líquido crescer</h2>
-        <p class="feat-desc">Cadastre ativos e passivos para acompanhar seu patrimônio real. Gráfico de composição mostra onde está seu dinheiro de forma visual e clara.</p>
-        <ul class="feat-list">
-          <li><span class="icon">🏡</span>Ativos: imóveis, investimentos, veículos e mais</li>
-          <li><span class="icon">📉</span>Passivos: financiamentos e dívidas deduzidos</li>
-          <li><span class="icon">🥧</span>Gráfico de composição patrimonial</li>
-          <li><span class="icon">📈</span>Patrimônio líquido calculado automaticamente</li>
+      <div class="feat-card fade">
+        <div class="feat-tag-pill"><i class="ph ph-buildings"></i>Patrimônio</div>
+        <h2 class="feat-card-title">Veja seu patrimônio líquido crescer.</h2>
+        <p class="feat-card-desc">Cadastre ativos e passivos para acompanhar seu patrimônio real. Gráfico de composição mostra onde está seu dinheiro de forma visual e clara.</p>
+        <ul class="feat-bullets">
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Ativos: imóveis, investimentos, veículos e mais</li>
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Passivos: financiamentos e dívidas deduzidos</li>
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Patrimônio líquido calculado automaticamente</li>
         </ul>
       </div>
       <div class="feat-img-wrap fade fade-delay-1">
@@ -464,15 +478,14 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 <section class="section section-light">
   <div class="section-inner">
     <div class="feat-row reverse">
-      <div class="fade">
-        <div class="feat-tag"><div class="feat-tag-dot"></div>Gastos por categoria</div>
-        <h2 class="feat-title">Descubra para onde seu dinheiro vai</h2>
-        <p class="feat-desc">Veja exatamente quanto gastou em cada categoria do mês. Identifique onde está exagerando e ajuste seus hábitos com clareza e sem achismo.</p>
-        <ul class="feat-list">
-          <li><span class="icon">🏠</span>Moradia, alimentação, saúde, lazer e muito mais</li>
-          <li><span class="icon">📊</span>Percentual de cada categoria no total</li>
-          <li><span class="icon">🎯</span>Compare com seus orçamentos definidos</li>
-          <li><span class="icon">📋</span>Últimas transações logo abaixo</li>
+      <div class="feat-card fade">
+        <div class="feat-tag-pill"><i class="ph ph-chart-pie"></i>Gastos por categoria</div>
+        <h2 class="feat-card-title">Descubra para onde seu dinheiro vai.</h2>
+        <p class="feat-card-desc">Veja exatamente quanto gastou em cada categoria do mês. Identifique onde está exagerando e ajuste seus hábitos com clareza e sem achismo.</p>
+        <ul class="feat-bullets">
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Moradia, alimentação, saúde, lazer e muito mais</li>
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Percentual de cada categoria no total de gastos</li>
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Compare com seus orçamentos mensais definidos</li>
         </ul>
       </div>
       <div class="feat-img-wrap fade fade-delay-1">
@@ -486,15 +499,14 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 <section class="section section-light">
   <div class="section-inner">
     <div class="feat-row">
-      <div class="fade">
-        <div class="feat-tag"><div class="feat-tag-dot"></div>Orçamentos</div>
-        <h2 class="feat-title">Defina limites e pare de extrapolar</h2>
-        <p class="feat-desc">Configure orçamentos mensais por categoria e o Dincon te avisa quando você está chegando no limite. Chega de gastar mais do que planejou.</p>
-        <ul class="feat-list">
-          <li><span class="icon">🎯</span>Limite personalizado por categoria de gasto</li>
-          <li><span class="icon">⚠️</span>Alerta visual quando o limite é ultrapassado</li>
-          <li><span class="icon">📊</span>Gráfico de visão geral de todos os limites</li>
-          <li><span class="icon">✅</span>Porcentagem de uso em tempo real</li>
+      <div class="feat-card fade">
+        <div class="feat-tag-pill"><i class="ph ph-wallet"></i>Orçamentos</div>
+        <h2 class="feat-card-title">Defina limites e pare de extrapolar.</h2>
+        <p class="feat-card-desc">Configure orçamentos mensais por categoria e o Dincon te avisa quando você está chegando no limite. Chega de gastar mais do que planejou.</p>
+        <ul class="feat-bullets">
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Limite personalizado por categoria de gasto</li>
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Alerta visual quando o limite é ultrapassado</li>
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Porcentagem de uso em tempo real</li>
         </ul>
       </div>
       <div class="feat-img-wrap fade fade-delay-1">
@@ -564,15 +576,14 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 <section class="section section-light">
   <div class="section-inner">
     <div class="feat-row reverse">
-      <div class="fade">
-        <div class="feat-tag"><div class="feat-tag-dot"></div>Alertas inteligentes</div>
-        <h2 class="feat-title">O app trabalha<br>enquanto você vive</h2>
-        <p class="feat-desc">O Dincon registra seus gastos e te avisa quando está chegando no limite do orçamento. Nada passa despercebido — você sempre sabe como está sua situação financeira.</p>
-        <ul class="feat-list">
-          <li><span class="icon">🔔</span>Alerta quando o orçamento está quase no limite</li>
-          <li><span class="icon">✅</span>Confirmação imediata de cada lançamento</li>
-          <li><span class="icon">📊</span>Percentual do orçamento gasto em tempo real</li>
-          <li><span class="icon">💡</span>Nunca mais seja pego de surpresa no fim do mês</li>
+      <div class="feat-card fade">
+        <div class="feat-tag-pill"><i class="ph ph-bell-ringing"></i>Alertas inteligentes</div>
+        <h2 class="feat-card-title">O app trabalha enquanto você vive.</h2>
+        <p class="feat-card-desc">O Dincon registra seus gastos e te avisa quando está chegando no limite do orçamento. Nada passa despercebido — você sempre sabe como está sua situação financeira.</p>
+        <ul class="feat-bullets">
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Alerta quando o orçamento está quase no limite</li>
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Confirmação imediata de cada lançamento</li>
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Nunca mais seja pego de surpresa no fim do mês</li>
         </ul>
       </div>
       <div class="feat-img-wrap fade fade-delay-1">
