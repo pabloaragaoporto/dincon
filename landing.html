@@ -306,6 +306,46 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 .footer-bottom{border-top:1px solid var(--border);padding-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 .footer-copy{font-size:13px;color:var(--t3);}
 
+/* ── WHATSAPP MOCKUP ── */
+.wapp-wrap{display:flex;justify-content:center;align-items:center;padding:20px 10px;}
+.wapp-phone{width:300px;background:#0d1117;border-radius:38px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.45),0 0 0 1.5px rgba(255,255,255,.08);font-family:var(--font);}
+.wapp-notch{height:28px;background:#0d1117;display:flex;align-items:center;justify-content:center;}
+.wapp-notch::after{content:'';width:80px;height:5px;background:#1a1f2b;border-radius:100px;}
+.wapp-header{display:flex;align-items:center;gap:9px;padding:10px 14px 12px;background:#1a1f2b;border-bottom:1px solid rgba(255,255,255,.06);}
+.wapp-avatar-wrap{position:relative;flex-shrink:0;}
+.wapp-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#00c86e,#00a050);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#000;flex-shrink:0;}
+.wapp-online-dot{position:absolute;bottom:1px;right:1px;width:9px;height:9px;border-radius:50%;background:#25d366;border:2px solid #1a1f2b;}
+.wapp-hinfo{flex:1;min-width:0;}
+.wapp-name{font-size:13px;font-weight:700;color:#fff;display:flex;align-items:center;gap:4px;}
+.wapp-status{font-size:11px;color:#25d366;}
+.wapp-hicons{display:flex;gap:14px;color:#8a9ab5;font-size:18px;}
+.wapp-body{background:#0d1117;padding:14px 12px;display:flex;flex-direction:column;gap:8px;min-height:280px;background-image:url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E");}
+.wapp-date-sep{text-align:center;font-size:10px;color:#556275;background:rgba(255,255,255,.05);border-radius:100px;padding:3px 10px;align-self:center;margin-bottom:4px;letter-spacing:.04em;}
+.wapp-msg{max-width:84%;padding:9px 11px 22px;border-radius:12px;font-size:12.5px;line-height:1.55;color:#e9edef;position:relative;}
+.wapp-out{background:#005c4b;align-self:flex-end;border-bottom-right-radius:3px;}
+.wapp-in{background:#1e2b3a;align-self:flex-start;border-bottom-left-radius:3px;}
+.wapp-time{position:absolute;bottom:5px;right:9px;font-size:10px;color:#8a9ab5;display:flex;align-items:center;gap:3px;}
+.wapp-tags{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap;}
+.wapp-tags span{background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.25);color:#25d366;border-radius:100px;padding:2px 9px;font-size:10px;font-weight:600;}
+.wapp-typing{display:flex;align-items:center;gap:8px;align-self:flex-start;}
+.typing-dots{background:#1e2b3a;border-radius:12px;padding:10px 14px;display:flex;gap:4px;align-items:center;}
+.typing-dots span{width:7px;height:7px;border-radius:50%;background:#8a9ab5;animation:tdot 1.4s ease-in-out infinite;}
+.typing-dots span:nth-child(2){animation-delay:.2s;}
+.typing-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes tdot{0%,80%,100%{transform:scale(.8);opacity:.5}40%{transform:scale(1.1);opacity:1}}
+.wapp-input-bar{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#1a1f2b;}
+.wapp-input-field{flex:1;background:#2a3441;border-radius:100px;padding:9px 14px;display:flex;align-items:center;gap:8px;font-size:12px;color:#556275;}
+.wapp-input-field i{color:#556275;font-size:16px;}
+.wapp-mic{width:36px;height:36px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;color:#000;font-size:16px;}
+
+/* Animações sequenciais das mensagens */
+.wapp-anim-1{opacity:0;animation:msgIn .4s ease .3s both;}
+.wapp-anim-2{opacity:0;animation:msgIn .4s ease 1.2s both;}
+.wapp-anim-3{opacity:0;animation:msgIn .4s ease 2.2s both;}
+.wapp-anim-4{opacity:0;animation:msgIn .3s ease 3s both;}
+.wapp-anim-5{opacity:0;animation:msgIn .4s ease 4s both;}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+
 /* ── ANIMATIONS ── */
 .fade{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease;}
 .fade.in{opacity:1;transform:translateY(0);}
@@ -410,6 +450,81 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 
 <!-- ═══ FEATURES ═══ -->
 <div id="funcionalidades"></div>
+
+<!-- ═══ WHATSAPP DEMO ═══ -->
+<section class="section section-light" id="whatsapp-demo">
+  <div class="section-inner">
+    <div class="feat-row">
+      <div class="feat-card fade">
+        <div class="feat-tag-pill"><i class="ph ph-chat-circle-dots"></i>Como funciona</div>
+        <h2 class="feat-card-title">Registre seus gastos<br>em segundos.</h2>
+        <p class="feat-card-desc">Diga ao Dincon o que gastou e ele registra, categoriza e atualiza seu dashboard na hora. Controle financeiro nunca foi tão simples.</p>
+        <ul class="feat-bullets">
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Registre qualquer gasto em segundos</li>
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Categorização automática inteligente</li>
+          <li><span class="bcheck"><i class="ph ph-check"></i></span>Dashboard atualizado instantaneamente</li>
+        </ul>
+      </div>
+      <div class="feat-img-wrap fade fade-delay-1" style="justify-content:center;">
+        <!-- WhatsApp chat mockup CSS -->
+        <div class="wapp-wrap">
+          <div class="wapp-phone">
+            <div class="wapp-notch"></div>
+            <div class="wapp-header">
+              <div class="wapp-avatar-wrap">
+                <div class="wapp-avatar">D</div>
+                <div class="wapp-online-dot"></div>
+              </div>
+              <div class="wapp-hinfo">
+                <div class="wapp-name">Dincon <i class="ph ph-seal-check" style="color:#25d366;font-size:13px;"></i></div>
+                <div class="wapp-status">online agora</div>
+              </div>
+              <div class="wapp-hicons">
+                <i class="ph ph-video-camera"></i>
+                <i class="ph ph-phone"></i>
+              </div>
+            </div>
+            <div class="wapp-body">
+              <div class="wapp-date-sep">HOJE</div>
+              <div class="wapp-msg wapp-out wapp-anim-1">
+                Gastei 85 reais no supermercado no pix
+                <span class="wapp-time">21:14 <i class="ph ph-checks" style="color:#53bdeb"></i></span>
+              </div>
+              <div class="wapp-msg wapp-in wapp-anim-2">
+                ✅ <strong>Lançamento registrado!</strong><br>
+                R$ 85,00 em <strong>Alimentação</strong>.<br><br>
+                Você já gastou R$ 210,00 nessa categoria este mês.
+                <span class="wapp-time">21:14</span>
+                <div class="wapp-tags"><span>Alimentação</span><span>Finanças</span></div>
+              </div>
+              <div class="wapp-msg wapp-out wapp-anim-3">
+                Qual meu saldo esse mês?
+                <span class="wapp-time">21:15 <i class="ph ph-checks" style="color:#53bdeb"></i></span>
+              </div>
+              <div class="wapp-typing wapp-anim-4">
+                <div class="wapp-avatar" style="width:28px;height:28px;font-size:12px;">D</div>
+                <div class="typing-dots"><span></span><span></span><span></span></div>
+              </div>
+              <div class="wapp-msg wapp-in wapp-anim-5">
+                📊 <strong>Saldo de junho: R$ 1.455,00</strong> ✓<br><br>
+                ↑ Receitas: R$ 3.000,00<br>
+                ↓ Despesas: R$ 1.545,00
+                <span class="wapp-time">21:15</span>
+              </div>
+            </div>
+            <div class="wapp-input-bar">
+              <div class="wapp-input-field">
+                <i class="ph ph-smiley"></i>
+                <span>Escreva uma mensagem...</span>
+              </div>
+              <div class="wapp-mic"><i class="ph ph-microphone"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- Feature 1 -->
 <section class="section section-light">
