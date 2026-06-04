@@ -104,6 +104,88 @@ nav.over-light .btn-ghost:hover{color:#111;}
 .sl-dark .sec-label{color:var(--accent);}
 .sl-dark .sec-title{color:var(--t);}
 .sl-dark .sec-sub{color:var(--t2);}
+.sl-dark .step-title{color:var(--t) !important;}
+.sl-dark .step-desc{color:var(--t2) !important;}
+.sl-dark .step-card{background:var(--s2) !important;border-color:var(--border) !important;}
+.sl-dark .vid-title{color:var(--t) !important;}
+.sl-dark .vid-desc{color:var(--t2) !important;}
+.sl-dark .vid-label{color:var(--accent) !important;}
+
+/* ── PRICING GLASSMORPHISM ── */
+.section-pricing{
+  background:#f8f8f8 !important;
+  position:relative;
+  overflow:hidden;
+}
+.section-pricing::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 15% 50%,rgba(0,200,110,.1) 0%,transparent 45%),
+    radial-gradient(circle at 85% 20%,rgba(139,92,246,.08) 0%,transparent 45%),
+    radial-gradient(circle at 50% 90%,rgba(96,165,250,.07) 0%,transparent 40%);
+  pointer-events:none;
+}
+.section-pricing .sec-label{color:#00a050;}
+.section-pricing .sec-title{color:#111;}
+.section-pricing .sec-sub{color:#555;}
+/* Glassmorphism pricing cards */
+.section-pricing .pcard{
+  background:rgba(255,255,255,.6);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,.8);
+  box-shadow:0 8px 48px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.9);
+}
+.section-pricing .pcard:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.12);}
+.section-pricing .pcard.featured{
+  background:rgba(0,200,110,.08);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-color:rgba(0,200,110,.3);
+  box-shadow:0 8px 48px rgba(0,200,110,.15),inset 0 1px 0 rgba(255,255,255,.8);
+}
+.section-pricing .pcard.featured:hover{box-shadow:0 20px 60px rgba(0,200,110,.2);}
+.section-pricing .pcard.family{
+  background:rgba(139,92,246,.07);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-color:rgba(139,92,246,.25);
+}
+.section-pricing .pname{color:#555;}
+.section-pricing .pprice{color:#111;}
+.section-pricing .pperiod{color:#888;}
+.section-pricing .pdivider{background:rgba(0,0,0,.08);}
+.section-pricing .pfeats li{color:#444;}
+.section-pricing .pfeats li .no{color:#bbb;}
+.section-pricing .pbtn.free{background:rgba(0,0,0,.06);color:#555;}
+.section-pricing .pbtn.free:hover{background:rgba(0,0,0,.1);color:#222;}
+
+/* ── LOCK SCREEN PHONE ── */
+.ls-screen{position:absolute;inset:0;background:linear-gradient(160deg,#060614 0%,#0d1a2e 35%,#071a10 65%,#040c06 100%);overflow:hidden;display:flex;flex-direction:column;align-items:center;z-index:0;}
+.ls-screen::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 35% 55%,rgba(0,200,110,.18) 0%,transparent 45%),radial-gradient(circle at 75% 25%,rgba(96,165,250,.12) 0%,transparent 40%);pointer-events:none;}
+.ls-status{display:flex;justify-content:space-between;align-items:center;padding:4px 16px;width:100%;position:relative;z-index:2;}
+.ls-status-time{font-size:10px;font-weight:700;color:rgba(255,255,255,.8);}
+.ls-status-icons{display:flex;align-items:center;gap:3px;color:rgba(255,255,255,.8);}
+.ls-time-block{text-align:center;margin-top:24px;position:relative;z-index:2;}
+.ls-big-time{font-size:52px;font-weight:200;color:#fff;letter-spacing:-.02em;line-height:1;}
+.ls-date{font-size:12px;color:rgba(255,255,255,.6);margin-top:6px;font-weight:400;}
+.ls-lock-icon{margin-top:10px;font-size:14px;color:rgba(255,255,255,.4);}
+.ls-notifs-area{position:relative;z-index:2;width:100%;padding:0 8px;margin-top:16px;flex:1;overflow:hidden;}
+.ls-banner{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:9px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);margin-bottom:8px;transform:translateY(-110%);opacity:0;}
+.ls-b1{animation:lsBannerIn 4.5s ease .4s both;}
+.ls-b2{animation:lsBannerIn 4.5s ease 5.4s both;}
+.ls-b3{animation:lsBannerIn 4.5s ease 10.4s both;}
+.ls-b4{animation:lsBannerIn 4.5s ease 15.4s both;}
+.ls-b5{animation:lsBannerIn 4.5s ease 20.4s both;}
+@keyframes lsBannerIn{0%{transform:translateY(-110%);opacity:0}10%{transform:translateY(0);opacity:1}70%{transform:translateY(0);opacity:1}100%{transform:translateY(-110%);opacity:0}}
+.ls-banner-icon{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#00c86e,#00a050);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#000;flex-shrink:0;}
+.ls-banner-body{flex:1;min-width:0;}
+.ls-banner-app{font-size:9px;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
+.ls-banner-msg{font-size:11px;color:rgba(255,255,255,.9);line-height:1.4;}
+.ls-banner-time{font-size:9px;color:rgba(255,255,255,.4);flex-shrink:0;}
+.ls-unlock-hint{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:10px;color:rgba(255,255,255,.3);z-index:2;}
 
 /* Card branco que envolve o texto */
 .feat-card{background:#fff;border-radius:28px;padding:52px 48px;box-shadow:0 8px 48px rgba(0,0,0,.09);}
@@ -129,11 +211,11 @@ nav.over-light .btn-ghost:hover{color:#111;}
 .section-light .sec-label{color:var(--accent);}
 .section-light .sec-title{color:var(--t);}
 .section-light .sec-sub{color:var(--t2);}
-.section-light .testi-card{background:var(--s2);border-color:var(--border);}
-.section-light .testi-card:hover{border-color:var(--b2);}
-.section-light .testi-text{color:var(--t2);}
-.section-light .testi-name{color:var(--t);}
-.section-light .testi-role{color:var(--t3);}
+.section-light .testi-card{background:#ffffff;border-color:rgba(255,255,255,.08);box-shadow:0 4px 24px rgba(0,0,0,.25);}
+.section-light .testi-card:hover{border-color:rgba(255,255,255,.15);}
+.section-light .testi-text{color:#444;}
+.section-light .testi-name{color:#111;}
+.section-light .testi-role{color:#888;}
 /* Feat-card sombra mais visível no fundo escuro */
 .feat-card{box-shadow:0 24px 64px rgba(0,0,0,.4);}
 
@@ -1419,54 +1501,52 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
         <div class="din-sim-phone notif-demo-phone">
           <div class="din-notch"></div>
           <div class="din-status-bar"><span class="din-time">9:41</span><div class="din-status-icons"><svg width="25" height="11" viewBox="0 0 25 11"><rect x="0" y="1" width="22" height="9" rx="2" stroke="currentColor" stroke-width="1" fill="none" opacity=".4"/><rect x="1.5" y="2.5" width="16" height="6" rx="1" fill="#00c86e"/><rect x="23" y="3.5" width="1.5" height="4" rx=".75" fill="currentColor" opacity=".4"/></svg></div></div>
-          <!-- Área de notificações (banner drop-down) -->
-          <div class="ndp-notifs">
-            <div class="ndp-banner ndp-b1">
-              <div class="ndp-app-icon nc-green">D</div>
-              <div class="ndp-body"><div class="ndp-app-name">Dincon</div><div class="ndp-text">✅ R$85,00 registrado em <strong>Alimentação</strong>.</div></div>
-              <div class="ndp-time">agora</div>
+          <!-- LOCK SCREEN BONITA -->
+          <div class="ls-screen">
+            <!-- Status bar -->
+            <div class="ls-status">
+              <span class="ls-status-time">9:41</span>
+              <div class="ls-status-icons">
+                <svg width="12" height="9" viewBox="0 0 15 11"><rect x="0" y="5" width="3" height="6" rx="1" fill="currentColor" opacity=".4"/><rect x="4" y="3" width="3" height="8" rx="1" fill="currentColor" opacity=".7"/><rect x="8" y="1" width="3" height="10" rx="1" fill="currentColor"/><rect x="12" y="0" width="3" height="11" rx="1" fill="currentColor"/></svg>
+                <svg width="12" height="9" viewBox="0 0 14 11"><path d="M7 2.5C9.2 2.5 11.2 3.4 12.6 4.9L14 3.5C12.2 1.3 9.7 0 7 0S1.8 1.3 0 3.5L1.4 4.9C2.8 3.4 4.8 2.5 7 2.5z" fill="currentColor"/><circle cx="7" cy="9.5" r="1.5" fill="currentColor"/></svg>
+                <svg width="22" height="9" viewBox="0 0 25 11"><rect x="0" y="1" width="22" height="9" rx="2" stroke="currentColor" stroke-width="1" fill="none" opacity=".5"/><rect x="1.5" y="2.5" width="16" height="6" rx="1" fill="rgba(255,255,255,.7)"/><rect x="23" y="3.5" width="1.5" height="4" rx=".75" fill="currentColor" opacity=".5"/></svg>
+              </div>
             </div>
-            <div class="ndp-banner ndp-b2">
-              <div class="ndp-app-icon" style="background:rgba(245,158,11,.2);color:#f59e0b;">D</div>
-              <div class="ndp-body"><div class="ndp-app-name">Dincon</div><div class="ndp-text">⚠️ <strong>Serviços:</strong> 80% do limite usado!</div></div>
-              <div class="ndp-time">1m</div>
+            <!-- Hora e data -->
+            <div class="ls-time-block">
+              <div class="ls-big-time">9:41</div>
+              <div class="ls-date">Quinta, 5 de junho de 2026</div>
+              <div class="ls-lock-icon"><i class="ph ph-lock" style="font-size:16px;"></i></div>
             </div>
-            <div class="ndp-banner ndp-b3">
-              <div class="ndp-app-icon nc-purple">D</div>
-              <div class="ndp-body"><div class="ndp-app-name">Dincon</div><div class="ndp-text">🎉 Meta <strong>"Viagem"</strong> atingiu 40%!</div></div>
-              <div class="ndp-time">5m</div>
+            <!-- Notificações na lock screen -->
+            <div class="ls-notifs-area">
+              <div class="ls-banner ls-b1">
+                <div class="ls-banner-icon">D</div>
+                <div class="ls-banner-body"><div class="ls-banner-app">Dincon</div><div class="ls-banner-msg">✅ R$85,00 registrado em Alimentação.</div></div>
+                <div class="ls-banner-time">agora</div>
+              </div>
+              <div class="ls-banner ls-b2">
+                <div class="ls-banner-icon" style="background:linear-gradient(135deg,#f59e0b,#b45309);">D</div>
+                <div class="ls-banner-body"><div class="ls-banner-app">Dincon</div><div class="ls-banner-msg">⚠️ Serviços: 80% do limite usado!</div></div>
+                <div class="ls-banner-time">2m</div>
+              </div>
+              <div class="ls-banner ls-b3">
+                <div class="ls-banner-icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);">D</div>
+                <div class="ls-banner-body"><div class="ls-banner-app">Dincon</div><div class="ls-banner-msg">🎉 Meta "Viagem" atingiu 40%!</div></div>
+                <div class="ls-banner-time">5m</div>
+              </div>
+              <div class="ls-banner ls-b4">
+                <div class="ls-banner-icon">D</div>
+                <div class="ls-banner-body"><div class="ls-banner-app">Dincon</div><div class="ls-banner-msg">💚 Score financeiro: 87/100 ✓</div></div>
+                <div class="ls-banner-time">8m</div>
+              </div>
+              <div class="ls-banner ls-b5">
+                <div class="ls-banner-icon">D</div>
+                <div class="ls-banner-body"><div class="ls-banner-app">Dincon</div><div class="ls-banner-msg">📊 Saldo: R$2.455,00 — Finanças em dia!</div></div>
+                <div class="ls-banner-time">15m</div>
+              </div>
             </div>
-            <div class="ndp-banner ndp-b4">
-              <div class="ndp-app-icon nc-green">D</div>
-              <div class="ndp-body"><div class="ndp-app-name">Dincon</div><div class="ndp-text">💚 Pagamento registrado! Score: <strong>87/100</strong></div></div>
-              <div class="ndp-time">8m</div>
-            </div>
-            <div class="ndp-banner ndp-b5">
-              <div class="ndp-app-icon nc-blue">D</div>
-              <div class="ndp-body"><div class="ndp-app-name">Dincon</div><div class="ndp-text">📊 Saldo do mês: <strong style="color:#00c86e">R$2.455,00</strong> ✓</div></div>
-              <div class="ndp-time">15m</div>
-            </div>
-          </div>
-          <!-- App rodando no fundo -->
-          <div class="ndp-app">
-            <div class="ndp-app-header"><div class="din-app-d">D</div><span class="din-app-name">dincon</span><div style="margin-left:auto;font-size:8px;font-weight:700;color:var(--t2);">jun 2026</div></div>
-            <div class="ndp-green-card">
-              <div style="font-size:7px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:3px;">SALDO DO MÊS</div>
-              <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-.04em;">R$2.455,00</div>
-              <div style="font-size:7px;color:rgba(255,255,255,.6);margin-top:3px;">✓ Finanças em dia</div>
-            </div>
-            <div class="ndp-kpis">
-              <div class="ndp-kpi"><div style="font-size:7px;color:#aaa;">Receitas</div><div style="font-size:11px;font-weight:900;color:#00c86e;">R$4.000</div></div>
-              <div class="ndp-kpi"><div style="font-size:7px;color:#aaa;">Despesas</div><div style="font-size:11px;font-weight:900;color:#f87171;">R$1.545</div></div>
-              <div class="ndp-kpi"><div style="font-size:7px;color:#aaa;">Economia</div><div style="font-size:11px;font-weight:900;color:#8b5cf6;">55%</div></div>
-            </div>
-          </div>
-          <div class="din-bottom-nav">
-            <div class="din-bnav-item active"><i class="ph ph-chart-bar"></i><span>Início</span></div>
-            <div class="din-bnav-item"><i class="ph ph-arrows-left-right"></i><span>Transações</span></div>
-            <div class="din-bnav-item"><i class="ph ph-target"></i><span>Metas</span></div>
-            <div class="din-bnav-item"><i class="ph ph-heart"></i><span>Saúde</span></div>
-            <div class="din-bnav-item"><i class="ph ph-dots-three"></i><span>Mais</span></div>
+            <div class="ls-unlock-hint">Deslize para abrir</div>
           </div>
         </div>
       </div>
@@ -1475,7 +1555,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 </section>
 
 <!-- ═══ COMO COMEÇAR + SUPORTE ═══ -->
-<section class="section" style="background:var(--s1);">
+<section class="section sl-dark">
   <div class="section-inner">
     <div class="sec-header fade">
       <div class="sec-label" style="color:#00a050;">Primeiros passos</div>
@@ -1782,7 +1862,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 </section>
 
 <!-- ═══ PRICING ═══ -->
-<section class="section" id="precos">
+<section class="section section-pricing sl-white" id="precos">
   <div class="section-inner">
     <div class="sec-header fade">
       <div class="sec-label">Preços</div>
@@ -2017,7 +2097,7 @@ if(wappPhone){
 
 // Nav adaptativo (claro/escuro conforme seção)
 const navEl=document.querySelector('nav');
-const lightSections=document.querySelectorAll('.section-light');
+const lightSections=document.querySelectorAll('.sl-white,.sl-gray');
 const navHeight=86;
 function checkNavColor(){
   let overLight=false;
