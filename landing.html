@@ -369,6 +369,48 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 .din-visible .din-chart-line,.din-visible .din-fab{animation-play-state:running;}
 @keyframes kpiIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
+/* ── CARTÕES SIMULATION ── */
+.din-c-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;background:#fff;border-bottom:1px solid #eee;flex-shrink:0;}
+.din-c-title{font-size:14px;font-weight:800;color:#111;letter-spacing:-.02em;}
+.din-c-subtitle{font-size:9px;color:#aaa;margin-top:1px;}
+.din-c-btn{font-size:10px;font-weight:700;color:#00c86e;background:rgba(0,200,110,.1);border:1px solid rgba(0,200,110,.25);padding:5px 10px;border-radius:100px;}
+.din-c-body{flex:1;overflow:hidden;padding:10px;display:flex;flex-direction:column;gap:9px;background:#f5f5f8;}
+/* Credit cards */
+.din-cc{border-radius:14px;padding:13px 14px;color:#fff;position:relative;overflow:hidden;}
+.din-cc-santander{background:linear-gradient(135deg,#5b21b6,#7c3aed,#4c1d95);}
+.din-cc-nubank{background:linear-gradient(135deg,#991b1b,#dc2626,#7f1d1d);}
+.din-cc::before{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.08);}
+.din-cc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+.din-cc-name{font-size:11px;font-weight:800;letter-spacing:.08em;}
+.din-cc-dots{font-size:8px;color:rgba(255,255,255,.6);margin-top:2px;letter-spacing:.04em;}
+.din-cc-edit-btns{display:flex;gap:4px;}
+.din-cc-edit-btns span{width:22px;height:22px;background:rgba(255,255,255,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer;}
+.din-cc-lbl{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:rgba(255,255,255,.6);margin-bottom:3px;}
+.din-cc-val{font-size:20px;font-weight:900;letter-spacing:-.03em;margin-bottom:9px;}
+.din-cc-bar-track{height:4px;background:rgba(255,255,255,.2);border-radius:100px;margin-bottom:6px;overflow:hidden;}
+.din-cc-bar{height:100%;border-radius:100px;background:rgba(255,255,255,.85);width:0;}
+.din-cc-bar-sant{animation:barFillSant 1s ease 1.3s forwards;animation-play-state:paused;}
+.din-cc-bar-nub{animation:barFillNub .5s ease 1.8s forwards;animation-play-state:paused;}
+@keyframes barFillSant{to{width:75%;}}
+@keyframes barFillNub{to{width:0%;}}
+.din-cc-limit-text{font-size:8px;color:rgba(255,255,255,.65);}
+/* Gastos */
+.din-c-gastos{background:#fff;border-radius:12px;padding:10px 12px;border:1px solid #f0f0f0;}
+.din-c-gastos-title{font-size:10px;font-weight:800;color:#111;margin-bottom:8px;}
+.din-c-gasto-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f5f5f5;}
+.din-c-gasto-item:last-child{border-bottom:none;padding-bottom:0;}
+.din-c-gasto-icon{width:28px;height:28px;background:#f5f5f0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.din-c-gasto-info{flex:1;min-width:0;}
+.din-c-gasto-name{font-size:10px;font-weight:700;color:#111;}
+.din-c-gasto-meta{font-size:8px;color:#aaa;}
+.din-c-gasto-val{font-size:10px;font-weight:800;color:#f87171;}
+/* Animações dos cartões */
+.din-c-anim-1{opacity:0;animation:kpiIn .45s ease .3s both;animation-play-state:paused;}
+.din-c-anim-2{opacity:0;animation:kpiIn .45s ease .7s both;animation-play-state:paused;}
+.din-c-anim-3{opacity:0;animation:kpiIn .45s ease 1.1s both;animation-play-state:paused;}
+.din-cartoes-visible .din-c-anim-1,.din-cartoes-visible .din-c-anim-2,.din-cartoes-visible .din-c-anim-3{animation-play-state:running;}
+.din-cartoes-visible .din-cc-bar-sant,.din-cartoes-visible .din-cc-bar-nub{animation-play-state:running;}
+
 /* ── WHATSAPP SECTION COLORS ── */
 #whatsapp-demo .feat-card-title{color:#111118;}
 #whatsapp-demo .feat-card-desc{color:#55556a;}
@@ -713,8 +755,71 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
           <li><span class="bcheck"><i class="ph ph-check"></i></span>Suporte a múltiplos bancos e carteiras</li>
         </ul>
       </div>
-      <div class="feat-img-wrap fade fade-delay-1">
-        <img src="/screenshots/s2.jpg" alt="Cartões Dincon">
+      <!-- ANIMATED CARTÕES PHONE SIM -->
+      <div class="feat-img-wrap fade fade-delay-1" style="justify-content:center;padding:20px 10px;">
+        <div class="din-sim-phone din-cartoes-phone">
+          <div class="din-notch"></div>
+          <div class="din-status-bar">
+            <span class="din-time">9:41</span>
+            <div class="din-status-icons">
+              <svg width="15" height="11" viewBox="0 0 15 11"><rect x="0" y="5" width="3" height="6" rx="1" fill="currentColor" opacity=".4"/><rect x="4" y="3" width="3" height="8" rx="1" fill="currentColor" opacity=".6"/><rect x="8" y="1" width="3" height="10" rx="1" fill="currentColor"/><rect x="12" y="0" width="3" height="11" rx="1" fill="currentColor"/></svg>
+              <svg width="14" height="11" viewBox="0 0 14 11"><path d="M7 2.5C9.2 2.5 11.2 3.4 12.6 4.9L14 3.5C12.2 1.3 9.7 0 7 0S1.8 1.3 0 3.5L1.4 4.9C2.8 3.4 4.8 2.5 7 2.5z" fill="currentColor"/><path d="M7 5.5C8.4 5.5 9.6 6.1 10.5 7L12 5.5C10.7 4.1 8.9 3.2 7 3.2S3.3 4.1 2 5.5L3.5 7C4.4 6.1 5.6 5.5 7 5.5z" fill="currentColor"/><circle cx="7" cy="9.5" r="1.5" fill="currentColor"/></svg>
+              <svg width="25" height="11" viewBox="0 0 25 11"><rect x="0" y="1" width="22" height="9" rx="2" stroke="currentColor" stroke-width="1" fill="none" opacity=".4"/><rect x="1.5" y="2.5" width="16" height="6" rx="1" fill="#00c86e"/><rect x="23" y="3.5" width="1.5" height="4" rx=".75" fill="currentColor" opacity=".4"/></svg>
+            </div>
+          </div>
+          <!-- Header cartões -->
+          <div class="din-c-header">
+            <div><div class="din-c-title">Meus Cartões</div><div class="din-c-subtitle">Fatura e limites</div></div>
+            <div class="din-c-btn">+ Cartão</div>
+          </div>
+          <!-- Corpo com scroll visual -->
+          <div class="din-c-body">
+            <!-- Santander -->
+            <div class="din-cc din-cc-santander din-c-anim-1">
+              <div class="din-cc-top">
+                <div><div class="din-cc-name">SANTANDER</div><div class="din-cc-dots">• • • • • • • • • • 0000</div></div>
+                <div class="din-cc-edit-btns"><span>✏️</span><span>×</span></div>
+              </div>
+              <div class="din-cc-lbl">FATURA ATUAL</div>
+              <div class="din-cc-val">R$ 500,00</div>
+              <div class="din-cc-bar-track"><div class="din-cc-bar din-cc-bar-sant"></div></div>
+              <div class="din-cc-limit-text">Comprometido: R$1.508,67 / R$2.000,00 · <strong>75%</strong></div>
+            </div>
+            <!-- Nubank -->
+            <div class="din-cc din-cc-nubank din-c-anim-2">
+              <div class="din-cc-top">
+                <div><div class="din-cc-name">NUBANK</div><div class="din-cc-dots">• • • • • • • • • • 0000</div></div>
+                <div class="din-cc-edit-btns"><span>✏️</span><span>×</span></div>
+              </div>
+              <div class="din-cc-lbl">FATURA ATUAL</div>
+              <div class="din-cc-val">R$ 0,00</div>
+              <div class="din-cc-bar-track"><div class="din-cc-bar din-cc-bar-nub"></div></div>
+              <div class="din-cc-limit-text">Comprometido: R$0,00 / R$1.000,00 · <strong>0%</strong></div>
+            </div>
+            <!-- Gastos -->
+            <div class="din-c-gastos din-c-anim-3">
+              <div class="din-c-gastos-title">Gastos no crédito</div>
+              <div class="din-c-gasto-item">
+                <div class="din-c-gasto-icon">📦</div>
+                <div class="din-c-gasto-info"><div class="din-c-gasto-name">Gast...</div><div class="din-c-gasto-meta">Outros · crédito · Santander</div></div>
+                <div class="din-c-gasto-val">-R$350,00</div>
+              </div>
+              <div class="din-c-gasto-item">
+                <div class="din-c-gasto-icon">📦</div>
+                <div class="din-c-gasto-info"><div class="din-c-gasto-name">Gast...</div><div class="din-c-gasto-meta">Outros · crédito · Santander</div></div>
+                <div class="din-c-gasto-val">-R$150,00</div>
+              </div>
+            </div>
+          </div>
+          <!-- Bottom nav -->
+          <div class="din-bottom-nav">
+            <div class="din-bnav-item"><i class="ph ph-chart-bar"></i><span>Início</span></div>
+            <div class="din-bnav-item"><i class="ph ph-arrows-left-right"></i><span>Transações</span></div>
+            <div class="din-bnav-item"><i class="ph ph-target"></i><span>Metas</span></div>
+            <div class="din-bnav-item"><i class="ph ph-heart"></i><span>Saúde</span></div>
+            <div class="din-bnav-item"><i class="ph ph-dots-three"></i><span>Mais</span></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1110,6 +1215,17 @@ if(dinPhone){
     });
   },{threshold:0.25});
   dinObs.observe(dinPhone);
+}
+
+// Cartões phone — inicia ao entrar na tela
+const cartoesPhone = document.querySelector('.din-cartoes-phone');
+if(cartoesPhone){
+  const cObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){e.target.classList.add('din-cartoes-visible');cObs.unobserve(e.target);}
+    });
+  },{threshold:0.25});
+  cObs.observe(cartoesPhone);
 }
 
 // WhatsApp chat — inicia animação ao entrar na tela
