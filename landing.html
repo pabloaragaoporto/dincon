@@ -489,35 +489,37 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 .din-orc-a4{opacity:0;animation:kpiIn .4s ease 1.3s both;animation-play-state:paused;}
 .din-orc-visible .din-orc-a1,.din-orc-visible .din-orc-a2,.din-orc-visible .din-orc-a3,.din-orc-visible .din-orc-a4{animation-play-state:running;}
 
-/* ── NOTIFICATION ILLUSTRATION ── */
-.notif-stage{position:relative;width:340px;height:340px;flex-shrink:0;}
-@media(max-width:960px){.notif-stage{width:280px;height:280px;}}
-.notif-phone{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:110px;background:#06060e;border-radius:22px;border:3px solid #1a1a28;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px rgba(0,200,110,.15);overflow:hidden;z-index:3;}
-.notif-ph-notch{height:12px;background:#0a0a14;display:flex;align-items:center;justify-content:center;}
-.notif-ph-notch::after{content:'';width:36px;height:3px;background:#111;border-radius:100px;}
-.notif-ph-screen{padding:8px;background:#0d1a10;}
-.notif-ph-header{display:flex;align-items:center;gap:4px;margin-bottom:6px;}
-.notif-ph-d{width:14px;height:14px;border-radius:4px;background:#00c86e;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:900;color:#000;}
-.notif-ph-header span{font-size:9px;font-weight:800;color:#fff;}
-.notif-ph-saldo{font-size:14px;font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:2px;}
-.notif-ph-status{font-size:7px;color:#00c86e;font-weight:700;margin-bottom:8px;}
-.notif-ph-bars{display:flex;flex-direction:column;gap:4px;}
-.notif-ph-bar{height:4px;border-radius:100px;opacity:.7;}
-/* Notification cards */
-.notif-card{position:absolute;background:rgba(10,10,20,.92);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 10px;display:flex;align-items:center;gap:8px;backdrop-filter:blur(12px);z-index:4;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4);max-width:200px;}
-.nc-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;}
-.nc-green{background:rgba(0,200,110,.15);color:#00c86e;}
-.nc-blue{background:rgba(96,165,250,.15);color:#60a5fa;}
-.nc-purple{background:rgba(139,92,246,.15);color:#8b5cf6;}
-.nc-body{min-width:0;}.nc-title{font-size:9px;font-weight:800;color:#fff;margin-bottom:1px;}.nc-msg{font-size:9px;color:rgba(255,255,255,.7);line-height:1.4;white-space:normal;}
-/* Positions */
-.nc-1{top:5%;left:-5%;animation:ncFloat 4s ease-in-out infinite, ncIn .5s ease .3s both;}
-.nc-2{top:18%;right:-8%;animation:ncFloat 5s ease-in-out infinite .8s, ncIn .5s ease 1.1s both;}
-.nc-3{bottom:28%;left:-8%;animation:ncFloat 4.5s ease-in-out infinite .4s, ncIn .5s ease 1.9s both;}
-.nc-4{bottom:8%;right:-5%;animation:ncFloat 5.5s ease-in-out infinite 1s, ncIn .5s ease 2.7s both;}
-.nc-5{top:45%;left:-10%;animation:ncFloat 4s ease-in-out infinite 1.5s, ncIn .5s ease 3.5s both;}
-@keyframes ncFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-@keyframes ncIn{from{opacity:0;transform:scale(.8) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+/* ── NOTIFICATION PHONE (iOS style) ── */
+.notif-demo-phone{position:relative;}
+.ndp-notifs{position:absolute;top:42px;left:6px;right:6px;z-index:10;display:flex;flex-direction:column;gap:6px;pointer-events:none;}
+.ndp-banner{background:rgba(28,28,40,.96);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:10px 12px;display:flex;align-items:flex-start;gap:9px;backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,.5);transform:translateY(-120%);opacity:0;}
+/* Each banner slides in then out */
+.ndp-b1{animation:ndpIn 4.5s ease .5s both;}
+.ndp-b2{animation:ndpIn 4.5s ease 5.5s both;}
+.ndp-b3{animation:ndpIn 4.5s ease 10.5s both;}
+.ndp-b4{animation:ndpIn 4.5s ease 15.5s both;}
+.ndp-b5{animation:ndpIn 4.5s ease 20.5s both;}
+@keyframes ndpIn{
+  0%{transform:translateY(-120%);opacity:0;}
+  10%{transform:translateY(0);opacity:1;}
+  70%{transform:translateY(0);opacity:1;}
+  100%{transform:translateY(-120%);opacity:0;}
+}
+.ndp-app-icon{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0;}
+.nc-green{background:rgba(0,200,110,.2);color:#00c86e;}
+.nc-blue{background:rgba(96,165,250,.2);color:#60a5fa;}
+.nc-purple{background:rgba(139,92,246,.2);color:#8b5cf6;}
+.ndp-body{flex:1;min-width:0;}
+.ndp-app-name{font-size:9px;font-weight:800;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
+.ndp-text{font-size:11px;color:#f0f0f8;line-height:1.45;}
+.ndp-text strong{color:#fff;}
+.ndp-time{font-size:9px;color:rgba(255,255,255,.35);flex-shrink:0;margin-top:1px;}
+/* App content behind notifications */
+.ndp-app{padding:8px 10px;flex:1;display:flex;flex-direction:column;gap:8px;overflow:hidden;}
+.ndp-app-header{display:flex;align-items:center;gap:6px;margin-bottom:2px;}
+.ndp-green-card{background:linear-gradient(145deg,#052e18,#0a4a25);border-radius:12px;padding:12px 14px;}
+.ndp-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.ndp-kpi{background:#fff;border-radius:9px;padding:7px 8px;border:1px solid #eee;}
 
 /* ── ORBIT ANIMATIONS ── */
 .orbit-ring-1{animation:orbitSpin 25s linear infinite;}
@@ -1388,42 +1390,58 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
         </ul>
         <a href="/dashboard" class="btn btn-primary" style="margin-top:24px;border-radius:12px;padding:13px 28px;font-size:14px;">Experimentar grátis →</a>
       </div>
-      <div class="feat-img-wrap fade fade-delay-1" style="justify-content:center;padding:20px;">
-        <div class="notif-stage">
-          <!-- Phone central -->
-          <div class="notif-phone">
-            <div class="notif-ph-notch"></div>
-            <div class="notif-ph-screen">
-              <div class="notif-ph-header"><div class="notif-ph-d">D</div><span>dincon</span></div>
-              <div class="notif-ph-saldo">R$ 2.455,00</div>
-              <div class="notif-ph-status">✓ Finanças em dia</div>
-              <div class="notif-ph-bars">
-                <div class="notif-ph-bar" style="width:75%;background:#00c86e;"></div>
-                <div class="notif-ph-bar" style="width:45%;background:#8b5cf6;"></div>
-                <div class="notif-ph-bar" style="width:30%;background:#60a5fa;"></div>
-              </div>
+      <div class="feat-img-wrap fade fade-delay-1" style="justify-content:center;padding:20px 10px;">
+        <div class="din-sim-phone notif-demo-phone">
+          <div class="din-notch"></div>
+          <div class="din-status-bar"><span class="din-time">9:41</span><div class="din-status-icons"><svg width="25" height="11" viewBox="0 0 25 11"><rect x="0" y="1" width="22" height="9" rx="2" stroke="currentColor" stroke-width="1" fill="none" opacity=".4"/><rect x="1.5" y="2.5" width="16" height="6" rx="1" fill="#00c86e"/><rect x="23" y="3.5" width="1.5" height="4" rx=".75" fill="currentColor" opacity=".4"/></svg></div></div>
+          <!-- Área de notificações (banner drop-down) -->
+          <div class="ndp-notifs">
+            <div class="ndp-banner ndp-b1">
+              <div class="ndp-app-icon nc-green">D</div>
+              <div class="ndp-body"><div class="ndp-app-name">Dincon</div><div class="ndp-text">✅ R$85,00 registrado em <strong>Alimentação</strong>.</div></div>
+              <div class="ndp-time">agora</div>
+            </div>
+            <div class="ndp-banner ndp-b2">
+              <div class="ndp-app-icon" style="background:rgba(245,158,11,.2);color:#f59e0b;">D</div>
+              <div class="ndp-body"><div class="ndp-app-name">Dincon</div><div class="ndp-text">⚠️ <strong>Serviços:</strong> 80% do limite usado!</div></div>
+              <div class="ndp-time">1m</div>
+            </div>
+            <div class="ndp-banner ndp-b3">
+              <div class="ndp-app-icon nc-purple">D</div>
+              <div class="ndp-body"><div class="ndp-app-name">Dincon</div><div class="ndp-text">🎉 Meta <strong>"Viagem"</strong> atingiu 40%!</div></div>
+              <div class="ndp-time">5m</div>
+            </div>
+            <div class="ndp-banner ndp-b4">
+              <div class="ndp-app-icon nc-green">D</div>
+              <div class="ndp-body"><div class="ndp-app-name">Dincon</div><div class="ndp-text">💚 Pagamento registrado! Score: <strong>87/100</strong></div></div>
+              <div class="ndp-time">8m</div>
+            </div>
+            <div class="ndp-banner ndp-b5">
+              <div class="ndp-app-icon nc-blue">D</div>
+              <div class="ndp-body"><div class="ndp-app-name">Dincon</div><div class="ndp-text">📊 Saldo do mês: <strong style="color:#00c86e">R$2.455,00</strong> ✓</div></div>
+              <div class="ndp-time">15m</div>
             </div>
           </div>
-          <!-- Notificações flutuantes -->
-          <div class="notif-card nc-1">
-            <div class="nc-icon nc-green">D</div>
-            <div class="nc-body"><div class="nc-title">Dincon</div><div class="nc-msg">✅ R$85,00 registrado em Alimentação.</div></div>
+          <!-- App rodando no fundo -->
+          <div class="ndp-app">
+            <div class="ndp-app-header"><div class="din-app-d">D</div><span class="din-app-name">dincon</span><div style="margin-left:auto;font-size:8px;font-weight:700;color:var(--t2);">jun 2026</div></div>
+            <div class="ndp-green-card">
+              <div style="font-size:7px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:3px;">SALDO DO MÊS</div>
+              <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-.04em;">R$2.455,00</div>
+              <div style="font-size:7px;color:rgba(255,255,255,.6);margin-top:3px;">✓ Finanças em dia</div>
+            </div>
+            <div class="ndp-kpis">
+              <div class="ndp-kpi"><div style="font-size:7px;color:#aaa;">Receitas</div><div style="font-size:11px;font-weight:900;color:#00c86e;">R$4.000</div></div>
+              <div class="ndp-kpi"><div style="font-size:7px;color:#aaa;">Despesas</div><div style="font-size:11px;font-weight:900;color:#f87171;">R$1.545</div></div>
+              <div class="ndp-kpi"><div style="font-size:7px;color:#aaa;">Economia</div><div style="font-size:11px;font-weight:900;color:#8b5cf6;">55%</div></div>
+            </div>
           </div>
-          <div class="notif-card nc-2">
-            <div class="nc-icon" style="background:rgba(245,158,11,.15);color:#f59e0b;">D</div>
-            <div class="nc-body"><div class="nc-title">Dincon</div><div class="nc-msg">⚠️ 80% do orçamento de Serviços usado.</div></div>
-          </div>
-          <div class="notif-card nc-3">
-            <div class="nc-icon nc-blue">👤</div>
-            <div class="nc-body"><div class="nc-title">Eduardo Luiz</div><div class="nc-msg">Paguei R$750 do financiamento hoje.</div></div>
-          </div>
-          <div class="notif-card nc-4">
-            <div class="nc-icon nc-green">D</div>
-            <div class="nc-body"><div class="nc-title">Dincon</div><div class="nc-msg">💚 Pagamento registrado! Score: 87/100</div></div>
-          </div>
-          <div class="notif-card nc-5">
-            <div class="nc-icon nc-purple">D</div>
-            <div class="nc-body"><div class="nc-title">Dincon</div><div class="nc-msg">🎉 Meta "Viagem" atingiu 40%!</div></div>
+          <div class="din-bottom-nav">
+            <div class="din-bnav-item active"><i class="ph ph-chart-bar"></i><span>Início</span></div>
+            <div class="din-bnav-item"><i class="ph ph-arrows-left-right"></i><span>Transações</span></div>
+            <div class="din-bnav-item"><i class="ph ph-target"></i><span>Metas</span></div>
+            <div class="din-bnav-item"><i class="ph ph-heart"></i><span>Saúde</span></div>
+            <div class="din-bnav-item"><i class="ph ph-dots-three"></i><span>Mais</span></div>
           </div>
         </div>
       </div>
