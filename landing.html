@@ -489,6 +489,93 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 .din-orc-a4{opacity:0;animation:kpiIn .4s ease 1.3s both;animation-play-state:paused;}
 .din-orc-visible .din-orc-a1,.din-orc-visible .din-orc-a2,.din-orc-visible .din-orc-a3,.din-orc-visible .din-orc-a4{animation-play-state:running;}
 
+/* ── STEP ANIMATIONS ── */
+.sa-wrap{background:linear-gradient(145deg,#f8f6f2,#f0ece6);border-radius:16px;padding:18px;margin-bottom:18px;overflow:hidden;position:relative;min-height:160px;display:flex;align-items:center;justify-content:center;}
+
+/* ─ Step 1: Form ─ */
+.sa-mini-form{width:100%;max-width:240px;}
+.sa-mini-header{display:flex;align-items:center;gap:7px;margin-bottom:12px;}
+.sa-d{width:22px;height:22px;border-radius:6px;background:#00c86e;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#000;flex-shrink:0;}
+.sa-mini-header span{font-size:11px;font-weight:800;color:#111;}
+.sa-field-row{margin-bottom:8px;opacity:0;transform:translateY(6px);}
+.sa-field-lbl{font-size:8px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
+.sa-field-box{background:#fff;border:1px solid #e0dcd8;border-radius:7px;padding:7px 10px;font-size:11px;color:#111;display:flex;align-items:center;gap:2px;min-height:28px;}
+.sa-text{overflow:hidden;white-space:nowrap;max-width:0;transition:max-width 0.6s ease;}
+.sa-cursor{color:#00c86e;font-weight:300;animation:blink .8s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.sa-btn-row{margin-top:10px;opacity:0;}
+.sa-create-btn{background:#00c86e;color:#000;font-size:11px;font-weight:800;padding:9px;border-radius:8px;text-align:center;transform:scale(.9);}
+.sa-success{text-align:center;font-size:11px;font-weight:700;color:#00a050;background:rgba(0,200,110,.1);border:1px solid rgba(0,200,110,.2);border-radius:8px;padding:8px;margin-top:6px;opacity:0;transform:scale(.8);}
+/* Step 1 triggered */
+.sa1-wrap.started .sa1-f1{animation:saFieldIn .4s ease .1s both;}
+.sa1-wrap.started .sa1-f2{animation:saFieldIn .4s ease .6s both;}
+.sa1-wrap.started .sa1-f3{animation:saFieldIn .4s ease 1.1s both;}
+.sa1-wrap.started .sa1-t1{max-width:120px;transition-delay:.3s;}
+.sa1-wrap.started .sa1-t2{max-width:140px;transition-delay:.8s;}
+.sa1-wrap.started .sa1-t3{max-width:80px;transition-delay:1.3s;}
+.sa1-cur1{animation:blink .8s step-end infinite;opacity:0;transition:opacity .1s .3s;}
+.sa1-wrap.started .sa1-cur1{opacity:1;}
+.sa1-wrap.started .sa1-btn{animation:saFieldIn .4s ease 1.8s both;}
+.sa1-wrap.started .sa1-btn .sa-create-btn{animation:btnPop .3s cubic-bezier(.34,1.56,.64,1) 1.85s both;}
+.sa1-wrap.started .sa1-success{animation:saPop .4s cubic-bezier(.34,1.56,.64,1) 2.6s both;}
+@keyframes saFieldIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes btnPop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes saPop{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+
+/* ─ Step 2: Transaction ─ */
+.sa-tx-card{width:100%;max-width:230px;background:#fff;border-radius:14px;padding:14px;border:1px solid #e8e4de;box-shadow:0 4px 16px rgba(0,0,0,.06);}
+.sa-tx-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.sa-tx-tipo{font-size:11px;font-weight:700;color:#111;opacity:0;}
+.sa-tx-date{font-size:9px;color:#aaa;opacity:0;}
+.sa-tx-cats{display:flex;gap:6px;margin-bottom:10px;opacity:0;}
+.sa-tx-cat{width:28px;height:28px;border-radius:8px;background:#f5f5f0;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid transparent;transition:border-color .2s;}
+.sa-tx-cat.active{border-color:#00c86e;background:rgba(0,200,110,.08);}
+.sa-tx-val-row{margin-bottom:8px;opacity:0;}
+.sa-tx-label{font-size:8px;font-weight:700;color:#888;text-transform:uppercase;display:block;margin-bottom:3px;}
+.sa-tx-value-box{background:#f8f6f2;border-radius:7px;padding:7px 10px;display:flex;align-items:center;gap:3px;}
+.sa-tx-minus{font-size:14px;font-weight:900;color:#f87171;}
+.sa-tx-val-num{font-size:16px;font-weight:900;color:#111;overflow:hidden;max-width:0;white-space:nowrap;transition:max-width .5s ease;}
+.sa-tx-name-row{margin-bottom:10px;opacity:0;}
+.sa-tx-name-box{background:#f8f6f2;border-radius:7px;padding:7px 10px;font-size:11px;font-weight:600;color:#111;overflow:hidden;max-width:0;white-space:nowrap;transition:max-width .5s ease;}
+.sa-tx-save{background:#00c86e;color:#000;font-size:11px;font-weight:800;padding:9px;border-radius:8px;text-align:center;opacity:0;transform:scale(.9);}
+.sa-tx-ok{text-align:center;font-size:11px;font-weight:700;color:#00a050;background:rgba(0,200,110,.1);border:1px solid rgba(0,200,110,.2);border-radius:8px;padding:8px;margin-top:6px;opacity:0;transform:scale(.8);}
+/* Step 2 triggered */
+.sa2-wrap.started .sa2-tipo{animation:saFieldIn .3s ease .2s both;}
+.sa2-wrap.started .sa2-date{animation:saFieldIn .3s ease .3s both;}
+.sa2-wrap.started .sa2-cats{animation:saFieldIn .4s ease .5s both;}
+.sa2-wrap.started .sa2-val{animation:saFieldIn .3s ease .9s both;}
+.sa2-wrap.started .sa2-val .sa-tx-val-num{max-width:80px;transition-delay:1.1s;}
+.sa2-cur{animation:blink .8s step-end infinite;opacity:0;}
+.sa2-wrap.started .sa2-cur{opacity:1;transition:opacity .1s 1.0s;}
+.sa2-wrap.started .sa2-name{animation:saFieldIn .3s ease 1.6s both;}
+.sa2-wrap.started .sa2-name .sa-tx-name-box{max-width:160px;transition-delay:1.8s;}
+.sa2-wrap.started .sa2-save{animation:btnPop .3s cubic-bezier(.34,1.56,.64,1) 2.3s both;}
+.sa2-wrap.started .sa2-ok{animation:saPop .4s cubic-bezier(.34,1.56,.64,1) 3.1s both;}
+
+/* ─ Step 3: Dashboard ─ */
+.sa-dash-mini{width:100%;max-width:240px;}
+.sa-dash-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
+.sa-kpi-mini{background:#fff;border-radius:9px;padding:7px 8px;border:1px solid #e8e4de;opacity:0;transform:translateY(8px);}
+.sa-kpi-l{font-size:8px;color:#888;margin-bottom:3px;font-weight:600;}
+.sa-kpi-v{font-size:11px;font-weight:900;letter-spacing:-.02em;}
+.sa-kpi-v.green{color:#00c86e;}.sa-kpi-v.purple{color:#8b5cf6;}
+.sa-bars-title{font-size:9px;font-weight:700;color:#555;margin-bottom:7px;opacity:0;}
+.sa-bars-wrap{display:flex;gap:6px;align-items:flex-end;height:70px;background:#fff;border-radius:10px;padding:8px 10px;border:1px solid #e8e4de;}
+.sa-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;}
+.sa-bar-fill{width:100%;background:linear-gradient(180deg,#00c86e,#00a050);border-radius:4px 4px 2px 2px;height:0;transition:height 0.7s cubic-bezier(.34,1.2,.64,1);margin-top:auto;}
+.sa-bar-col span{font-size:7px;color:#aaa;font-weight:600;}
+/* Step 3 triggered */
+.sa3-wrap.started .sa3-k1{animation:saFieldIn .3s ease .2s both;}
+.sa3-wrap.started .sa3-k2{animation:saFieldIn .3s ease .4s both;}
+.sa3-wrap.started .sa3-k3{animation:saFieldIn .3s ease .6s both;}
+.sa3-wrap.started .sa3-bt{animation:saFieldIn .3s ease .9s both;}
+.sa3-wrap.started .sa3-b1{height:var(--bh);transition-delay:1.0s;}
+.sa3-wrap.started .sa3-b2{height:var(--bh);transition-delay:1.15s;}
+.sa3-wrap.started .sa3-b3{height:var(--bh);transition-delay:1.3s;}
+.sa3-wrap.started .sa3-b4{height:var(--bh);transition-delay:1.45s;}
+.sa3-wrap.started .sa3-b5{height:var(--bh);transition-delay:1.6s;}
+.sa3-wrap.started .sa3-b6{height:var(--bh);transition-delay:1.75s;}
+
 /* ── VIDEO TUTORIAL MOCKUP ── */
 .vid-section{margin-top:56px;text-align:center;}
 .vid-label{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:#00a050;text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;}
@@ -1222,24 +1309,99 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
       <h2 class="sec-title" style="color:#111;">Como começar em 3 minutos</h2>
       <p class="sec-sub">Sem complicação. Em menos de 3 minutos você já tem sua vida financeira organizada no Dincon.</p>
     </div>
-    <div class="steps-grid">
+    <div class="steps-grid" id="stepsGrid">
+
+      <!-- STEP 1: Criar conta -->
       <div class="step-card fade">
         <div class="step-connector"></div>
+        <!-- Animação: formulário sendo preenchido -->
+        <div class="sa-wrap sa1-wrap">
+          <div class="sa-mini-form">
+            <div class="sa-mini-header"><div class="sa-d">D</div><span>Criar conta gratuita</span></div>
+            <div class="sa-field-row sa1-f1">
+              <div class="sa-field-lbl">SEU NOME</div>
+              <div class="sa-field-box"><span class="sa-text sa1-t1">Pablo Aragão</span><span class="sa-cursor sa1-cur1">|</span></div>
+            </div>
+            <div class="sa-field-row sa1-f2">
+              <div class="sa-field-lbl">E-MAIL</div>
+              <div class="sa-field-box"><span class="sa-text sa1-t2">pablo@gmail.com</span></div>
+            </div>
+            <div class="sa-field-row sa1-f3">
+              <div class="sa-field-lbl">SENHA</div>
+              <div class="sa-field-box"><span class="sa-text sa1-t3">••••••••</span></div>
+            </div>
+            <div class="sa-btn-row sa1-btn">
+              <div class="sa-create-btn">Criar conta gratuita</div>
+            </div>
+            <div class="sa-success sa1-success">🎉 Conta criada! Bem-vindo!</div>
+          </div>
+        </div>
         <div class="step-num">1</div>
         <div class="step-title">Crie sua conta grátis</div>
         <p class="step-desc">Acesse <strong>dincon.com.br</strong>, clique em "Criar conta" e preencha nome, e-mail e senha. Confirme no e-mail e pronto — conta ativa em segundos.</p>
       </div>
+
+      <!-- STEP 2: Adicionar transação -->
       <div class="step-card fade fade-delay-1">
         <div class="step-connector"></div>
+        <!-- Animação: transação sendo lançada -->
+        <div class="sa-wrap sa2-wrap">
+          <div class="sa-tx-card">
+            <div class="sa-tx-top">
+              <span class="sa-tx-tipo sa2-tipo">💸 Gasto</span>
+              <span class="sa-tx-date sa2-date">26/06/2026</span>
+            </div>
+            <div class="sa-tx-cats sa2-cats">
+              <span class="sa-tx-cat active">🍔</span>
+              <span class="sa-tx-cat">🏠</span>
+              <span class="sa-tx-cat">💊</span>
+              <span class="sa-tx-cat">⚡</span>
+              <span class="sa-tx-cat">🎬</span>
+            </div>
+            <div class="sa-tx-val-row">
+              <span class="sa-tx-label">Valor</span>
+              <div class="sa-tx-value-box sa2-val">
+                <span class="sa-tx-minus">-</span><span class="sa-tx-val-num">R$ 85,00</span><span class="sa-cursor sa2-cur">|</span>
+              </div>
+            </div>
+            <div class="sa-tx-name-row sa2-name">
+              <div class="sa-tx-name-box">Supermercado</div>
+            </div>
+            <div class="sa-tx-save sa2-save">✅ Salvar lançamento</div>
+            <div class="sa-tx-ok sa2-ok">💚 Lançamento registrado!</div>
+          </div>
+        </div>
         <div class="step-num">2</div>
         <div class="step-title">Adicione suas finanças</div>
-        <p class="step-desc">Informe sua renda mensal, adicione seus cartões de crédito e comece a registrar seus gastos e receitas do mês atual.</p>
+        <p class="step-desc">Informe sua renda mensal, adicione seus cartões e registre seus gastos e receitas. Em segundos, tudo está categorizado e no dashboard.</p>
       </div>
+
+      <!-- STEP 3: Dashboard -->
       <div class="step-card fade fade-delay-2">
+        <!-- Animação: gráfico e KPIs crescendo -->
+        <div class="sa-wrap sa3-wrap">
+          <div class="sa-dash-mini">
+            <div class="sa-dash-kpis">
+              <div class="sa-kpi-mini sa3-k1"><div class="sa-kpi-l">Receitas</div><div class="sa-kpi-v green">R$4.000</div></div>
+              <div class="sa-kpi-mini sa3-k2"><div class="sa-kpi-l">Saldo</div><div class="sa-kpi-v green">R$2.999</div></div>
+              <div class="sa-kpi-mini sa3-k3"><div class="sa-kpi-l">Economia</div><div class="sa-kpi-v purple">55%</div></div>
+            </div>
+            <div class="sa-bars-title sa3-bt">Evolução anual</div>
+            <div class="sa-bars-wrap">
+              <div class="sa-bar-col"><div class="sa-bar-fill sa3-b1" style="--bh:20%"></div><span>Jan</span></div>
+              <div class="sa-bar-col"><div class="sa-bar-fill sa3-b2" style="--bh:35%"></div><span>Fev</span></div>
+              <div class="sa-bar-col"><div class="sa-bar-fill sa3-b3" style="--bh:45%"></div><span>Mar</span></div>
+              <div class="sa-bar-col"><div class="sa-bar-fill sa3-b4" style="--bh:55%"></div><span>Abr</span></div>
+              <div class="sa-bar-col"><div class="sa-bar-fill sa3-b5" style="--bh:70%"></div><span>Mai</span></div>
+              <div class="sa-bar-col"><div class="sa-bar-fill sa3-b6" style="--bh:90%"></div><span>Jun</span></div>
+            </div>
+          </div>
+        </div>
         <div class="step-num">3</div>
         <div class="step-title">Acompanhe seu progresso</div>
         <p class="step-desc">O dashboard mostra tudo em tempo real: saldo, score de economia, gastos por categoria e sua evolução mês a mês.</p>
       </div>
+
     </div>
     <!-- VIDEO TUTORIAL -->
     <div class="vid-section fade">
@@ -1593,6 +1755,27 @@ if(dinPhone){
   },{threshold:0.25});
   dinObs.observe(dinPhone);
 }
+
+// Step animations — inicia ao entrar na tela e repete em loop
+function startStepAnim(wrap, totalMs){
+  wrap.classList.remove('started');
+  // Força reflow para reiniciar animações
+  void wrap.offsetWidth;
+  wrap.classList.add('started');
+  // Reinicia após animação completa
+  setTimeout(()=>startStepAnim(wrap, totalMs), totalMs);
+}
+const stepWraps = [{sel:'.sa1-wrap',ms:7000},{sel:'.sa2-wrap',ms:8000},{sel:'.sa3-wrap',ms:6000}];
+stepWraps.forEach(({sel,ms})=>{
+  const el=document.querySelector(sel);
+  if(!el)return;
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){startStepAnim(el,ms);obs.unobserve(e.target);}
+    });
+  },{threshold:0.3});
+  obs.observe(el);
+});
 
 // Patrimônio, Gastos, Orçamentos — inicia ao entrar na tela
 [{sel:'.din-pat-phone',cls:'din-pat-visible'},{sel:'.din-cat-phone',cls:'din-cat-visible'},{sel:'.din-orc-phone',cls:'din-orc-visible'}].forEach(({sel,cls})=>{
