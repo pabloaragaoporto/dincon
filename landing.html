@@ -411,6 +411,109 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 .din-cartoes-visible .din-c-anim-1,.din-cartoes-visible .din-c-anim-2,.din-cartoes-visible .din-c-anim-3{animation-play-state:running;}
 .din-cartoes-visible .din-cc-bar-sant,.din-cartoes-visible .din-cc-bar-nub{animation-play-state:running;}
 
+/* ── PATRIMÔNIO SIMULATION ── */
+.din-pat-header{background:linear-gradient(145deg,#1e1b4b,#312e81,#4338ca);border-radius:14px;padding:14px 16px;color:#fff;}
+.din-pat-lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:rgba(255,255,255,.5);margin-bottom:4px;}
+.din-pat-val{font-size:24px;font-weight:900;letter-spacing:-.04em;margin-bottom:10px;}
+.din-pat-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.din-pat-sub-card{background:rgba(255,255,255,.1);border-radius:8px;padding:7px 9px;}
+.din-pat-sub-lbl{font-size:8px;color:rgba(255,255,255,.55);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;}
+.din-pat-chart-card{background:#fff;border-radius:12px;padding:10px 12px;border:1px solid #f0f0f0;}
+.din-pat-chart-title{font-size:10px;font-weight:800;color:#111;margin-bottom:8px;}
+.din-pat-donut-wrap{display:flex;align-items:center;gap:10px;}
+.din-donut-svg{width:80px;height:80px;flex-shrink:0;}
+.din-donut-seg{stroke-dasharray:0 176;transition:stroke-dasharray 1.2s ease;}
+.din-pat-visible .din-donut-s1{stroke-dasharray:109 67;}
+.din-pat-visible .din-donut-s2{stroke-dasharray:3 173;}
+.din-pat-visible .din-donut-s3{stroke-dasharray:40 136;}
+.din-pat-legend{display:flex;flex-direction:column;gap:4px;}
+.din-pat-leg-item{display:flex;align-items:center;gap:5px;font-size:8px;color:#555;}
+.din-pat-leg-item span{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.din-pat-leg-small{font-size:7px;}
+.din-pat-ativos-card{background:#fff;border-radius:12px;padding:10px 12px;border:1px solid #f0f0f0;}
+.din-pat-ativo-item{display:flex;align-items:center;gap:8px;padding:6px 0;}
+.din-pat-ativo-icon{width:28px;height:28px;background:#f5f0ff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+/* Patrimônio animations */
+.din-pat-a1{opacity:0;animation:kpiIn .45s ease .3s both;animation-play-state:paused;}
+.din-pat-a2{opacity:0;animation:kpiIn .45s ease .7s both;animation-play-state:paused;}
+.din-pat-a3{opacity:0;animation:kpiIn .45s ease 1.0s both;animation-play-state:paused;}
+.din-pat-visible .din-pat-a1,.din-pat-visible .din-pat-a2,.din-pat-visible .din-pat-a3{animation-play-state:running;}
+
+/* ── GASTOS POR CATEGORIA ── */
+.din-cat-row{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #f8f8f8;}
+.din-cat-row:last-child{border-bottom:none;}
+.din-cat-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0;}
+.din-cat-info{flex:1;min-width:0;}
+.din-cat-name{font-size:10px;font-weight:700;color:#111;margin-bottom:3px;}
+.din-cat-track{height:4px;background:#f0f0f0;border-radius:100px;overflow:hidden;}
+.din-cat-bar{height:100%;border-radius:100px;width:0;transition:width 1s ease;}
+.din-cat-visible .din-cat-bar{width:var(--bw);}
+.din-cat-amt{font-size:9px;font-weight:700;color:#555;text-align:right;flex-shrink:0;min-width:45px;}
+.din-cat-amt span{display:block;color:#aaa;font-weight:500;font-size:8px;}
+.din-tx-row{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #f8f8f8;}
+.din-tx-ico{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.din-tx-info{flex:1;}.din-tx-name{font-size:10px;font-weight:700;color:#111;}.din-tx-meta{font-size:8px;color:#aaa;}
+.din-tx-val{font-size:10px;font-weight:800;color:#f87171;}
+/* Gastos animations */
+.din-cat-a1{opacity:0;animation:kpiIn .3s ease .2s both;animation-play-state:paused;}
+.din-cat-a2{opacity:0;animation:kpiIn .3s ease .35s both;animation-play-state:paused;}
+.din-cat-a3{opacity:0;animation:kpiIn .3s ease .5s both;animation-play-state:paused;}
+.din-cat-a4{opacity:0;animation:kpiIn .3s ease .65s both;animation-play-state:paused;}
+.din-cat-a5{opacity:0;animation:kpiIn .3s ease .8s both;animation-play-state:paused;}
+.din-cat-a6{opacity:0;animation:kpiIn .3s ease .95s both;animation-play-state:paused;}
+.din-cat-a7{opacity:0;animation:kpiIn .3s ease 1.1s both;animation-play-state:paused;}
+.din-cat-a8{opacity:0;animation:kpiIn .3s ease 1.25s both;animation-play-state:paused;}
+.din-cat-visible .din-cat-a1,.din-cat-visible .din-cat-a2,.din-cat-visible .din-cat-a3,.din-cat-visible .din-cat-a4,
+.din-cat-visible .din-cat-a5,.din-cat-visible .din-cat-a6,.din-cat-visible .din-cat-a7,.din-cat-visible .din-cat-a8{animation-play-state:running;}
+.din-cat-visible .din-cat-bar{width:var(--bw);}
+
+/* ── ORÇAMENTOS SIMULATION ── */
+.din-orc-overview{background:#fff;border-radius:12px;padding:10px 12px;border:1px solid #f0f0f0;}
+.din-orc-mini-row{display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+.din-orc-mini-row:last-child{margin-bottom:0;}
+.din-orc-mini-row span{font-size:8px;color:#888;width:50px;flex-shrink:0;}
+.din-orc-mini-track{flex:1;height:4px;background:#f0f0f0;border-radius:100px;overflow:hidden;}
+.din-orc-mini-bar{height:100%;border-radius:100px;width:0;transition:width .8s ease;}
+.din-orc-visible .din-orc-mini-bar{width:var(--bw);}
+.din-orc-item{background:#fff;border-radius:12px;padding:10px 12px;border:1px solid #f0f0f0;}
+.din-orc-item-top{display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+.din-orc-icon{font-size:16px;}.din-orc-iname{font-size:10px;color:#111;}
+.din-orc-edit{width:20px;height:20px;background:#f8f8f8;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;}
+.din-orc-track{height:6px;background:#f0f0f0;border-radius:100px;overflow:hidden;margin-bottom:4px;}
+.din-orc-bar{height:100%;border-radius:100px;width:0;transition:width 1s ease;}
+.din-orc-visible .din-orc-bar{width:var(--bw);}
+.din-orc-pct{font-size:8px;font-weight:700;text-align:right;}.din-orc-pct.green{color:#00c86e;}.din-orc-pct.red{color:#f87171;}
+.din-orc-a1{opacity:0;animation:kpiIn .4s ease .3s both;animation-play-state:paused;}
+.din-orc-a2{opacity:0;animation:kpiIn .4s ease .7s both;animation-play-state:paused;}
+.din-orc-a3{opacity:0;animation:kpiIn .4s ease 1.0s both;animation-play-state:paused;}
+.din-orc-a4{opacity:0;animation:kpiIn .4s ease 1.3s both;animation-play-state:paused;}
+.din-orc-visible .din-orc-a1,.din-orc-visible .din-orc-a2,.din-orc-visible .din-orc-a3,.din-orc-visible .din-orc-a4{animation-play-state:running;}
+
+/* ── COMO COMEÇAR (ONBOARDING) ── */
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:52px;}
+@media(max-width:768px){.steps-grid{grid-template-columns:1fr;max-width:420px;margin-left:auto;margin-right:auto;}}
+.step-card{background:#fff;border-radius:20px;padding:28px 24px;border:1px solid #e8e4de;position:relative;}
+.step-num{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#00c86e,#00a050);color:#000;font-size:18px;font-weight:900;display:flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:0 4px 16px rgba(0,200,110,.3);}
+.step-title{font-size:16px;font-weight:800;color:#111;margin-bottom:8px;letter-spacing:-.02em;}
+.step-desc{font-size:14px;color:#666;line-height:1.7;}
+.step-connector{position:absolute;top:50px;right:-14px;width:28px;height:2px;background:linear-gradient(90deg,#00c86e,rgba(0,200,110,.2));z-index:1;}
+@media(max-width:768px){.step-connector{display:none;}}
+.support-section{margin-top:52px;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+@media(max-width:768px){.support-section{grid-template-columns:1fr;}}
+.support-big-card{background:#fff;border-radius:20px;padding:32px;border:1px solid #e8e4de;}
+.support-big-card h3{font-size:18px;font-weight:900;color:#111;margin-bottom:10px;letter-spacing:-.02em;}
+.support-big-card p{font-size:14px;color:#666;line-height:1.7;margin-bottom:20px;}
+.support-contact-row{display:flex;flex-direction:column;gap:10px;}
+.support-link{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;border:1px solid #e8e4de;font-size:14px;font-weight:600;color:#333;text-decoration:none;transition:border-color .15s,background .15s;}
+.support-link:hover{border-color:#00c86e;background:rgba(0,200,110,.04);color:#00a050;}
+.support-link i{font-size:20px;color:#00c86e;}
+.support-faq-card{background:#fff;border-radius:20px;padding:28px;border:1px solid #e8e4de;}
+.support-faq-card h3{font-size:16px;font-weight:800;color:#111;margin-bottom:16px;}
+.support-faq-item{padding:12px 0;border-bottom:1px solid #f0ece8;}
+.support-faq-item:last-child{border-bottom:none;}
+.support-faq-q{font-size:13px;font-weight:700;color:#111;margin-bottom:4px;}
+.support-faq-a{font-size:12px;color:#888;line-height:1.6;}
+
 /* ── WHATSAPP SECTION COLORS ── */
 #whatsapp-demo .feat-card-title{color:#111118;}
 #whatsapp-demo .feat-card-desc{color:#55556a;}
@@ -839,8 +942,52 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
           <li><span class="bcheck"><i class="ph ph-check"></i></span>Patrimônio líquido calculado automaticamente</li>
         </ul>
       </div>
-      <div class="feat-img-wrap fade fade-delay-1">
-        <img src="/screenshots/s3.jpg" alt="Patrimônio Dincon">
+      <div class="feat-img-wrap fade fade-delay-1" style="justify-content:center;padding:20px 10px;">
+        <div class="din-sim-phone din-pat-phone">
+          <div class="din-notch"></div>
+          <div class="din-status-bar"><span class="din-time">9:41</span><div class="din-status-icons"><svg width="15" height="11" viewBox="0 0 15 11"><rect x="0" y="5" width="3" height="6" rx="1" fill="currentColor" opacity=".4"/><rect x="4" y="3" width="3" height="8" rx="1" fill="currentColor" opacity=".6"/><rect x="8" y="1" width="3" height="10" rx="1" fill="currentColor"/><rect x="12" y="0" width="3" height="11" rx="1" fill="currentColor"/></svg><svg width="25" height="11" viewBox="0 0 25 11"><rect x="0" y="1" width="22" height="9" rx="2" stroke="currentColor" stroke-width="1" fill="none" opacity=".4"/><rect x="1.5" y="2.5" width="16" height="6" rx="1" fill="#00c86e"/><rect x="23" y="3.5" width="1.5" height="4" rx=".75" fill="currentColor" opacity=".4"/></svg></div></div>
+          <div class="din-c-body" style="background:#f5f5f8;gap:10px;padding:10px;">
+            <!-- Patrimônio header -->
+            <div class="din-pat-header din-pat-a1">
+              <div class="din-pat-lbl">PATRIMÔNIO LÍQUIDO</div>
+              <div class="din-pat-val">R$ 77.250,00</div>
+              <div class="din-pat-row">
+                <div class="din-pat-sub-card"><div class="din-pat-sub-lbl">Ativos</div><div style="color:#00c86e;font-size:13px;font-weight:900;">R$331.500</div></div>
+                <div class="din-pat-sub-card"><div class="din-pat-sub-lbl">Passivos</div><div style="color:#f87171;font-size:13px;font-weight:900;">R$254.250</div></div>
+              </div>
+            </div>
+            <!-- Donut chart -->
+            <div class="din-pat-chart-card din-pat-a2">
+              <div class="din-pat-chart-title">Composição patrimonial</div>
+              <div class="din-pat-donut-wrap">
+                <svg class="din-donut-svg" viewBox="0 0 80 80">
+                  <circle class="din-donut-bg" cx="40" cy="40" r="28" fill="none" stroke="#f0f0f0" stroke-width="12"/>
+                  <circle class="din-donut-seg din-donut-s1" cx="40" cy="40" r="28" fill="none" stroke="#dc2626" stroke-width="12" stroke-dasharray="109 67" stroke-dashoffset="21" transform="rotate(-90 40 40)"/>
+                  <circle class="din-donut-seg din-donut-s2" cx="40" cy="40" r="28" fill="none" stroke="#8b5cf6" stroke-width="12" stroke-dasharray="3 173" stroke-dashoffset="-109" transform="rotate(-90 40 40)"/>
+                  <circle class="din-donut-seg din-donut-s3" cx="40" cy="40" r="28" fill="none" stroke="#00c86e" stroke-width="12" stroke-dasharray="40 136" stroke-dashoffset="-130" transform="rotate(-90 40 40)"/>
+                </svg>
+                <div class="din-pat-legend">
+                  <div class="din-pat-leg-item"><span style="background:#00c86e"></span>ROXO34</div>
+                  <div class="din-pat-leg-item"><span style="background:#22c55e"></span>Gol G6</div>
+                  <div class="din-pat-leg-item"><span style="background:#8b5cf6"></span>Nubank conta</div>
+                  <div class="din-pat-leg-item din-pat-leg-small"><span style="background:#dc2626"></span>MCMV - Caixa (dívida)</div>
+                </div>
+              </div>
+            </div>
+            <!-- Ativos -->
+            <div class="din-pat-ativos-card din-pat-a3">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span style="font-size:11px;font-weight:800;color:#111;">Ativos</span><span style="font-size:9px;color:#00c86e;background:rgba(0,200,110,.1);padding:3px 9px;border-radius:100px;font-weight:700;">+ Ativo</span></div>
+              <div class="din-pat-ativo-item"><div class="din-pat-ativo-icon">📈</div><div><div style="font-size:10px;font-weight:700;color:#111;">ROXO34</div><div style="font-size:8px;color:#aaa;">investimento</div></div><div style="font-size:11px;font-weight:800;color:#00c86e;margin-left:auto;">R$10.000</div></div>
+            </div>
+          </div>
+          <div class="din-bottom-nav">
+            <div class="din-bnav-item active"><i class="ph ph-chart-bar"></i><span>Início</span></div>
+            <div class="din-bnav-item"><i class="ph ph-arrows-left-right"></i><span>Transações</span></div>
+            <div class="din-bnav-item"><i class="ph ph-target"></i><span>Metas</span></div>
+            <div class="din-bnav-item"><i class="ph ph-heart"></i><span>Saúde</span></div>
+            <div class="din-bnav-item"><i class="ph ph-dots-three"></i><span>Mais</span></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -860,8 +1007,31 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
           <li><span class="bcheck"><i class="ph ph-check"></i></span>Compare com seus orçamentos mensais definidos</li>
         </ul>
       </div>
-      <div class="feat-img-wrap fade fade-delay-1">
-        <img src="/screenshots/s4.jpg" alt="Categorias Dincon">
+      <div class="feat-img-wrap fade fade-delay-1" style="justify-content:center;padding:20px 10px;">
+        <div class="din-sim-phone din-cat-phone">
+          <div class="din-notch"></div>
+          <div class="din-status-bar"><span class="din-time">9:41</span><div class="din-status-icons"><svg width="25" height="11" viewBox="0 0 25 11"><rect x="0" y="1" width="22" height="9" rx="2" stroke="currentColor" stroke-width="1" fill="none" opacity=".4"/><rect x="1.5" y="2.5" width="16" height="6" rx="1" fill="#00c86e"/><rect x="23" y="3.5" width="1.5" height="4" rx=".75" fill="currentColor" opacity=".4"/></svg></div></div>
+          <div class="din-c-body" style="background:#fff;gap:0;padding:0;overflow:hidden;">
+            <div style="padding:10px 14px 6px;border-bottom:1px solid #f0f0f0;flex-shrink:0;"><span style="font-size:13px;font-weight:800;color:#111;">Gastos por categoria</span></div>
+            <!-- Category bars -->
+            <div style="padding:6px 12px;flex-shrink:0;">
+              <div class="din-cat-row din-cat-a1"><div class="din-cat-icon">🏠</div><div class="din-cat-info"><div class="din-cat-name">Moradia</div><div class="din-cat-track"><div class="din-cat-bar" style="--bw:33%;background:#f87171;"></div></div></div><div class="din-cat-amt">R$510<span>33%</span></div></div>
+              <div class="din-cat-row din-cat-a2"><div class="din-cat-icon">📦</div><div class="din-cat-info"><div class="din-cat-name">Outros</div><div class="din-cat-track"><div class="din-cat-bar" style="--bw:32%;background:#94a3b8;"></div></div></div><div class="din-cat-amt">R$500<span>32%</span></div></div>
+              <div class="din-cat-row din-cat-a3"><div class="din-cat-icon">⚡</div><div class="din-cat-info"><div class="din-cat-name">Serviços</div><div class="din-cat-track"><div class="din-cat-bar" style="--bw:16%;background:#f97316;"></div></div></div><div class="din-cat-amt">R$250<span>16%</span></div></div>
+              <div class="din-cat-row din-cat-a4"><div class="din-cat-icon">🍔</div><div class="din-cat-info"><div class="din-cat-name">Alimentação</div><div class="din-cat-track"><div class="din-cat-bar" style="--bw:8%;background:#ec4899;"></div></div></div><div class="din-cat-amt">R$125<span>8%</span></div></div>
+              <div class="din-cat-row din-cat-a5"><div class="din-cat-icon">💊</div><div class="din-cat-info"><div class="din-cat-name">Saúde</div><div class="din-cat-track"><div class="din-cat-bar" style="--bw:7%;background:#f59e0b;"></div></div></div><div class="din-cat-amt">R$110<span>7%</span></div></div>
+              <div class="din-cat-row din-cat-a6"><div class="din-cat-icon">🎬</div><div class="din-cat-info"><div class="din-cat-name">Lazer</div><div class="din-cat-track"><div class="din-cat-bar" style="--bw:3%;background:#60a5fa;"></div></div></div><div class="din-cat-amt">R$50<span>3%</span></div></div>
+            </div>
+            <!-- Últimas transações -->
+            <div style="padding:8px 14px 6px;border-top:1px solid #f0f0f0;flex-shrink:0;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span style="font-size:11px;font-weight:800;color:#111;">Últimas transações</span><span style="font-size:9px;color:#00c86e;font-weight:700;">Ver todas</span></div>
+              <div class="din-tx-row din-cat-a7"><div class="din-tx-ico" style="background:rgba(249,115,22,.1);">⚡</div><div class="din-tx-info"><div class="din-tx-name">TWILO</div><div class="din-tx-meta">Serviços · pix</div></div><div class="din-tx-val">-R$50</div></div>
+              <div class="din-tx-row din-cat-a8"><div class="din-tx-ico" style="background:rgba(248,113,113,.1);">🏠</div><div class="din-tx-info"><div class="din-tx-name">Internet</div><div class="din-tx-meta">Moradia · pix</div></div><div class="din-tx-val">-R$110</div></div>
+              <div class="din-tx-row"><div class="din-tx-ico" style="background:rgba(236,72,153,.1);">🍔</div><div class="din-tx-info"><div class="din-tx-name">Cort...</div><div class="din-tx-meta">Alimentação · pix</div></div><div class="din-tx-val">-R$125</div></div>
+            </div>
+          </div>
+          <div class="din-bottom-nav"><div class="din-bnav-item active"><i class="ph ph-chart-bar"></i><span>Início</span></div><div class="din-bnav-item"><i class="ph ph-arrows-left-right"></i><span>Transações</span></div><div class="din-bnav-item"><i class="ph ph-target"></i><span>Metas</span></div><div class="din-bnav-item"><i class="ph ph-heart"></i><span>Saúde</span></div><div class="din-bnav-item"><i class="ph ph-dots-three"></i><span>Mais</span></div></div>
+          <div class="din-fab">+</div>
+        </div>
       </div>
     </div>
   </div>
@@ -881,8 +1051,42 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
           <li><span class="bcheck"><i class="ph ph-check"></i></span>Porcentagem de uso em tempo real</li>
         </ul>
       </div>
-      <div class="feat-img-wrap fade fade-delay-1">
-        <img src="/screenshots/s6.jpg" alt="Orçamentos Dincon">
+      <div class="feat-img-wrap fade fade-delay-1" style="justify-content:center;padding:20px 10px;">
+        <div class="din-sim-phone din-orc-phone">
+          <div class="din-notch"></div>
+          <div class="din-status-bar"><span class="din-time">9:41</span><div class="din-status-icons"><svg width="25" height="11" viewBox="0 0 25 11"><rect x="0" y="1" width="22" height="9" rx="2" stroke="currentColor" stroke-width="1" fill="none" opacity=".4"/><rect x="1.5" y="2.5" width="16" height="6" rx="1" fill="#00c86e"/><rect x="23" y="3.5" width="1.5" height="4" rx=".75" fill="currentColor" opacity=".4"/></svg></div></div>
+          <div class="din-c-header"><div><div class="din-c-title">Orçamentos</div><div class="din-c-subtitle">Limites por categoria</div></div><div class="din-c-btn">+ Limite</div></div>
+          <div class="din-c-body" style="background:#f5f5f8;gap:9px;padding:10px;">
+            <!-- Mini chart overview -->
+            <div class="din-orc-overview din-orc-a1">
+              <div style="font-size:10px;font-weight:800;color:#111;margin-bottom:8px;">Visão geral dos limites</div>
+              <div class="din-orc-mini-row"><span>Moradia</span><div class="din-orc-mini-track"><div class="din-orc-mini-bar" style="--bw:41%;background:#00c86e;"></div></div></div>
+              <div class="din-orc-mini-row"><span>Serviços</span><div class="din-orc-mini-track"><div class="din-orc-mini-bar" style="--bw:100%;background:#f87171;"></div></div></div>
+              <div class="din-orc-mini-row"><span>Educação</span><div class="din-orc-mini-track"><div class="din-orc-mini-bar" style="--bw:2%;background:#00c86e;"></div></div></div>
+              <div class="din-orc-mini-row"><span>Lazer</span><div class="din-orc-mini-track"><div class="din-orc-mini-bar" style="--bw:8%;background:#00c86e;"></div></div></div>
+            </div>
+            <!-- Budget items -->
+            <div class="din-orc-item din-orc-a2">
+              <div class="din-orc-item-top"><div class="din-orc-icon">🏠</div><div class="din-orc-iname"><strong>Moradia</strong></div><div style="display:flex;gap:4px;margin-left:auto;"><span class="din-orc-edit">✏️</span><span class="din-orc-edit">×</span></div></div>
+              <div style="font-size:8px;color:#aaa;margin-bottom:5px;">Gasto: R$510,00 · Limite: R$1.250,00</div>
+              <div class="din-orc-track"><div class="din-orc-bar" style="--bw:41%;background:#00c86e;"></div></div>
+              <div class="din-orc-pct green">41%</div>
+            </div>
+            <div class="din-orc-item din-orc-a3">
+              <div class="din-orc-item-top"><div class="din-orc-icon">⚡</div><div class="din-orc-iname"><strong>Serviços</strong></div><div style="display:flex;gap:4px;margin-left:auto;"><span class="din-orc-edit">✏️</span><span class="din-orc-edit">×</span></div></div>
+              <div style="font-size:8px;color:#aaa;margin-bottom:5px;">Gasto: R$250,00 · Limite: R$250,00</div>
+              <div class="din-orc-track"><div class="din-orc-bar" style="--bw:100%;background:#f87171;"></div></div>
+              <div class="din-orc-pct red">100% ⚠️ Limite excedido!</div>
+            </div>
+            <div class="din-orc-item din-orc-a4">
+              <div class="din-orc-item-top"><div class="din-orc-icon">🎓</div><div class="din-orc-iname"><strong>Educação</strong></div><div style="display:flex;gap:4px;margin-left:auto;"><span class="din-orc-edit">✏️</span><span class="din-orc-edit">×</span></div></div>
+              <div style="font-size:8px;color:#aaa;margin-bottom:5px;">Gasto: R$0,00 · Limite: R$100,00</div>
+              <div class="din-orc-track"><div class="din-orc-bar" style="--bw:0%;background:#00c86e;"></div></div>
+              <div class="din-orc-pct green">0%</div>
+            </div>
+          </div>
+          <div class="din-bottom-nav"><div class="din-bnav-item active"><i class="ph ph-chart-bar"></i><span>Início</span></div><div class="din-bnav-item"><i class="ph ph-arrows-left-right"></i><span>Transações</span></div><div class="din-bnav-item"><i class="ph ph-target"></i><span>Metas</span></div><div class="din-bnav-item"><i class="ph ph-heart"></i><span>Saúde</span></div><div class="din-bnav-item"><i class="ph ph-dots-three"></i><span>Mais</span></div></div>
+        </div>
       </div>
     </div>
   </div>
@@ -960,6 +1164,66 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
       </div>
       <div class="feat-img-wrap fade fade-delay-1">
         <img src="/screenshots/s5.jpg" alt="Alertas Dincon">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ COMO COMEÇAR + SUPORTE ═══ -->
+<section class="section" style="background:#ece8e3;">
+  <div class="section-inner">
+    <div class="sec-header fade">
+      <div class="sec-label" style="color:#00a050;">Primeiros passos</div>
+      <h2 class="sec-title" style="color:#111;">Como começar em 3 minutos</h2>
+      <p class="sec-sub">Sem complicação. Em menos de 3 minutos você já tem sua vida financeira organizada no Dincon.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card fade">
+        <div class="step-connector"></div>
+        <div class="step-num">1</div>
+        <div class="step-title">Crie sua conta grátis</div>
+        <p class="step-desc">Acesse <strong>dincon.com.br</strong>, clique em "Criar conta" e preencha nome, e-mail e senha. Confirme no e-mail e pronto — conta ativa em segundos.</p>
+      </div>
+      <div class="step-card fade fade-delay-1">
+        <div class="step-connector"></div>
+        <div class="step-num">2</div>
+        <div class="step-title">Adicione suas finanças</div>
+        <p class="step-desc">Informe sua renda mensal, adicione seus cartões de crédito e comece a registrar seus gastos e receitas do mês atual.</p>
+      </div>
+      <div class="step-card fade fade-delay-2">
+        <div class="step-num">3</div>
+        <div class="step-title">Acompanhe seu progresso</div>
+        <p class="step-desc">O dashboard mostra tudo em tempo real: saldo, score de economia, gastos por categoria e sua evolução mês a mês.</p>
+      </div>
+    </div>
+    <!-- Suporte -->
+    <div class="support-section">
+      <div class="support-big-card fade">
+        <div class="support-badge">Suporte humano</div>
+        <h3>Ficou com alguma dúvida?</h3>
+        <p>Nossa equipe está disponível para te ajudar a configurar o Dincon, entender as funcionalidades ou resolver qualquer problema. Respondemos em até 24 horas.</p>
+        <div class="support-contact-row">
+          <a href="mailto:contato@dincon.com.br" class="support-link"><i class="ph ph-envelope"></i>contato@dincon.com.br</a>
+        </div>
+      </div>
+      <div class="support-faq-card fade fade-delay-1">
+        <h3>Dúvidas rápidas</h3>
+        <div class="support-faq-item">
+          <div class="support-faq-q">Como registrar uma transação?</div>
+          <div class="support-faq-a">Clique no botão "+" verde no dashboard, preencha o valor, categoria e data. Salva em 5 segundos.</div>
+        </div>
+        <div class="support-faq-item">
+          <div class="support-faq-q">Posso usar em mais de um dispositivo?</div>
+          <div class="support-faq-a">Sim! Os dados sincronizam automaticamente em todos os seus dispositivos via nuvem.</div>
+        </div>
+        <div class="support-faq-item">
+          <div class="support-faq-q">Como faço upgrade para o Pro?</div>
+          <div class="support-faq-a">Acesse "Perfil" → "Assinatura" dentro do app e clique em "Assinar Pro". Leva menos de 1 minuto.</div>
+        </div>
+        <div class="support-faq-item">
+          <div class="support-faq-q">Meus dados são seguros?</div>
+          <div class="support-faq-a">Sim. Usamos criptografia de ponta a ponta e infraestrutura AWS (Supabase). Ninguém acessa seus dados.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1216,6 +1480,14 @@ if(dinPhone){
   },{threshold:0.25});
   dinObs.observe(dinPhone);
 }
+
+// Patrimônio, Gastos, Orçamentos — inicia ao entrar na tela
+[{sel:'.din-pat-phone',cls:'din-pat-visible'},{sel:'.din-cat-phone',cls:'din-cat-visible'},{sel:'.din-orc-phone',cls:'din-orc-visible'}].forEach(({sel,cls})=>{
+  const el=document.querySelector(sel);
+  if(!el)return;
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add(cls);obs.unobserve(e.target);}});},{threshold:0.25});
+  obs.observe(el);
+});
 
 // Cartões phone — inicia ao entrar na tela
 const cartoesPhone = document.querySelector('.din-cartoes-phone');
