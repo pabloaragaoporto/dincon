@@ -489,6 +489,51 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 .din-orc-a4{opacity:0;animation:kpiIn .4s ease 1.3s both;animation-play-state:paused;}
 .din-orc-visible .din-orc-a1,.din-orc-visible .din-orc-a2,.din-orc-visible .din-orc-a3,.din-orc-visible .din-orc-a4{animation-play-state:running;}
 
+/* ── VIDEO TUTORIAL MOCKUP ── */
+.vid-section{margin-top:56px;text-align:center;}
+.vid-label{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:#00a050;text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;}
+.vid-label i{font-size:16px;}
+.vid-title{font-size:clamp(22px,3vw,32px);font-weight:900;letter-spacing:-.04em;color:#111;margin-bottom:10px;}
+.vid-desc{font-size:15px;color:#666;line-height:1.7;max-width:560px;margin:0 auto 36px;}
+.vid-player-wrap{display:grid;grid-template-columns:1fr 280px;gap:20px;max-width:900px;margin:0 auto;text-align:left;}
+@media(max-width:768px){.vid-player-wrap{grid-template-columns:1fr;}}
+.vid-player{background:#111;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+.vid-thumb{position:relative;aspect-ratio:16/9;overflow:hidden;background:linear-gradient(135deg,#06060e 0%,#0a1f12 40%,#06060e 100%);}
+.vid-thumb-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:20px 28px;}
+.vid-thumb-phone{animation:float 5s ease-in-out infinite;}
+.vid-thumb-text{text-align:right;}
+.vid-thumb-badge{display:inline-block;background:rgba(0,200,110,.15);border:1px solid rgba(0,200,110,.3);color:#00c86e;font-size:11px;font-weight:700;padding:4px 12px;border-radius:100px;margin-bottom:10px;}
+.vid-thumb-h{font-size:22px;font-weight:900;color:#fff;letter-spacing:-.04em;line-height:1.1;margin-bottom:6px;}
+.vid-thumb-sub{font-size:13px;color:rgba(255,255,255,.5);}
+/* Play button */
+.vid-play-btn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.vid-play-circle{width:68px;height:68px;border-radius:50%;background:rgba(0,200,110,.9);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s,background .2s;position:relative;z-index:2;box-shadow:0 8px 32px rgba(0,200,110,.5);}
+.vid-play-circle:hover{transform:scale(1.1);background:#00c86e;}
+.vid-play-pulse{position:absolute;width:68px;height:68px;border-radius:50%;background:rgba(0,200,110,.3);animation:vidPulse 2s ease-in-out infinite;}
+@keyframes vidPulse{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.5);opacity:0}}
+/* Duration */
+.vid-duration{position:absolute;bottom:44px;right:12px;background:rgba(0,0,0,.7);color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:5px;}
+/* Progress bar */
+.vid-progress-bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,.15);}
+.vid-progress-fill{height:100%;width:0%;background:var(--accent);}
+/* Controls */
+.vid-controls{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#1a1a1a;}
+.vid-ctrl-left,.vid-ctrl-right{display:flex;align-items:center;gap:14px;color:#aaa;font-size:18px;}
+.vid-time{font-size:12px;color:#888;font-weight:600;}
+/* Chapters */
+.vid-chapters{background:#fff;border-radius:16px;padding:16px;border:1px solid #e8e4de;overflow:hidden;}
+.vid-chapters-title{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:800;color:#111;margin-bottom:12px;}
+.vid-chapters-title i{color:#00a050;font-size:16px;}
+.vid-chapter{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:9px;cursor:pointer;transition:background .15s;}
+.vid-chapter:hover{background:#f5f5f0;}
+.vid-chapter.active{background:rgba(0,200,110,.08);border:1px solid rgba(0,200,110,.2);}
+.vid-ch-time{font-size:11px;font-weight:700;color:#00a050;min-width:32px;}
+.vid-ch-name{font-size:12px;color:#444;font-weight:500;}
+.vid-chapter.active .vid-ch-name{color:#111;font-weight:700;}
+/* Bottom note */
+.vid-app-note{display:inline-flex;align-items:center;gap:8px;margin-top:20px;font-size:13px;color:#888;background:rgba(0,200,110,.06);border:1px solid rgba(0,200,110,.15);padding:8px 18px;border-radius:100px;}
+.vid-app-note i{color:#00a050;font-size:15px;}
+
 /* ── COMO COMEÇAR (ONBOARDING) ── */
 .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:52px;}
 @media(max-width:768px){.steps-grid{grid-template-columns:1fr;max-width:420px;margin-left:auto;margin-right:auto;}}
@@ -1196,6 +1241,74 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
         <p class="step-desc">O dashboard mostra tudo em tempo real: saldo, score de economia, gastos por categoria e sua evolução mês a mês.</p>
       </div>
     </div>
+    <!-- VIDEO TUTORIAL -->
+    <div class="vid-section fade">
+      <div class="vid-label"><i class="ph ph-play-circle"></i>Tutorial em vídeo</div>
+      <h3 class="vid-title">Aprenda a usar o Dincon em minutos</h3>
+      <p class="vid-desc">Dentro do app, você encontra um vídeo completo ensinando como configurar sua conta, registrar transações, definir metas e tirar o máximo do Dincon.</p>
+      <div class="vid-player-wrap">
+        <!-- Thumbnail / player mockup -->
+        <div class="vid-player">
+          <div class="vid-thumb">
+            <!-- Background gradient com elementos do app -->
+            <div class="vid-thumb-bg">
+              <div class="vid-thumb-phone">
+                <div style="background:#0d1117;border-radius:10px;padding:8px;width:140px;">
+                  <div style="background:#052e18;border-radius:6px;padding:8px;color:#fff;margin-bottom:6px;">
+                    <div style="font-size:7px;color:rgba(255,255,255,.5);margin-bottom:2px;">SALDO DO MÊS</div>
+                    <div style="font-size:16px;font-weight:900;letter-spacing:-.03em;">R$2.999,40</div>
+                  </div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+                    <div style="background:#111;border-radius:5px;padding:6px;"><div style="font-size:6px;color:#888;">RECEITAS</div><div style="font-size:10px;font-weight:800;color:#00c86e;">R$4.000</div></div>
+                    <div style="background:#111;border-radius:5px;padding:6px;"><div style="font-size:6px;color:#888;">DESPESAS</div><div style="font-size:10px;font-weight:800;color:#f87171;">R$1.000</div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="vid-thumb-text">
+                <div class="vid-thumb-badge">📹 Tutorial Oficial</div>
+                <div class="vid-thumb-h">Como usar o Dincon</div>
+                <div class="vid-thumb-sub">Do zero ao controle total</div>
+              </div>
+            </div>
+            <!-- Play button overlay -->
+            <div class="vid-play-btn">
+              <div class="vid-play-circle">
+                <i class="ph ph-play" style="font-size:28px;color:#fff;margin-left:3px;"></i>
+              </div>
+              <div class="vid-play-pulse"></div>
+            </div>
+            <!-- Duration badge -->
+            <div class="vid-duration">8:42</div>
+            <!-- Progress bar -->
+            <div class="vid-progress-bar"><div class="vid-progress-fill"></div></div>
+          </div>
+          <!-- Player controls -->
+          <div class="vid-controls">
+            <div class="vid-ctrl-left">
+              <i class="ph ph-play-circle"></i>
+              <div class="vid-time">0:00 / 8:42</div>
+            </div>
+            <div class="vid-ctrl-right">
+              <i class="ph ph-subtitles"></i>
+              <i class="ph ph-gear"></i>
+              <i class="ph ph-arrows-out"></i>
+            </div>
+          </div>
+        </div>
+        <!-- Capítulos -->
+        <div class="vid-chapters">
+          <div class="vid-chapters-title"><i class="ph ph-list"></i> Capítulos</div>
+          <div class="vid-chapter active"><div class="vid-ch-time">0:00</div><div class="vid-ch-name">Criando sua conta</div></div>
+          <div class="vid-chapter"><div class="vid-ch-time">1:30</div><div class="vid-ch-name">Configurando renda e metas</div></div>
+          <div class="vid-chapter"><div class="vid-ch-time">3:15</div><div class="vid-ch-name">Registrando transações</div></div>
+          <div class="vid-chapter"><div class="vid-ch-time">5:00</div><div class="vid-ch-name">Cartões de crédito</div></div>
+          <div class="vid-chapter"><div class="vid-ch-time">6:20</div><div class="vid-ch-name">Orçamentos e metas</div></div>
+          <div class="vid-chapter"><div class="vid-ch-time">7:45</div><div class="vid-ch-name">Planejamento anual</div></div>
+        </div>
+      </div>
+      <div class="vid-app-note"><i class="ph ph-lock-open"></i>Este tutorial estará disponível dentro do app Dincon após o seu cadastro</div>
+    </div>
+
     <!-- Suporte -->
     <div class="support-section">
       <div class="support-big-card fade">
