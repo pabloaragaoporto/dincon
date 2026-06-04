@@ -77,8 +77,33 @@ nav.over-light .btn-ghost:hover{color:#111;}
 /* ── MARQUEE ICONS ── */
 .marquee-item i{font-size:16px;color:var(--accent);flex-shrink:0;}
 
-/* ── SECTION LIGHT → agora dark ── */
-.section-light{background:var(--s1) !important;}
+/* ── SECTION ALTERNATING BACKGROUNDS ── */
+.section-light{background:var(--s1);}/* fallback */
+.sl-dark{background:var(--s1);}
+.sl-white{background:#ffffff;}
+.sl-gray{background:#f4f4f0;}
+
+/* Textos fora do feat-card em fundos claros */
+.sl-white .sec-label,.sl-gray .sec-label{color:#00a050;}
+.sl-white .sec-title,.sl-gray .sec-title{color:#111118;}
+.sl-white .sec-sub,.sl-gray .sec-sub{color:#55556a;}
+.sl-white .feat-tag-pill,.sl-gray .feat-tag-pill{color:#00a050;background:rgba(0,160,80,.1);border-color:rgba(0,160,80,.22);}
+.sl-white .step-title,.sl-gray .step-title{color:#111118;}
+.sl-white .step-desc,.sl-gray .step-desc{color:#55556a;}
+.sl-white .step-card,.sl-gray .step-card{background:#f8f8f4;border-color:#e4e4de;}
+.sl-white .sa-wrap,.sl-gray .sa-wrap{background:linear-gradient(145deg,#eeeee8,#e4e4de);border-color:#d8d8d0;}
+.sl-white .testi-card{background:#f8f8f4;border-color:#e4e4de;}
+.sl-white .testi-text,.sl-gray .testi-text{color:#555;}
+.sl-white .testi-name,.sl-gray .testi-name{color:#111;}
+.sl-white .testi-role,.sl-gray .testi-role{color:#888;}
+/* feat-card sombra adaptada */
+.sl-white .feat-card{box-shadow:0 8px 40px rgba(0,0,0,.08);}
+.sl-gray .feat-card{box-shadow:0 12px 48px rgba(0,0,0,.1);}
+.sl-dark .feat-card{box-shadow:0 24px 64px rgba(0,0,0,.4);}
+/* Textos em fundos escuros */
+.sl-dark .sec-label{color:var(--accent);}
+.sl-dark .sec-title{color:var(--t);}
+.sl-dark .sec-sub{color:var(--t2);}
 
 /* Card branco que envolve o texto */
 .feat-card{background:#fff;border-radius:28px;padding:52px 48px;box-shadow:0 8px 48px rgba(0,0,0,.09);}
@@ -909,7 +934,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 <div id="funcionalidades"></div>
 
 <!-- ═══ WHATSAPP DEMO ═══ -->
-<section class="section" id="whatsapp-demo" style="background:var(--s1);">
+<section class="section sl-white" id="whatsapp-demo">
   <div class="section-inner">
     <div class="feat-row">
       <div class="feat-card fade">
@@ -984,7 +1009,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 </section>
 
 <!-- Feature 1 -->
-<section class="section section-light">
+<section class="section sl-gray">
   <div class="section-inner">
     <div class="feat-row">
       <div class="feat-card fade">
@@ -1072,7 +1097,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 </section>
 
 <!-- Feature 2 -->
-<section class="section section-light">
+<section class="section sl-dark">
   <div class="section-inner">
     <div class="feat-row reverse">
       <div class="feat-card fade">
@@ -1156,7 +1181,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 </section>
 
 <!-- Feature 3 -->
-<section class="section section-light">
+<section class="section sl-white">
   <div class="section-inner">
     <div class="feat-row">
       <div class="feat-card fade">
@@ -1221,7 +1246,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 </section>
 
 <!-- Feature 4 -->
-<section class="section section-light">
+<section class="section sl-gray">
   <div class="section-inner">
     <div class="feat-row reverse">
       <div class="feat-card fade">
@@ -1265,7 +1290,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 </section>
 
 <!-- Feature 5 - Orçamentos -->
-<section class="section section-light">
+<section class="section sl-dark">
   <div class="section-inner">
     <div class="feat-row">
       <div class="feat-card fade">
@@ -1376,7 +1401,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 </section>
 
 <!-- Feature Extra - Alertas inteligentes -->
-<section class="section section-light" id="alertas-section">
+<section class="section sl-white" id="alertas-section">
   <div class="section-inner">
     <div class="feat-row reverse">
       <div class="feat-card fade">
