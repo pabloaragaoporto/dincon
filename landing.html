@@ -77,8 +77,8 @@ nav.over-light .btn-ghost:hover{color:#111;}
 /* ── MARQUEE ICONS ── */
 .marquee-item i{font-size:16px;color:var(--accent);flex-shrink:0;}
 
-/* ── SECTION LIGHT — estilo meuassessor ── */
-.section-light{background:#ece8e3 !important;}
+/* ── SECTION LIGHT → agora dark ── */
+.section-light{background:var(--s1) !important;}
 
 /* Card branco que envolve o texto */
 .feat-card{background:#fff;border-radius:28px;padding:52px 48px;box-shadow:0 8px 48px rgba(0,0,0,.09);}
@@ -100,15 +100,17 @@ nav.over-light .btn-ghost:hover{color:#111;}
 .bcheck{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#00c86e,#00a050);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(0,200,110,.3);}
 .bcheck i{font-size:12px;color:#fff;}
 
-/* Seção de depoimentos no tema claro */
-.section-light .sec-label{color:#00a050;}
-.section-light .sec-title{color:#111118;}
-.section-light .sec-sub{color:#666675;}
-.section-light .testi-card{background:#fff;border-color:#e0dcd6;}
-.section-light .testi-card:hover{border-color:#ccc;}
-.section-light .testi-text{color:#555;}
-.section-light .testi-name{color:#111;}
-.section-light .testi-role{color:#888;}
+/* Textos fora do feat-card (no fundo escuro) */
+.section-light .sec-label{color:var(--accent);}
+.section-light .sec-title{color:var(--t);}
+.section-light .sec-sub{color:var(--t2);}
+.section-light .testi-card{background:var(--s2);border-color:var(--border);}
+.section-light .testi-card:hover{border-color:var(--b2);}
+.section-light .testi-text{color:var(--t2);}
+.section-light .testi-name{color:var(--t);}
+.section-light .testi-role{color:var(--t3);}
+/* Feat-card sombra mais visível no fundo escuro */
+.feat-card{box-shadow:0 24px 64px rgba(0,0,0,.4);}
 
 /* Nav pill mais visível */
 .nav-pill{border-color:rgba(255,255,255,.18) !important;}
@@ -542,7 +544,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 @keyframes orbitNodeIn{from{opacity:0;transform:translate(-50%,-50%) scale(.3)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
 
 /* ── STEP ANIMATIONS ── */
-.sa-wrap{background:linear-gradient(145deg,#f8f6f2,#f0ece6);border-radius:16px;padding:14px 16px;margin-bottom:18px;overflow:hidden;position:relative;height:240px;display:flex;align-items:center;justify-content:center;}
+.sa-wrap{background:linear-gradient(145deg,#0f0f1c,#141428);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px 16px;margin-bottom:18px;overflow:hidden;position:relative;height:240px;display:flex;align-items:center;justify-content:center;}
 
 /* ─ Step 1: Form ─ */
 .sa-mini-form{width:100%;max-width:240px;}
@@ -719,7 +721,9 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 /* ── COMO COMEÇAR (ONBOARDING) ── */
 .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:52px;}
 @media(max-width:768px){.steps-grid{grid-template-columns:1fr;max-width:420px;margin-left:auto;margin-right:auto;}}
-.step-card{background:#fff;border-radius:20px;padding:28px 24px;border:1px solid #e8e4de;position:relative;}
+.step-card{background:var(--s2);border-radius:20px;padding:28px 24px;border:1px solid var(--border);position:relative;}
+.step-title{color:var(--t);}
+.step-desc{color:var(--t2);}
 .step-num{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#00c86e,#00a050);color:#000;font-size:18px;font-weight:900;display:flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:0 4px 16px rgba(0,200,110,.3);}
 .step-title{font-size:16px;font-weight:800;color:#111;margin-bottom:8px;letter-spacing:-.02em;}
 .step-desc{font-size:14px;color:#666;line-height:1.7;}
@@ -741,11 +745,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 .support-faq-q{font-size:13px;font-weight:700;color:#111;margin-bottom:4px;}
 .support-faq-a{font-size:12px;color:#888;line-height:1.6;}
 
-/* ── WHATSAPP SECTION COLORS ── */
-#whatsapp-demo .feat-card-title{color:#111118;}
-#whatsapp-demo .feat-card-desc{color:#55556a;}
-#whatsapp-demo .feat-bullets li{color:#333340;}
-#whatsapp-demo .feat-tag-pill{color:#00a050;}
+/* Whatsapp section — feat-card tem bg:#fff então cores escuras ok */
 
 /* ── WHATSAPP MOCKUP ── */
 .wapp-wrap{display:flex;justify-content:center;align-items:center;padding:20px 10px;}
@@ -909,7 +909,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 <div id="funcionalidades"></div>
 
 <!-- ═══ WHATSAPP DEMO ═══ -->
-<section class="section" id="whatsapp-demo" style="background:#ffffff;">
+<section class="section" id="whatsapp-demo" style="background:var(--s1);">
   <div class="section-inner">
     <div class="feat-row">
       <div class="feat-card fade">
@@ -1450,7 +1450,7 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 </section>
 
 <!-- ═══ COMO COMEÇAR + SUPORTE ═══ -->
-<section class="section" style="background:#ece8e3;">
+<section class="section" style="background:var(--s1);">
   <div class="section-inner">
     <div class="sec-header fade">
       <div class="sec-label" style="color:#00a050;">Primeiros passos</div>
