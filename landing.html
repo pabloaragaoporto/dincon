@@ -916,6 +916,26 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 .fade.in .feat-bullets li:nth-child(3){opacity:1;transform:translateX(0);transition-delay:.8s;}
 .fade.in .feat-bullets li:nth-child(4){opacity:1;transform:translateX(0);transition-delay:1.0s;}
 
+/* ── DECORATIVE BACKGROUND ELEMENTS ── */
+/* Dot grid em fundos claros */
+.sl-white,.sl-gray{position:relative;}
+.sl-white::before,.sl-gray::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(0,0,0,.045) 1.5px,transparent 1.5px);background-size:30px 30px;pointer-events:none;z-index:0;}
+/* Grid de linhas em fundos escuros */
+.sl-dark::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,200,110,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,110,.03) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0;}
+/* section-inner sempre acima das decorações */
+.section-inner{position:relative;z-index:1;}
+/* Orb animado */
+.deco-orb{position:absolute;border-radius:50%;pointer-events:none;z-index:0;filter:blur(55px);}
+/* Shape geométrico */
+.deco-shape{position:absolute;pointer-events:none;z-index:0;border-radius:4px;}
+/* Keyframes decorativos */
+@keyframes orbFloat1{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-24px) scale(1.06)}}
+@keyframes orbFloat2{0%,100%{transform:translateY(0)}50%{transform:translateY(20px)}}
+@keyframes orbFloat3{0%,100%{transform:translateX(0)}50%{transform:translateX(-18px)}}
+@keyframes shapeSpinA{to{transform:rotate(360deg);}}
+@keyframes shapeSpinB{to{transform:rotate(-360deg);}}
+@keyframes shapePulse{0%,100%{opacity:.06;transform:scale(1)}50%{opacity:.12;transform:scale(1.15)}}
+
 /* ── ANIMATIONS ── */
 .fade{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease;}
 .fade.in{opacity:1;transform:translateY(0);}
@@ -2100,6 +2120,68 @@ if(wappPhone){
   },{threshold:0.4});
   wappObs.observe(wappPhone);
 }
+
+// ── Decorative background elements ──
+(function addDecoElements(){
+  const orbConfigs = {
+    'sl-white':[
+      {w:'240px',top:'-8%',left:'-4%',bg:'rgba(0,200,110,.08)',blur:'65px',anim:'orbFloat1 9s ease-in-out infinite'},
+      {w:'180px',bottom:'5%',right:'-3%',bg:'rgba(139,92,246,.06)',blur:'55px',anim:'orbFloat2 11s ease-in-out infinite 1.5s'},
+      {w:'120px',top:'45%',right:'10%',bg:'rgba(96,165,250,.05)',blur:'45px',anim:'orbFloat3 7s ease-in-out infinite 3s'},
+    ],
+    'sl-gray':[
+      {w:'200px',top:'-5%',right:'-2%',bg:'rgba(0,200,110,.07)',blur:'60px',anim:'orbFloat2 10s ease-in-out infinite'},
+      {w:'150px',bottom:'8%',left:'-2%',bg:'rgba(245,158,11,.05)',blur:'50px',anim:'orbFloat1 8s ease-in-out infinite 2s'},
+      {w:'100px',top:'35%',left:'40%',bg:'rgba(139,92,246,.04)',blur:'40px',anim:'orbFloat3 12s ease-in-out infinite 4s'},
+    ],
+    'sl-dark':[
+      {w:'320px',top:'-12%',right:'-6%',bg:'rgba(0,200,110,.07)',blur:'90px',anim:'orbFloat1 12s ease-in-out infinite'},
+      {w:'220px',bottom:'-8%',left:'-4%',bg:'rgba(139,92,246,.05)',blur:'80px',anim:'orbFloat3 10s ease-in-out infinite 3s'},
+    ]
+  };
+  const shapeConfigs = {
+    'sl-white':[
+      {s:'14px',top:'18%',right:'7%',brd:'2px solid rgba(0,200,110,.18)',anim:'shapeSpinA 16s linear infinite',br:'3px'},
+      {s:'9px',bottom:'25%',left:'9%',brd:'2px solid rgba(139,92,246,.15)',anim:'shapeSpinB 22s linear infinite',br:'2px'},
+      {s:'18px',top:'65%',right:'18%',brd:'2px solid rgba(0,200,110,.12)',anim:'shapeSpinA 12s linear infinite 4s',br:'4px'},
+      {s:'11px',top:'40%',left:'5%',brd:'2px solid rgba(96,165,250,.12)',anim:'shapePulse 5s ease-in-out infinite 2s',br:'50%'},
+    ],
+    'sl-gray':[
+      {s:'12px',top:'22%',left:'6%',brd:'2px solid rgba(0,200,110,.15)',anim:'shapeSpinA 18s linear infinite',br:'3px'},
+      {s:'8px',bottom:'18%',right:'8%',brd:'2px solid rgba(245,158,11,.15)',anim:'shapeSpinB 14s linear infinite 1s',br:'2px'},
+      {s:'15px',top:'58%',right:'12%',brd:'2px solid rgba(0,200,110,.1)',anim:'shapePulse 6s ease-in-out infinite',br:'50%'},
+    ]
+  };
+  ['sl-white','sl-gray','sl-dark'].forEach(cls=>{
+    document.querySelectorAll('.'+cls).forEach(section=>{
+      section.style.overflow='hidden';
+      // Orbs
+      (orbConfigs[cls]||[]).forEach(c=>{
+        const el=document.createElement('div');
+        el.className='deco-orb';
+        el.style.cssText=[
+          `width:${c.w}`,`height:${c.w}`,`background:${c.bg}`,
+          `filter:blur(${c.blur||'55px'})`,`animation:${c.anim}`,
+          c.top?`top:${c.top}`:'',c.bottom?`bottom:${c.bottom}`:'',
+          c.left?`left:${c.left}`:'',c.right?`right:${c.right}`:''
+        ].filter(Boolean).join(';');
+        section.insertBefore(el,section.firstChild);
+      });
+      // Shapes
+      (shapeConfigs[cls]||[]).forEach(c=>{
+        const el=document.createElement('div');
+        el.className='deco-shape';
+        el.style.cssText=[
+          `width:${c.s}`,`height:${c.s}`,`border:${c.brd}`,
+          `border-radius:${c.br||'4px'}`,`animation:${c.anim}`,
+          c.top?`top:${c.top}`:'',c.bottom?`bottom:${c.bottom}`:'',
+          c.left?`left:${c.left}`:'',c.right?`right:${c.right}`:''
+        ].filter(Boolean).join(';');
+        section.insertBefore(el,section.firstChild);
+      });
+    });
+  });
+})();
 
 // Nav adaptativo (claro/escuro conforme seção)
 const navEl=document.querySelector('nav');
