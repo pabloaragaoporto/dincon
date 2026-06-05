@@ -168,30 +168,49 @@ nav.over-light .btn-ghost:hover{color:#111;}
 .section-pricing .pbtn.free{background:rgba(0,0,0,.06);color:#555;}
 .section-pricing .pbtn.free:hover{background:rgba(0,0,0,.1);color:#222;}
 
-/* ── LOCK SCREEN PHONE ── */
-.ls-screen{position:absolute;inset:0;background:linear-gradient(160deg,#060614 0%,#0d1a2e 35%,#071a10 65%,#040c06 100%);overflow:hidden;display:flex;flex-direction:column;align-items:center;z-index:0;}
-.ls-screen::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 35% 55%,rgba(0,200,110,.18) 0%,transparent 45%),radial-gradient(circle at 75% 25%,rgba(96,165,250,.12) 0%,transparent 40%);pointer-events:none;}
-.ls-status{display:flex;justify-content:space-between;align-items:center;padding:4px 16px;width:100%;position:relative;z-index:2;}
-.ls-status-time{font-size:10px;font-weight:700;color:rgba(255,255,255,.8);}
-.ls-status-icons{display:flex;align-items:center;gap:3px;color:rgba(255,255,255,.8);}
-.ls-time-block{text-align:center;margin-top:24px;position:relative;z-index:2;}
-.ls-big-time{font-size:52px;font-weight:200;color:#fff;letter-spacing:-.02em;line-height:1;}
-.ls-date{font-size:12px;color:rgba(255,255,255,.6);margin-top:6px;font-weight:400;}
-.ls-lock-icon{margin-top:10px;font-size:14px;color:rgba(255,255,255,.4);}
-.ls-notifs-area{position:relative;z-index:2;width:100%;padding:0 8px;margin-top:16px;flex:1;overflow:hidden;}
-.ls-banner{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:9px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);margin-bottom:8px;transform:translateY(-110%);opacity:0;}
-.ls-b1{animation:lsBannerIn 4.5s ease .4s both;}
-.ls-b2{animation:lsBannerIn 4.5s ease 5.4s both;}
-.ls-b3{animation:lsBannerIn 4.5s ease 10.4s both;}
-.ls-b4{animation:lsBannerIn 4.5s ease 15.4s both;}
-.ls-b5{animation:lsBannerIn 4.5s ease 20.4s both;}
-@keyframes lsBannerIn{0%{transform:translateY(-110%);opacity:0}10%{transform:translateY(0);opacity:1}70%{transform:translateY(0);opacity:1}100%{transform:translateY(-110%);opacity:0}}
-.ls-banner-icon{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#00c86e,#00a050);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#000;flex-shrink:0;}
+/* ── LOCK SCREEN — PÔR DO SOL ── */
+.ls-screen{position:absolute;inset:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;z-index:0;}
+/* Gradiente céu pôr do sol */
+.ls-landscape{position:absolute;inset:0;background:linear-gradient(180deg,
+  #0d0424 0%,#2e0f52 10%,#7a1f5c 24%,
+  #c44d3a 38%,#e8883a 50%,#f5b866 59%,
+  #f0cc80 64%,#5a7a3a 67%,
+  #2d4a1a 78%,#141e0a 100%);}
+/* Sol */
+.ls-sun{position:absolute;width:38px;height:38px;border-radius:50%;background:radial-gradient(circle,#fff8e0 0%,#ffd060 35%,#ff9020 70%,transparent 100%);bottom:33%;left:50%;transform:translateX(-50%);box-shadow:0 0 24px rgba(255,190,0,.9),0 0 50px rgba(255,140,0,.5),0 0 90px rgba(255,100,0,.25);z-index:1;}
+.ls-sun-ray{position:absolute;bottom:32.5%;left:50%;transform:translateX(-50%);width:160px;height:12px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,180,0,.2) 0%,transparent 70%);z-index:1;}
+/* Montanhas SVG */
+.ls-mtns{position:absolute;width:100%;pointer-events:none;}
+.ls-mtns-far{bottom:28%;opacity:.75;}
+.ls-mtns-mid{bottom:16%;opacity:.88;}
+.ls-mtns-near{bottom:0;}
+/* Névoa horizonte */
+.ls-haze{position:absolute;height:28px;left:0;right:0;bottom:31%;background:linear-gradient(to top,rgba(240,140,60,.1),transparent);z-index:1;}
+/* Status bar / time / lock */
+.ls-status{display:flex;justify-content:space-between;align-items:center;padding:4px 16px;width:100%;position:relative;z-index:3;}
+.ls-status-time{font-size:10px;font-weight:700;color:rgba(255,255,255,.85);}
+.ls-status-icons{display:flex;align-items:center;gap:3px;color:rgba(255,255,255,.85);}
+.ls-time-block{text-align:center;margin-top:16px;position:relative;z-index:3;}
+.ls-big-time{font-size:52px;font-weight:200;color:#fff;letter-spacing:-.02em;line-height:1;text-shadow:0 2px 20px rgba(0,0,0,.4);}
+.ls-date{font-size:12px;color:rgba(255,255,255,.7);margin-top:6px;font-weight:400;text-shadow:0 1px 8px rgba(0,0,0,.4);}
+.ls-lock-icon{margin-top:8px;font-size:14px;color:rgba(255,255,255,.5);}
+/* Notificações se acumulando */
+.ls-notifs-area{position:relative;z-index:3;width:100%;padding:0 8px;margin-top:12px;flex:1;overflow:hidden;}
+.ls-banner{background:rgba(40,30,60,.72);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:9px 11px;display:flex;align-items:center;gap:9px;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);margin-bottom:7px;opacity:0;transform:translateY(-16px) scale(.96);}
+/* Cada notificação aparece e FICA — se acumulam */
+.ls-b1{animation:lsStackIn .45s cubic-bezier(.34,1.3,.64,1) .6s both;}
+.ls-b2{animation:lsStackIn .45s cubic-bezier(.34,1.3,.64,1) 2.4s both;}
+.ls-b3{animation:lsStackIn .45s cubic-bezier(.34,1.3,.64,1) 4.2s both;}
+.ls-b4{animation:lsStackIn .45s cubic-bezier(.34,1.3,.64,1) 6.0s both;}
+.ls-b5{animation:lsStackIn .45s cubic-bezier(.34,1.3,.64,1) 7.8s both;}
+/* Aparece e fica (sem sair) */
+@keyframes lsStackIn{from{opacity:0;transform:translateY(-16px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
+.ls-banner-icon{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#00c86e,#00a050);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#000;flex-shrink:0;}
 .ls-banner-body{flex:1;min-width:0;}
-.ls-banner-app{font-size:9px;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
-.ls-banner-msg{font-size:11px;color:rgba(255,255,255,.9);line-height:1.4;}
-.ls-banner-time{font-size:9px;color:rgba(255,255,255,.4);flex-shrink:0;}
-.ls-unlock-hint{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:10px;color:rgba(255,255,255,.3);z-index:2;}
+.ls-banner-app{font-size:8px;font-weight:700;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.07em;margin-bottom:1px;}
+.ls-banner-msg{font-size:10.5px;color:rgba(255,255,255,.92);line-height:1.35;}
+.ls-banner-time{font-size:8px;color:rgba(255,255,255,.38);flex-shrink:0;}
+.ls-unlock-hint{position:absolute;bottom:12px;left:0;right:0;text-align:center;font-size:10px;color:rgba(255,255,255,.3);z-index:3;letter-spacing:.04em;}
 
 /* Card branco que envolve o texto */
 .feat-card{background:#fff;border-radius:28px;padding:52px 48px;box-shadow:0 8px 48px rgba(0,0,0,.09);}
@@ -1529,24 +1548,40 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
         <div class="din-sim-phone notif-demo-phone">
           <div class="din-notch"></div>
           <div class="din-status-bar"><span class="din-time">9:41</span><div class="din-status-icons"><svg width="25" height="11" viewBox="0 0 25 11"><rect x="0" y="1" width="22" height="9" rx="2" stroke="currentColor" stroke-width="1" fill="none" opacity=".4"/><rect x="1.5" y="2.5" width="16" height="6" rx="1" fill="#00c86e"/><rect x="23" y="3.5" width="1.5" height="4" rx=".75" fill="currentColor" opacity=".4"/></svg></div></div>
-          <!-- LOCK SCREEN BONITA -->
+          <!-- LOCK SCREEN — PÔR DO SOL + NOTIFICAÇÕES ACUMULANDO -->
           <div class="ls-screen">
+            <!-- Paisagem: céu, sol, montanhas -->
+            <div class="ls-landscape"></div>
+            <div class="ls-sun"></div>
+            <div class="ls-sun-ray"></div>
+            <div class="ls-haze"></div>
+            <!-- Montanhas distantes -->
+            <svg class="ls-mtns ls-mtns-far" viewBox="0 0 300 80" preserveAspectRatio="none">
+              <path d="M0,80 L0,55 L25,30 L50,48 L75,18 L100,42 L125,8 L150,38 L175,22 L200,44 L225,15 L250,40 L275,28 L300,45 L300,80 Z" fill="#3d1f6e" opacity=".7"/>
+            </svg>
+            <!-- Montanhas médias -->
+            <svg class="ls-mtns ls-mtns-mid" viewBox="0 0 300 80" preserveAspectRatio="none">
+              <path d="M0,80 L0,62 L30,38 L60,55 L95,22 L130,50 L160,30 L195,52 L225,35 L260,55 L300,40 L300,80 Z" fill="#1e2d12" opacity=".85"/>
+            </svg>
+            <!-- Montanhas próximas -->
+            <svg class="ls-mtns ls-mtns-near" viewBox="0 0 300 80" preserveAspectRatio="none">
+              <path d="M0,80 L0,65 L40,42 L80,60 L120,38 L160,58 L200,42 L240,62 L280,48 L300,58 L300,80 Z" fill="#0d1808"/>
+            </svg>
             <!-- Status bar -->
             <div class="ls-status">
               <span class="ls-status-time">9:41</span>
               <div class="ls-status-icons">
-                <svg width="12" height="9" viewBox="0 0 15 11"><rect x="0" y="5" width="3" height="6" rx="1" fill="currentColor" opacity=".4"/><rect x="4" y="3" width="3" height="8" rx="1" fill="currentColor" opacity=".7"/><rect x="8" y="1" width="3" height="10" rx="1" fill="currentColor"/><rect x="12" y="0" width="3" height="11" rx="1" fill="currentColor"/></svg>
-                <svg width="12" height="9" viewBox="0 0 14 11"><path d="M7 2.5C9.2 2.5 11.2 3.4 12.6 4.9L14 3.5C12.2 1.3 9.7 0 7 0S1.8 1.3 0 3.5L1.4 4.9C2.8 3.4 4.8 2.5 7 2.5z" fill="currentColor"/><circle cx="7" cy="9.5" r="1.5" fill="currentColor"/></svg>
-                <svg width="22" height="9" viewBox="0 0 25 11"><rect x="0" y="1" width="22" height="9" rx="2" stroke="currentColor" stroke-width="1" fill="none" opacity=".5"/><rect x="1.5" y="2.5" width="16" height="6" rx="1" fill="rgba(255,255,255,.7)"/><rect x="23" y="3.5" width="1.5" height="4" rx=".75" fill="currentColor" opacity=".5"/></svg>
+                <svg width="12" height="9" viewBox="0 0 15 11"><rect x="0" y="5" width="3" height="6" rx="1" fill="currentColor" opacity=".5"/><rect x="4" y="3" width="3" height="8" rx="1" fill="currentColor" opacity=".7"/><rect x="8" y="1" width="3" height="10" rx="1" fill="currentColor"/><rect x="12" y="0" width="3" height="11" rx="1" fill="currentColor"/></svg>
+                <svg width="22" height="9" viewBox="0 0 25 11"><rect x="0" y="1" width="22" height="9" rx="2" stroke="currentColor" stroke-width="1" fill="none" opacity=".5"/><rect x="1.5" y="2.5" width="16" height="6" rx="1" fill="rgba(255,255,255,.8)"/></svg>
               </div>
             </div>
             <!-- Hora e data -->
             <div class="ls-time-block">
               <div class="ls-big-time">9:41</div>
               <div class="ls-date">Quinta, 5 de junho de 2026</div>
-              <div class="ls-lock-icon"><i class="ph ph-lock" style="font-size:16px;"></i></div>
+              <div class="ls-lock-icon">🔒</div>
             </div>
-            <!-- Notificações na lock screen -->
+            <!-- Notificações se acumulando na tela -->
             <div class="ls-notifs-area">
               <div class="ls-banner ls-b1">
                 <div class="ls-banner-icon">D</div>
