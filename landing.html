@@ -920,8 +920,10 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 /* Dot grid em fundos claros */
 .sl-white,.sl-gray{position:relative;}
 .sl-white::before,.sl-gray::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(0,0,0,.045) 1.5px,transparent 1.5px);background-size:30px 30px;pointer-events:none;z-index:0;}
-/* Grid de linhas em fundos escuros */
-.sl-dark::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,200,110,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,110,.03) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0;}
+/* Grid de linhas em fundos escuros + hero + FAQ + CTA */
+.sl-dark::before,.hero::before,#faq::before,.cta-section::before,.orbit-section::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,200,110,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,110,.025) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0;}
+.hero{position:relative;overflow:hidden;}
+.cta-section{position:relative;overflow:hidden;}
 /* section-inner sempre acima das decorações */
 .section-inner{position:relative;z-index:1;}
 /* Orb animado */
@@ -2152,6 +2154,20 @@ if(wappPhone){
       {s:'15px',top:'58%',right:'12%',brd:'2px solid rgba(0,200,110,.1)',anim:'shapePulse 6s ease-in-out infinite',br:'50%'},
     ]
   };
+  // Adiciona .deco-ext para seções sem sl-* (hero, FAQ, CTA, orbit, etc.)
+  document.querySelectorAll('.hero,.orbit-section,.cta-section,#faq,.stats').forEach(section=>{
+    section.style.overflow='hidden';
+    [{w:'300px',top:'-10%',right:'-5%',bg:'rgba(0,200,110,.07)',blur:'90px',anim:'orbFloat1 14s ease-in-out infinite'},
+     {w:'200px',bottom:'-8%',left:'-3%',bg:'rgba(139,92,246,.05)',blur:'80px',anim:'orbFloat2 11s ease-in-out infinite 2s'}
+    ].forEach(c=>{
+      const el=document.createElement('div');el.className='deco-orb';
+      el.style.cssText=[`width:${c.w}`,`height:${c.w}`,`background:${c.bg}`,`filter:blur(${c.blur})`,`animation:${c.anim}`,
+        c.top?`top:${c.top}`:'',c.bottom?`bottom:${c.bottom}`:'',c.left?`left:${c.left}`:'',c.right?`right:${c.right}`:''
+      ].filter(Boolean).join(';');
+      section.insertBefore(el,section.firstChild);
+    });
+  });
+
   ['sl-white','sl-gray','sl-dark'].forEach(cls=>{
     document.querySelectorAll('.'+cls).forEach(section=>{
       section.style.overflow='hidden';
