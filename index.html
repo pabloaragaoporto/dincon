@@ -2418,19 +2418,29 @@ function renderCC(){
   }
   if(!S.cartoes.length){ el.innerHTML=`<div class="empty"><div class="empty-icon">💳</div><div class="empty-lbl">Nenhum cartão cadastrado</div><div class="empty-sub">Controle fatura e limite dos seus cartões</div><button class="add-btn" style="margin-top:14px" onclick="openAddCC()">+ Adicionar cartão</button></div>`; }
   else {
-    const hoje2=new Date();
+    const m=cur.getMonth(),y=cur.getFullYear();
     el.innerHTML=S.cartoes.map((c,i)=>{
-      // Fatura atual = parcelas deste mês (o que será cobrado na fatura)
-      const faturaCalc=txDoMes().filter(t=>t.tipo==='gasto'&&t.cartao===c.nome).reduce((s,t)=>s+t.valor/(t.parcelas||1),0);
-      // Saldo comprometido = total ainda pendente de todas as compras (para limite)
+      // ── FATURA: inclui parcelas de meses anteriores que ainda estão em curso ──
+      // Ex: compra 3x em maio → aparece na fatura de maio, junho e julho
+      const txFatura=S.tx.filter(t=>{
+        if(t.tipo!=='gasto'||t.cartao!==c.nome||!t.data)return false;
+        const d=new Date(t.data+'T12:00');
+        const mesesDesde=(y-d.getFullYear())*12+(m-d.getMonth());
+        const parc=t.parcelas||1;
+        return mesesDesde>=0&&mesesDesde<parc; // este mês está dentro do range de parcelas
+      });
+      const faturaCalc=txFatura.reduce((s,t)=>s+t.valor/(t.parcelas||1),0);
+
+      // ── COMPROMETIDO: saldo restante APÓS o mês visualizado ──
+      // Ex: compra 3x em maio, visualizando junho → 1 parcela paga, restam 2
       const comprometido=S.tx.filter(t=>t.tipo==='gasto'&&t.cartao===c.nome&&t.meio==='crédito').reduce((s,t)=>{
         if(!t.data)return s+t.valor;
         const compra=new Date(t.data+'T12:00');
-        const meses=(hoje2.getFullYear()-compra.getFullYear())*12+(hoje2.getMonth()-compra.getMonth());
+        const mesesPagosAteAgora=(y-compra.getFullYear())*12+(m-compra.getMonth())+1; // +1: parcela deste mês será paga
         const parc=t.parcelas||1;
-        const pagas=Math.min(Math.max(0,meses),parc);
-        const restante=t.valor-pagas*(t.valor/parc);
-        return s+Math.max(0,restante);
+        const pagas=Math.min(Math.max(0,mesesPagosAteAgora),parc);
+        const restante=Math.max(0,t.valor-pagas*(t.valor/parc));
+        return s+restante;
       },0);
       const usoPct=c.limite>0?Math.min(Math.round((comprometido/c.limite)*100),100):0;
       const dias=diasParaVencimento(c.venc);
@@ -2449,10 +2459,35 @@ function renderCC(){
       </div>`;
     }).join('');
   }
-  // Gastos no crédito
+  // Gastos no crédito — inclui parcelas de meses anteriores em curso
   const ccTxEl=document.getElementById('ccTxList');if(!ccTxEl)return;
-  const ccTxs=txDoMes().filter(t=>t.tipo==='gasto'&&(t.meio==='crédito'||t.cartao));
-  ccTxEl.innerHTML=ccTxs.length?ccTxs.map(t=>txItemHTML(t)).join(''):`<div class="empty"><div class="empty-icon">💳</div><div class="empty-lbl">Nenhum gasto no crédito este mês</div></div>`;
+  const ccTxs=S.tx.filter(t=>{
+    if(t.tipo!=='gasto'||(t.meio!=='crédito'&&!t.cartao)||!t.data)return false;
+    const d=new Date(t.data+'T12:00');
+    const mesesDesde=(y-d.getFullYear())*12+(m-d.getMonth());
+    const parc=t.parcelas||1;
+    return mesesDesde>=0&&mesesDesde<parc;
+  });
+  // Adiciona info da parcela atual para exibição
+  const ccTxsComInfo=ccTxs.map(t=>{
+    if(!t.data)return t;
+    const d=new Date(t.data+'T12:00');
+    const mesesDesde=(y-d.getFullYear())*12+(m-d.getMonth());
+    const parc=t.parcelas||1;
+    const numParc=mesesDesde+1; // parcela atual (1ª, 2ª, etc.)
+    return {...t,_parcAtual:parc>1?numParc:null};
+  });
+  ccTxEl.innerHTML=ccTxsComInfo.length
+    ?ccTxsComInfo.map(t=>{
+      const base=txItemHTML(t);
+      if(!t._parcAtual||t.parcelas<=1)return base;
+      // Injeta badge de parcela atual no item
+      return base.replace('class="tx-meta"',`class="tx-meta"`).replace(
+        `${t.parcelas}x`,
+        `${t._parcAtual}ª/${t.parcelas}x`
+      );
+    }).join('')
+    :`<div class="empty"><div class="empty-icon">💳</div><div class="empty-lbl">Nenhum gasto no crédito este mês</div></div>`;
 }
 
 let _editCC=-1,_editMeta=-1,_editAtivo=-1,_editPassivo=-1,_editFin=-1;
