@@ -285,7 +285,7 @@ nav.over-light .btn-ghost:hover{color:#111;}
 .phone-notch-bar{height:12px;background:#080810;display:flex;align-items:center;justify-content:center;}
 .phone-notch{width:70px;height:4px;background:#18182a;border-radius:100px;}
 @keyframes float3d{0%,100%{transform:perspective(900px) rotateY(-8deg) rotateX(2deg) translateY(0)}50%{transform:perspective(900px) rotateY(-8deg) rotateX(2deg) translateY(-12px)}}
-@media(max-width:960px){.phone-stage{height:380px;}.phone-3d-wrap{width:320px;height:360px;}.phone-front{width:190px;}.phone-back{width:175px;}}
+@media(max-width:960px){.phone-stage{height:auto;min-height:unset;}.phone-3d-wrap{width:280px;height:300px;}.phone-front{width:170px;}.phone-back{width:155px;}}
 
 /* Floating cards */
 .float-card{position:absolute;background:rgba(12,12,22,.96);border:1px solid var(--border);border-radius:14px;padding:11px 15px;backdrop-filter:blur(14px);z-index:10;white-space:nowrap;box-shadow:0 16px 48px rgba(0,0,0,.6);}
@@ -934,6 +934,115 @@ footer{border-top:1px solid var(--border);background:var(--s1);}
 .fade.in .feat-bullets li:nth-child(2){opacity:1;transform:translateX(0);transition-delay:.6s;}
 .fade.in .feat-bullets li:nth-child(3){opacity:1;transform:translateX(0);transition-delay:.8s;}
 .fade.in .feat-bullets li:nth-child(4){opacity:1;transform:translateX(0);transition-delay:1.0s;}
+
+/* ══════════════════════════════════════
+   MOBILE RESPONSIVE — todos os ajustes
+   ══════════════════════════════════════ */
+@media(max-width:768px){
+
+  /* NAV */
+  nav{padding:10px 16px;}
+  .nav-pill{padding:0 8px 0 14px;height:58px;}
+  .logo-name{font-size:17px;}
+
+  /* HERO */
+  .hero{overflow-x:hidden;overflow-y:visible;}
+  .hero-inner{padding:28px 20px 32px;gap:28px;}
+  .hero h1{font-size:clamp(36px,9.5vw,52px);}
+  .hero-sub{font-size:16px;line-height:1.65;}
+  .hero-ctas{flex-direction:column;align-items:center;gap:10px;}
+  .hero-ctas .btn-lg{width:100%;max-width:340px;justify-content:center;}
+  .hero-trust{gap:12px;font-size:12px;}
+  /* Imagem do hero — sem corte, tamanho completo */
+  .phone-stage img{max-width:100% !important;max-height:none !important;width:90vw !important;}
+
+  /* STATS */
+  .stats-inner{padding:24px 20px;gap:20px;}
+  .stat-n{font-size:28px;}
+  .stat-l{font-size:11px;}
+
+  /* SECTIONS */
+  .section{padding:64px 20px;}
+  .section-inner{padding:0;}
+
+  /* FEAT ROW */
+  .feat-row{gap:32px;}
+  .feat-card{padding:28px 22px;}
+  .feat-card-title{font-size:clamp(22px,6vw,32px);}
+  .feat-card-desc{font-size:14px;}
+  /* Imagens de feature — maiores no mobile */
+  .feat-img-wrap img{max-width:85vw !important;width:85vw;}
+  .feat-img-wrap{padding:10px 0;}
+
+  /* Celulares simulados — ajusta para mobile */
+  .din-sim-phone{width:260px;}
+  .din-cartoes-phone{width:260px;}
+  .din-pat-phone,.din-cat-phone,.din-orc-phone{width:260px;}
+
+  /* NOTIF PHONE */
+  .notif-demo-phone{width:260px;}
+
+  /* STEPS */
+  .steps-grid{gap:20px;}
+  .step-card{padding:22px 18px;}
+  .sa-wrap{height:200px;}
+
+  /* VIDEO PLAYER */
+  .vid-player-wrap{gap:16px;}
+  .vid-title{font-size:22px;}
+
+  /* ORBIT */
+  .orbit-stage{width:280px;height:280px;}
+  .orbit-ring-1{width:280px;height:280px;}
+  .orbit-ring-2{width:176px;height:176px;}
+  .orbit-center{width:64px;height:64px;font-size:28px;}
+  .orbit-pill{padding:6px 10px;font-size:11px;}
+  .orbit-pill span{font-size:13px;}
+
+  /* PRICING */
+  .price-grid{gap:16px;}
+  .pcard{padding:26px 20px;}
+
+  /* TESTIMONIALS */
+  .testi-grid{gap:14px;}
+
+  /* FAQ */
+  .faq-list{margin-top:32px;}
+  .faq-q{font-size:14px;padding:18px 18px;}
+  .faq-a-inner{font-size:14px;padding:0 18px 16px;}
+
+  /* CTA */
+  .cta-inner{padding:72px 20px;}
+  .cta-inner h2{font-size:clamp(26px,8vw,40px);}
+  .cta-trust{gap:14px;}
+
+  /* FOOTER */
+  .footer-inner{padding:40px 20px 24px;}
+  .footer-brand p{font-size:13px;}
+
+  /* SEC HEADER */
+  .sec-title{font-size:clamp(26px,7vw,40px);}
+  .sec-sub{font-size:15px;}
+
+  /* MARQUEE */
+  .marquee-item{font-size:11px;gap:6px;padding:0 16px;}
+
+  /* WPP PHONE */
+  .wapp-phone{width:260px;}
+
+  /* WhatsApp demo section */
+  #whatsapp-demo .feat-row{gap:24px;}
+}
+
+/* Extra pequeno */
+@media(max-width:400px){
+  .hero h1{font-size:34px;}
+  .phone-stage img{width:95vw !important;}
+  .feat-img-wrap img{max-width:92vw !important;width:92vw;}
+  .din-sim-phone,.wapp-phone,.notif-demo-phone{width:240px;}
+}
+
+/* ══════════════════════════════════════ */
 
 /* ── DECORATIVE BACKGROUND ELEMENTS ── */
 /* Dot grid em fundos claros */
